@@ -81,7 +81,11 @@
                 <br />
                 <strong>{{ props.row.productManufacturer }}</strong>
                 <br />
-                <small>@{{ props.row.productSupplier }}</small>
+                <b
+                  ><small
+                    ><i class="fas fa-truck-moving"></i> {{ props.row.productSupplier }}</small
+                  ></b
+                >
                 <br />
                 {{ props.row.productDescription }}
               </p>

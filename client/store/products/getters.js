@@ -5,34 +5,34 @@ const _ = deepdash(lodash)
 export default {
   getProducts(state) {
     let apiProducts = [...state.products]
-    if (
-      !state.stockGroup &&
-      state.mfrCheckboxGroup.length === 0 &&
-      state.supplierCheckboxGroup.length === 0
-    ) {
-      return apiProducts
-    } else if (state.stockGroup) {
-      let filteredStockStatusProducts = _.filterDeep(apiProducts, 'state.stockGroup', {
+    let filteredProducts = []
+
+    // sadece stoklu olanlar ya da tamamı
+    if (state.showOnlyHasStock) {
+      let hasStock = _.filterDeep(apiProducts, 'inStock', {
         childrenPath: ['InvOrg.webSites', 'sources', 'sourceParts'],
       })
-      return filteredStockStatusProducts
-    } else if (state.mfrCheckboxGroup.length > 0) {
-      //TODO! mtf için haricen funk yazılacak
-      return
-    } else if (state.supplierCheckboxGroup.length > 0) {
-      let filterSuppliersProducts = _.filterDeep(
-        filteredStockStatusProducts,
+      filteredProducts = hasStock
+    } else {
+      filteredProducts = apiProducts
+    }
+    // mfrName de bir seçim var ise;
+    if (state.mfrCheckboxGroup.length > 0) {
+      filteredProducts = filteredProducts.filter((el) =>
+        state.mfrCheckboxGroup.includes(el.manufacturer.mfrName)
+      )
+    }
+    // suppliers da bir seçim var ise;
+    if (state.supplierCheckboxGroup.length > 0) {
+      filteredProducts = _.filterDeep(
+        filteredProducts,
         function (value) {
           return _.includes(state.supplierCheckboxGroup, value.displayName)
         },
         { childrenPath: ['InvOrg.webSites', 'sources'] }
       )
-
-      return filterSuppliersProducts
-    } else {
-      //TODO! buraya da else kısmı eklenecek
-      return
     }
+    return filteredProducts
   },
   getManufacturerNames(state) {
     if (state.products) {

@@ -21,20 +21,20 @@ const getters = {
     }
   },
   getCartCurrencyInfo(state) {
-    // if (state.cart) {
-    //   let currArr = []
-    //   for (let i = 0; i < state.cart.length; i++) {
-    //     const curr = state.cart[i].productCurrency
-    //     currArr.push(curr)
-    //   }
-    //   const removeDuplicates = [...new Set(currArr)]
-    //   if (removeDuplicates.length === 1) {
-    //     return removeDuplicates
-    //   } else {
-    //     console.log('Sepette birden fazla döviz cinsine sahip ürün var!!!')
-    //     return null
-    //   }
-    // }
+    if (state.cart) {
+      let currArr = []
+      for (let i = 0; i < state.cart.length; i++) {
+        const curr = state.cart[i].productCurrency
+        currArr.push(curr)
+      }
+      const removeDuplicates = [...new Set(currArr)]
+      if (removeDuplicates.length === 1) {
+        return removeDuplicates
+      } else {
+        console.log('Sepette birden fazla döviz cinsine sahip ürün var!!!')
+        return null
+      }
+    }
   },
 }
 export default getters

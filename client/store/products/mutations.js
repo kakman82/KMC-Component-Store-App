@@ -4,7 +4,7 @@ const mutations = {
     state.cart.unshift(product)
   },
   setStockCheckboxSelections(state, selection) {
-    state.stockGroup = selection
+    state.showOnlyHasStock = selection
   },
   setManufacturerCheckboxSelections(state, selection) {
     state.mfrCheckboxGroup = selection

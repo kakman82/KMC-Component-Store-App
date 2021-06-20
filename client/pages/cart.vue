@@ -14,7 +14,11 @@
           </div>
         </div>
       </div>
+      <!-- Footer ın sayfada tabana oturması için ekledim  -->
+      <br />
     </section>
+    <!-- Footer ın sayfada tabana oturması için ekledim  -->
+    <br />
   </div>
 </template>
 

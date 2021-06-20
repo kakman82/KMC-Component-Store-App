@@ -13,7 +13,7 @@
       <!-- Tablo görünüm -->
       <div class="column is-9">
         <div
-          class="forscrolling card pt-1 mb-6"
+          class="forscrolling card pt-1 pb-1 mb-5"
           style="width: 95%"
           v-for="prod in products"
           :key="prod.itemId"
@@ -21,7 +21,6 @@
           <!-- Ürün Giriş Bilgileri ProductInfoCard ve ProductTable -->
           <!-- <ProductInfoCard :prod="prod" /> -->
           <ProductTable :prod="prod" />
-          <br />
         </div>
       </div>
     </section>
@@ -52,11 +51,11 @@ export default {
 </script>
 
 <style scoped>
-.forscrolling {
+/* .forscrolling {
   width: 1200px;
   height: 800px;
   overflow-x: scroll;
-}
+} */
 
 div.msg {
   margin-top: 5rem !important;

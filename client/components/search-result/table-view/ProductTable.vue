@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <table class="table mt-2 is-bordered is-striped mx-3">
+    <table class="table my-3 mx-3 p-0 is-bordered is-striped">
       <thead>
         <tr class="has-text-centered has-background-primary">
           <th class="has-text-white">Ürün Bilgileri</th>
@@ -67,7 +67,7 @@
                       <br />
                       <span class="icon-text">
                         <span class="icon has-text-primary-dark">
-                          <i class="far fa-building"></i>
+                          <i class="fas fa-truck-moving"></i>
                         </span>
                         <span>{{ supplier.displayName }}</span>
                       </span>
@@ -188,18 +188,12 @@
                     >
                   </span>
                   <br />
-                  <div class="column">
-                    <i class="fas fa-phone-volume"></i>
-                  </div>
-                  <div class="column is-11">
-                    <p>+90 216 527 36 41</p>
-                  </div>
-                  <!-- <span class="icon-text mt-2">
+                  <span class="icon-text mt-2">
                     <span class="icon">
                       <i class="fas fa-phone-volume"></i>
                     </span>
                     <span> +90 216 527 36 41</span>
-                  </span> -->
+                  </span>
                 </div>
               </td>
             </tr>

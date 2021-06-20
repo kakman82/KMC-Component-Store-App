@@ -5,20 +5,15 @@
       <!-- Stok Filtre -->
       <ul class="menu-list">
         <li>
-          <a class="is-active has-text-weight-bold">Stok Uygun Olanları Göster</a>
+          <a class="is-active has-text-weight-bold">Sadece Stoktakileri Göster</a>
           <ul>
             <b-field>
               <b-checkbox v-model="isStock" type="is-info" true-value="Evet" false-value="Hayır">
                 {{ isStock }}
               </b-checkbox>
             </b-field>
-            <!-- <b-field>
-              <b-checkbox v-model="stockGroup" :native-value="false" type="is-info">
-                Yok
-              </b-checkbox>
-            </b-field> -->
           </ul>
-          <p class="content"><b>Selection:</b> {{ stockGroup }}</p>
+          <!-- <p class="content"><b>Selection:</b> {{ stockGroup }}</p> -->
         </li>
       </ul>
       <!-- Üretici Firma Filter -->
@@ -36,7 +31,7 @@
               </b-checkbox>
             </b-field>
           </ul>
-          <p class="content"><b>Selection:</b> {{ mfrCheckboxGroup }}</p>
+          <!-- <p class="content"><b>Selection:</b> {{ mfrCheckboxGroup }}</p> -->
         </li>
       </ul>
       <!-- Tedarik Yeri Filter -->
@@ -54,7 +49,7 @@
               </b-checkbox>
             </b-field>
           </ul>
-          <p class="content"><b>Selection:</b> {{ supplierCheckboxGroup }}</p>
+          <!-- <p class="content"><b>Selection:</b> {{ supplierCheckboxGroup }}</p> -->
         </li>
       </ul>
     </aside>
