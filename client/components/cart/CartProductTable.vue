@@ -19,10 +19,6 @@
         {{ props.row.productName }}
       </b-table-column>
 
-      <!-- <b-table-column field="productManufacturer" label="Üretici" v-slot="props">
-        {{ props.row.productManufacturer }}
-      </b-table-column> -->
-
       <b-table-column field="productQuantity" label="Seçilen Adet" numeric centered v-slot="props">
         {{ niceFormat(props.row.productQuantity) }}
       </b-table-column>
@@ -53,19 +49,12 @@
         <span class="tag is-success"> Ort 2 hafta </span>
       </b-table-column>
 
-      <b-table-column label="Sil" centered>
-        <button class="button is-danger is-small">
-          <span class="icon is-small">
-            <i class="fas fa-trash"></i>
-          </span>
-        </button>
-        <!-- <span>
-          <b-icon pack="fas" icon="trash "> </b-icon>
-        </span> -->
+      <b-table-column label="Sil" centered v-slot="props">
+        <DialogConfirm :prodCartId="props.row.productCartId" />
       </b-table-column>
 
       <template #empty>
-        <div class="has-text-centered">Kayıt yok</div>
+        <div class="has-text-centered">Sepetinizde Ürün Bulunmuyor.</div>
       </template>
       <template #detail="props">
         <article class="media">
@@ -98,8 +87,11 @@
 </template>
 
 <script>
+import DialogConfirm from '../DialogConfirm.vue'
 import * as module from '../formatHelper'
 export default {
+  name: 'CartProductTable',
+  components: { DialogConfirm },
   data() {
     return {
       isEmpty: false,

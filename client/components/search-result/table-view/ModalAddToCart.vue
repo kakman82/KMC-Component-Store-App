@@ -34,7 +34,7 @@
                 {{ product.productManufacturer }}
               </p>
               <p class="is-6">
-                <i class="fas fa-building mr-2"></i>
+                <i class="fas fa-truck-moving mr-2"></i>
                 {{ product.productSupplier }}
               </p>
               <p class="is-7 mt-5"><b>Tutar: </b>{{ oneProductTotalPrice }}</p>
@@ -52,10 +52,7 @@
                   <b>{{ cartTotalPrice }} </b>
                 </h1>
 
-                <button
-                  class="button is-primary is-fullwidth"
-                  @click="$router.push({ path: '/cart' })"
-                >
+                <button class="button is-primary is-fullwidth" @click="goToCart">
                   Sepete Git ({{ $store.getters['cart/getCartLength'] }} ürün)
                 </button>
                 <button class="button is-outlined is-default is-fullwidth mt-3" @click="closeModal">
@@ -105,6 +102,10 @@ export default {
   methods: {
     closeModal() {
       this.$emit('closeModal')
+    },
+    goToCart() {
+      this.$router.push({ path: '/cart' })
+      this.closeModal()
     },
   },
 }

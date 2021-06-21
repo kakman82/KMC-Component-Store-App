@@ -100,8 +100,9 @@
 <script>
 export default {
   name: 'HomePage',
-
-  components: {},
+  head: {
+    title: 'Ana Sayfa | KMC Elektronik',
+  },
   data() {
     return {
       search_token: '',
@@ -113,13 +114,13 @@ export default {
     getSearchToken(e) {
       const val = e.target.value
       console.log('home page search value: ', val)
-
+      this.search_token = val
       this.isLoading = true
 
       setTimeout(() => {
         this.isLoading = false
         this.$router.push(`/search/${this.search_token}`)
-      }, 3000)
+      }, 1000)
     },
   },
 }

@@ -132,7 +132,7 @@ export default {
           productTotalPrice: (this.quantity * this.productPrice).toFixed(2) * 1,
           productQuantity: this.quantity,
         }
-        console.log('Sepete Eklenen Product Object: ', cartProductData)
+        //console.log('Sepete Eklenen Product Object: ', cartProductData)
         // Mutationa product gönderimi ve modal gösterimi;
         this.$store.commit('cart/addProductToCart', cartProductData)
         // Modal componentin beklediği active propu true olarak set ediyorum
