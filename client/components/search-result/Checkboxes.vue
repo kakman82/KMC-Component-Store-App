@@ -5,29 +5,23 @@
       <!-- Stok Filtre -->
       <ul class="menu-list">
         <li>
-          <a class="is-active has-text-weight-bold">Sadece Stoktakileri Göster</a>
+          <a class="is-active has-text-weight-bold">Yalnızca Stoğu Olanları Göster</a>
           <ul>
             <b-field>
-              <b-checkbox v-model="isStock" type="is-info" true-value="Evet" false-value="Hayır">
-                {{ isStock }}
-              </b-checkbox>
+              <b-checkbox v-model="stockCheckboxValue" type="is-info"> Evet </b-checkbox>
             </b-field>
           </ul>
-          <!-- <p class="content"><b>Selection:</b> {{ stockGroup }}</p> -->
+          <!-- <p class="content"><b>Selection:</b> {{ stockCheckboxValue }}</p> -->
         </li>
       </ul>
       <!-- Üretici Firma Filter -->
       <ul class="menu-list">
         <li>
           <a class="is-active has-text-weight-bold">Üretici Firma [A-Z]</a>
-          <ul v-for="manufacturer in manufacturers" :key="manufacturer.id">
+          <ul v-for="(manufacturer, i) in manufacturers" :key="i">
             <b-field>
-              <b-checkbox
-                v-model="mfrCheckboxGroup"
-                :native-value="manufacturer.name"
-                type="is-info"
-              >
-                {{ manufacturer.name }}
+              <b-checkbox v-model="mfrCheckboxGroup" :native-value="manufacturer" type="is-info">
+                {{ manufacturer }}
               </b-checkbox>
             </b-field>
           </ul>
@@ -38,14 +32,10 @@
       <ul class="menu-list">
         <li>
           <a class="is-active has-text-weight-bold">Tedarik Firma/Bölge [A-Z]</a>
-          <ul v-for="supplier in suppliers" :key="supplier.id">
+          <ul v-for="(supplier, i) in suppliers" :key="i">
             <b-field>
-              <b-checkbox
-                v-model="supplierCheckboxGroup"
-                :native-value="supplier.name"
-                type="is-info"
-              >
-                {{ supplier.name }}
+              <b-checkbox v-model="supplierCheckboxGroup" :native-value="supplier" type="is-info">
+                {{ supplier }}
               </b-checkbox>
             </b-field>
           </ul>
@@ -60,19 +50,12 @@
 export default {
   data() {
     return {
-      isStock: 'Evet',
+      stockCheckboxValue: true,
       mfrCheckboxGroup: [],
       supplierCheckboxGroup: [],
     }
   },
   computed: {
-    stockGroup() {
-      if (this.isStock === 'Evet') {
-        return true
-      } else {
-        return false
-      }
-    },
     manufacturers() {
       return this.$store.getters['products/getManufacturerNames']
     },
@@ -81,8 +64,9 @@ export default {
     },
   },
   watch: {
-    stockGroup(newVal, oldVal) {
-      this.$store.commit('products/setStockCheckboxSelections', this.stockGroup)
+    stockCheckboxValue(newVal, oldVal) {
+      //console.log('old: ', oldVal, 'new: ', newVal)
+      this.$store.commit('products/setStockCheckboxSelections', newVal)
     },
     mfrCheckboxGroup(newVal, oldVal) {
       this.$store.commit('products/setManufacturerCheckboxSelections', this.mfrCheckboxGroup)

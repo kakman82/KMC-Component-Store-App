@@ -36,21 +36,10 @@ export default {
   },
   getManufacturerNames(state) {
     if (state.products) {
-      const names = state.products.map((el) => el.manufacturer.mfrName)
-      const removeDuplicates = [...new Set(names)].sort()
+      // duplicateleri kaldırmak için ...new Set() yapısından yararlandım
+      const manufacturers = [...new Set(state.products.map((el) => el.manufacturer.mfrName))].sort()
 
-      const manufacturers = removeDuplicates.map((el) => {
-        let objData = {
-          id: Math.floor(Math.random() * 1000),
-          name: el,
-        }
-        return objData
-      })
       return manufacturers
-      // bu duplicateleri kaldırıp tek bir array oluşturmanın kısa yolu -
-      // yukarıdakinden farklı olarak haricen id ve name ile bir obje oluşturmadım
-      // const manufacturers = [...new Set(state.products.map((mfr) => mfr.mfrName))]
-      // return manufacturers
     }
   },
   getSupplierNames(state) {
@@ -60,15 +49,8 @@ export default {
         .flatMap((source) => source.sources)
         .map((sup) => sup.displayName)
 
-      const removeDuplicates = [...new Set(names)].sort()
+      const suppliers = [...new Set(names)].sort()
 
-      const suppliers = removeDuplicates.map((el) => {
-        let objData = {
-          id: Math.floor(Math.random() * 1000),
-          name: el,
-        }
-        return objData
-      })
       return suppliers
     }
   },
