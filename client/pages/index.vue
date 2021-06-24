@@ -23,7 +23,7 @@
               type="text"
               placeholder="Ara..."
               v-model="search_token"
-              @keyup.enter="getSearchToken($event)"
+              @keyup.enter="getApiProducts($event)"
             />
             <span class="icon is-medium is-left">
               <i class="fas fa-search"></i>
@@ -111,18 +111,42 @@ export default {
     }
   },
   methods: {
-    getSearchToken(e) {
-      const val = e.target.value
-      console.log('home page search value: ', val)
-      this.search_token = val
-      this.isLoading = true
-
-      setTimeout(() => {
+    async getApiProducts(e) {
+      this.$store.commit('products/resetValuesForNewSeach')
+      try {
+        this.isLoading = true
+        this.search_token = e.target.value
+        const response = await this.$axios.$get(`/products/${this.search_token}`)
+        console.log('api response: ', response);
+        if(response.success){
+          this.$store.commit('products/setApiProducts', response.apiProducts)
+          this.isLoading = false
+          this.$router.push(`/search_result/${this.search_token}`)
+          this.search_token = ''
+        }
+      } catch (error) {
         this.isLoading = false
-        this.$router.push(`/search/${this.search_token}`)
-      }, 1000)
+        this.search_token = ''
+        this.alertError()
+        console.log(error);
+
+      }
     },
-  },
+    alertError() {
+      this.$buefy.dialog.alert({
+        title: 'Hata',
+        message: 'Aradığınız kriterlere uygun ürün bulunamamıştır. <br /> Lütfen tekrar deneyin.',
+        type: 'is-danger',
+        hasIcon: true,
+        icon: 'times-circle',
+        iconPack: 'fa',
+        ariaRole: 'alertdialog',
+        ariaModal: true,
+        confirmText: 'Tamam'
+      })
+    }
+  }
+  
 }
 </script>
 
