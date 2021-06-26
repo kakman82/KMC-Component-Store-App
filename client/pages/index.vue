@@ -31,7 +31,11 @@
           </div>
           <p class="help is-white ml-4">Ürün kodu ile arama yapabilirsiniz.</p>
           <!-- Loading -->
-          <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="true"></b-loading>
+          <b-loading
+            :is-full-page="isFullPage"
+            v-model="isLoading"
+            :can-cancel="true"
+          ></b-loading>
         </div>
       </div>
     </div>
@@ -116,37 +120,41 @@ export default {
       try {
         this.isLoading = true
         this.search_token = e.target.value
-        const response = await this.$axios.$get(`/products/${this.search_token}`)
-        console.log('api response: ', response);
-        if(response.success){
-          this.$store.commit('products/setApiProducts', response.apiProducts)
+        const response = await this.$axios.$get(
+          `/products/${this.search_token}`
+        )
+
+        if (response.success) {
+          await this.$store.commit(
+            'products/setApiProducts',
+            response.apiProducts
+          )
+          await this.$router.push(`/search_result/${this.search_token}`)
           this.isLoading = false
-          this.$router.push(`/search_result/${this.search_token}`)
           this.search_token = ''
         }
       } catch (error) {
         this.isLoading = false
         this.search_token = ''
         this.alertError()
-        console.log(error);
-
+        console.log(error)
       }
     },
     alertError() {
       this.$buefy.dialog.alert({
         title: 'Hata',
-        message: 'Aradığınız kriterlere uygun ürün bulunamamıştır. <br /> Lütfen tekrar deneyin.',
+        message:
+          'Aradığınız kriterlere uygun ürün bulunamamıştır. <br /> Lütfen tekrar deneyin.',
         type: 'is-danger',
         hasIcon: true,
         icon: 'times-circle',
         iconPack: 'fa',
         ariaRole: 'alertdialog',
         ariaModal: true,
-        confirmText: 'Tamam'
+        confirmText: 'Tamam',
       })
-    }
-  }
-  
+    },
+  },
 }
 </script>
 

@@ -5,7 +5,7 @@
     </section>
     <section class="section is-large p-2 mb-6">
       <div class="card p-2">
-        <div class="columns is-justify-content-space-between">
+        <div class="columns is-justify-content-space-between for-mobile">
           <div class="column is-7">
             <CartProductTable />
           </div>
@@ -35,4 +35,19 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+/* Mobile görünümde sipariş tutarındaki div in ilk önce görünmesi için bu tanım yapıldı ref: https://stackoverflow.com/questions/41709977/bulma-change-stack-order-of-columns */
+@media (max-width: 767px) {
+  .for-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+/* tablet için */
+@media (max-width: 1024px) {
+  .for-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+</style>

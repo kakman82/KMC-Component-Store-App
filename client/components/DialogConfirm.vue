@@ -16,7 +16,7 @@ export default {
         title: 'Sepetten Silme',
         message:
           'Ürünü sepetinizden <b>silmek</b> istediğinize emin misiniz? <br/>  <small>Bu işlem geri alınamaz!</small>',
-        cancelText: 'İptal',
+        cancelText: 'Vazgeç',
         confirmText: 'Sil',
         type: 'is-danger',
         hasIcon: true,
@@ -26,7 +26,10 @@ export default {
     },
     handleConfirm() {
       this.$store.commit('cart/deleteProductFromCart', this.prodCartId)
-      this.$buefy.toast.open({ message: 'Ürün sepetten silindi!', type: 'is-success' })
+      this.$buefy.toast.open({
+        message: 'Ürün sepetten silindi!',
+        type: 'is-success',
+      })
     },
   },
 }

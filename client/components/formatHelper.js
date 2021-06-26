@@ -1,3 +1,6 @@
+import { format } from 'date-fns'
+import { tr } from 'date-fns/locale'
+
 export function formatNumber(value, digits) {
   const niceFormat = Intl.NumberFormat('tr-TR', {
     minimumFractionDigits: digits,
@@ -16,4 +19,11 @@ export function formatWithCurrencyAndDecimals(price, curr, digits) {
     maximumFractionDigits: digits,
   }).format(price)
   return currFormat
+}
+
+export function formatDate(date) {
+  const niceDate = format(new Date(date), 'dd MMMM yyyy, EEEE ', {
+    locale: tr,
+  })
+  return niceDate
 }

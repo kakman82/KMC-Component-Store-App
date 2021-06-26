@@ -10,27 +10,55 @@
       </h2>
     </div>
     <div class="column is-4 is-justify-items-flex-end">
-      <p class="title is-size-5-mobile">Günün tarihi</p>
-      <h2 class="subtitle is-size-6-mobile">USD: TCMB & EUR: TCMB</h2>
+      <p class="title is-size-5-mobile">{{ today }}</p>
+      <h2 class="subtitle is-size-6-mobile">
+        <b>USD: </b>{{ usdRate }} ; <b>EUR: </b> {{ euroRate }}
+      </h2>
     </div>
   </div>
 </template>
 
 <script>
-import tcmbdoviz from 'tcmb-doviz'
-
+import * as module from '../formatHelper'
 export default {
   name: 'CurrencyRates',
   data() {
     return {
-      date: '',
+      today: module.formatDate(Date.now()),
+      //today: '20 Haziran 2021, Pazar',
+      exchanges: [],
     }
   },
-
-  // async created() {
-  //   const data = await tcmbdoviz.getData()
-  //   console.log(data.date)
-  //   this.date = data.date
-  // },
+  computed: {
+    usdRate() {
+      if (this.exchanges.length > 0) {
+        const usd = this.exchanges.filter((el) => el.code === 'USD')
+        return usd[0].selling
+      }
+    },
+    euroRate() {
+      if (this.exchanges.length > 0) {
+        const euro = this.exchanges.filter((el) => el.code === 'EUR')
+        return euro[0].selling
+      }
+    },
+  },
+  created() {
+    this.getExchangeRates()
+  },
+  methods: {
+    async getExchangeRates() {
+      try {
+        const response = await this.$axios.$get('/daily_rates')
+        if (response.success) {
+          this.currDate = response.currDate
+          this.exchanges = response.exchanges
+          this.$store.commit('cart/setExhanges', response)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  },
 }
 </script>

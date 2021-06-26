@@ -9,6 +9,7 @@ const getters = {
       return 0
     }
   },
+  //* Dövizli tutar toplamı
   getCartTotal(state) {
     if (state.cart) {
       let total = 0
@@ -18,6 +19,23 @@ const getters = {
       return total
     } else {
       return 0
+    }
+  },
+  //* TL tutar toplamı
+  getCartTotalTL(state) {
+    if (state.cart) {
+      let total = 0
+      for (let i = 0; i < state.cart.length; i++) {
+        total += state.cart[i].productTotalPriceTL
+      }
+      return total
+    } else {
+      return 0
+    }
+  },
+  getCurrRates(state) {
+    if (state.currRates) {
+      return state.currRates.exchanges
     }
   },
   getCartCurrencyInfo(state) {

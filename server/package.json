@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
-
   },
   "author": "Kerem Akman",
   "license": "MIT",
@@ -17,7 +16,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.14"
+    "mongoose": "^5.12.14",
+    "tcmb-doviz": "^1.1.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

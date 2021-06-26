@@ -15,19 +15,41 @@
       show-detail-icon
       :detail-transition="transitionName"
     >
-      <b-table-column field="productName" label="Ürün Kodu" width="50" v-slot="props">
+      <b-table-column
+        field="productName"
+        label="Ürün Kodu"
+        width="50"
+        v-slot="props"
+      >
         {{ props.row.productName }}
       </b-table-column>
 
-      <b-table-column field="productQuantity" label="Seçilen Adet" numeric centered v-slot="props">
+      <b-table-column
+        field="productQuantity"
+        label="Seçilen Adet"
+        numeric
+        centered
+        v-slot="props"
+      >
         {{ niceFormat(props.row.productQuantity) }}
       </b-table-column>
 
-      <b-table-column field="productUnitPrice" label="Birim Fiyat" numeric centered v-slot="props">
+      <b-table-column
+        field="productUnitPrice"
+        label="Birim Fiyat"
+        numeric
+        centered
+        v-slot="props"
+      >
         {{ niceFormat(props.row.productUnitPrice, 4) }}
       </b-table-column>
 
-      <b-table-column field="productCurrency" label="Döviz Cinsi" centered v-slot="props">
+      <b-table-column
+        field="productCurrency"
+        label="Döviz Cinsi"
+        centered
+        v-slot="props"
+      >
         {{ props.row.productCurrency }}
       </b-table-column>
 
@@ -41,8 +63,20 @@
         {{ niceFormatWithCurr(props.row.productTotalPrice, 2) }}
       </b-table-column>
 
-      <b-table-column field="productTotalPrice" label="Tutar(TL)" numeric centered v-slot="props">
-        TL olacak {{ props.row.productTotalPrice }}
+      <b-table-column
+        field="productTotalPrice"
+        label="Tutar(TL)"
+        numeric
+        centered
+        v-slot="props"
+      >
+        {{
+          calcTLPrice(
+            props.row.productCartId,
+            props.row.productTotalPrice,
+            props.row.productCurrency
+          )
+        }}
       </b-table-column>
 
       <b-table-column label="Teslim Süresi" centered>
@@ -72,7 +106,8 @@
                 <br />
                 <b
                   ><small
-                    ><i class="fas fa-truck-moving"></i> {{ props.row.productSupplier }}</small
+                    ><i class="fas fa-truck-moving"></i>
+                    {{ props.row.productSupplier }}</small
                   ></b
                 >
                 <br />
@@ -120,7 +155,29 @@ export default {
       return module.formatNumber(val, digit)
     },
     niceFormatWithCurr(val, digit) {
-      return module.formatWithCurrencyAndDecimals(val, this.data[0].productCurrency, digit)
+      return module.formatWithCurrencyAndDecimals(
+        val,
+        this.data[0].productCurrency,
+        digit
+      )
+    },
+    calcTLPrice(cartId, price, curr) {
+      const allRates = this.$store.getters['cart/getCurrRates']
+      if (allRates) {
+        const currValue = allRates.filter((el) => el.code === curr)[0].selling
+        const priceInTL = price * currValue
+
+        const objToSendMutation = {
+          id: cartId,
+          productTotalPriceTL: priceInTL.toFixed(2) * 1,
+        }
+
+        this.$store.commit('cart/setTLPriceToCartProduct', objToSendMutation)
+
+        return module.formatWithCurrencyAndDecimals(priceInTL, 'TRY', 2)
+      } else {
+        return 'Kur hatalı!'
+      }
     },
   },
 }
