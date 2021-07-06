@@ -23,9 +23,102 @@
     </a>
     <button
       class="button is-success is-medium is-fullwidth has-text-weight-bold"
+      @click="createOrder"
     >
       Sipariş Oluştur
     </button>
+    <!-- Auth Modal Kısmı - Login & Sign-up Components -->
+    <div class="modal" :class="{ 'is-active': isAuthModalActive }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head has-text-centered">
+          <div class="column ml-3">
+            <p class="modal-card-title is-size-3 has-text-weight-bold">
+              Merhaba,
+            </p>
+            <br />
+            <p class="modal-card-title is-size-5">
+              Giriş yapın veya yeni bir hesap oluşturun.
+            </p>
+          </div>
+          <button
+            class="delete"
+            aria-label="close"
+            @click="isAuthModalActive = false"
+          ></button>
+        </header>
+        <section class="modal-card-body">
+          <b-tabs type="is-boxed" expanded>
+            <b-tab-item label="Giriş Yap" icon-pack="fas" icon="sign-in-alt">
+              <b-field
+                label="E-posta"
+                type="is-danger"
+                message="This email is invalid"
+              >
+                <b-input type="email" value="john@" maxlength="30"> </b-input>
+              </b-field>
+
+              <b-field
+                label="Şifre"
+                type="is-warning"
+                :message="[
+                  'Password is too short',
+                  'Password must have at least 8 characters',
+                ]"
+              >
+                <b-input value="123" type="password" maxlength="30"></b-input>
+              </b-field>
+            </b-tab-item>
+            <b-tab-item
+              label="Kayıt Ol"
+              icon-pack="fas"
+              icon="user-plus"
+            ></b-tab-item>
+          </b-tabs>
+          <!-- <div class="tabs is-centered is-boxed is-medium">
+            <ul>
+              <li class="is-active">
+                <a>
+                  <span class="icon is-small"
+                    ><i class="fas fa-image" aria-hidden="true"></i
+                  ></span>
+                  <span>Pictures</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"
+                    ><i class="fas fa-music" aria-hidden="true"></i
+                  ></span>
+                  <span>Music</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"
+                    ><i class="fas fa-film" aria-hidden="true"></i
+                  ></span>
+                  <span>Videos</span>
+                </a>
+              </li>
+              <li>
+                <a>
+                  <span class="icon is-small"
+                    ><i class="far fa-file-alt" aria-hidden="true"></i
+                  ></span>
+                  <span>Documents</span>
+                </a>
+              </li>
+            </ul>
+          </div> -->
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" @click="isAuthModalActive = false">
+            Kapat
+          </button>
+        </footer>
+      </div>
+    </div>
   </article>
 </template>
 
@@ -33,6 +126,11 @@
 import * as module from '../formatHelper'
 export default {
   name: 'CheckoutBox',
+  data() {
+    return {
+      isAuthModalActive: false,
+    }
+  },
   computed: {
     getCartTotalTLValue() {
       return this.$store.getters['cart/getCartTotalTL']
@@ -54,6 +152,11 @@ export default {
         this.getCartTotalTLValue + this.getCartTotalTLValue * 0.1
       const addTax = totalWithFee + totalWithFee * 0.18
       return module.formatNumber(addTax, 2)
+    },
+  },
+  methods: {
+    createOrder() {
+      this.isAuthModalActive = true
     },
   },
 }
