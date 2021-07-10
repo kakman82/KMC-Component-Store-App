@@ -35,13 +35,14 @@ const limiter = rateLimit({
 });
 app.use('/api', limiter);
 
-//* MONGODB;
-const dbUrl = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@kmc-store-app.5eyad.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+//* MONGODB Conn;
+const dbUrl = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@kmc-store-app.5eyad.mongodb.net/KMC?retryWrites=true&w=majority`;
 mongoose.connect(
   dbUrl,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useCreateIndex: true,
   },
   (err) => {
     if (err) {
@@ -55,9 +56,11 @@ mongoose.connect(
 //* DEFINING ROUTES
 const productRoutes = require('./routes/api/productRoutes');
 const currencyRateRoutes = require('./routes/api/currencyRateRoutes');
+const userRoutes = require('./routes/api/userRoutes');
 
 app.use('/api', productRoutes);
 app.use('/api', currencyRateRoutes);
+app.use('/api', userRoutes);
 
 //* 404 page: tanımlı route dışında bir url olduğunda ve bu url yi handle edecek bir funck da olmadığında 404 sayfa serverda bulunamadı hatası için;
 app.all('*', (req, res, next) => {

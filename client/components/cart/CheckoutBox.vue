@@ -32,15 +32,10 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head has-text-centered">
-          <div class="column ml-3">
-            <p class="modal-card-title is-size-3 has-text-weight-bold">
-              Merhaba,
-            </p>
-            <br />
-            <p class="modal-card-title is-size-5">
-              Giriş yapın veya yeni bir hesap oluşturun.
-            </p>
-          </div>
+          <p class="modal-card-title is-size-5 has-text-weight-bold">
+            Giriş yapın veya yeni bir hesap oluşturun.
+          </p>
+
           <button
             class="delete"
             aria-label="close"
@@ -50,6 +45,7 @@
         <section class="modal-card-body">
           <b-tabs type="is-boxed" expanded>
             <b-tab-item label="Giriş Yap" icon-pack="fas" icon="sign-in-alt">
+              <!-- Login Form -->
               <b-field
                 label="E-posta"
                 type="is-danger"
@@ -68,49 +64,16 @@
               >
                 <b-input value="123" type="password" maxlength="30"></b-input>
               </b-field>
+              <a>Şifremi unuttum!</a>
+              <b-button class="mt-4 is-primary has-text-weight-bold" expanded
+                >Giriş Yap</b-button
+              >
             </b-tab-item>
-            <b-tab-item
-              label="Kayıt Ol"
-              icon-pack="fas"
-              icon="user-plus"
-            ></b-tab-item>
+            <b-tab-item label="Kayıt Ol" icon-pack="fas" icon="user-plus">
+              <!-- Sign-up Form -->
+              <SignupForm />
+            </b-tab-item>
           </b-tabs>
-          <!-- <div class="tabs is-centered is-boxed is-medium">
-            <ul>
-              <li class="is-active">
-                <a>
-                  <span class="icon is-small"
-                    ><i class="fas fa-image" aria-hidden="true"></i
-                  ></span>
-                  <span>Pictures</span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small"
-                    ><i class="fas fa-music" aria-hidden="true"></i
-                  ></span>
-                  <span>Music</span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small"
-                    ><i class="fas fa-film" aria-hidden="true"></i
-                  ></span>
-                  <span>Videos</span>
-                </a>
-              </li>
-              <li>
-                <a>
-                  <span class="icon is-small"
-                    ><i class="far fa-file-alt" aria-hidden="true"></i
-                  ></span>
-                  <span>Documents</span>
-                </a>
-              </li>
-            </ul>
-          </div> -->
         </section>
         <footer class="modal-card-foot is-justify-content-flex-end">
           <button class="button" @click="isAuthModalActive = false">
@@ -123,9 +86,11 @@
 </template>
 
 <script>
+import SignupForm from '../auth/SignupForm.vue'
 import * as module from '../formatHelper'
 export default {
   name: 'CheckoutBox',
+  components: { SignupForm },
   data() {
     return {
       isAuthModalActive: false,

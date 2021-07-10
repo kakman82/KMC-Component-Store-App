@@ -6,6 +6,14 @@ const addressSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  companyName: {
+    type: String,
+    required: [true, 'Lütfen şirketinizin adını giriniz!'],
+  },
+  phone: {
+    type: Number,
+    required: [true, 'Lütfen telefon numaranızı giriniz!'],
+  },
   city: String,
   state: String,
   street: String,
@@ -13,4 +21,4 @@ const addressSchema = new Schema({
   description: String,
 });
 
-module.exports = mongoose.Model('Address', addressSchema);
+module.exports = mongoose.model('Address', addressSchema);

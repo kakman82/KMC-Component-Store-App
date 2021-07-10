@@ -1,47 +1,68 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema();
+// const Schema = mongoose.Schema();
 const bcrypt = require('bcryptjs');
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, 'Lütfen ad ve soyadınızı giriniz!'],
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: [true, 'Lütfen adınızı giriniz!'],
+    },
+    lastName: {
+      type: String,
+      required: [true, 'Lütfen soyadınızı giriniz!'],
+    },
+    email: {
+      type: String,
+      lowercase: true,
+      required: [true, 'Lütfen email adresinizi giriniz!'],
+      unique: true,
+    },
+
+    address: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Address',
+    },
+    role: {
+      type: String,
+      enum: ['customer', 'employee', 'admin'],
+      default: 'customer',
+    },
+    password: {
+      type: String,
+      required: [true, 'Lütfen parola giriniz!'],
+      minLength: 6,
+      select: false,
+    },
+    passwordChangedAt: {
+      type: Date,
+      default: () => {
+        let currDate = new Date();
+        let utc_offset = currDate.getTimezoneOffset();
+        let result = currDate.setMinutes(currDate.getMinutes() - utc_offset);
+        return result;
+      },
+    },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
   },
-  email: {
-    type: String,
-    lowercase: true,
-    required: [true, 'Lütfen email adresinizi giriniz!'],
-    unique: true,
-    validate: [validator.isEmail, 'Lütfen geçerli bir email adresi giriniz!'],
-  },
-  phone: {
-    type: Number,
-    required: [true, 'Lütfen telefon numaranızı giriniz!'],
-  },
-  address: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address',
-  },
-  role: {
-    type: String,
-    enum: ['customer', 'employee', 'admin'],
-    default: 'customer',
-  },
-  password: {
-    type: String,
-    required: [true, 'Lütfen parola giriniz!'],
-    minLength: 6,
-    select: false,
-  },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
-  },
-});
+  {
+    // created ve updated at alanlarında tam gmt saati göstermesi için;
+    timestamps: {
+      currentTime: () => {
+        let currDate = new Date();
+        let utc_offset = currDate.getTimezoneOffset();
+        let result = currDate.setMinutes(currDate.getMinutes() - utc_offset);
+        return result;
+      },
+    },
+  }
+);
 
 //* 1- Password Hash;
 userSchema.pre('save', async function (next) {
@@ -75,4 +96,4 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = mongoose.Model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);

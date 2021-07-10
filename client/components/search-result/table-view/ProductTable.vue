@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <table class="table my-3 mx-3 p-0 is-bordered is-striped">
+    <table class="table is-bordered is-striped is-fullwidth">
       <thead>
         <tr class="has-text-centered has-background-primary">
           <th class="has-text-white">Ürün Bilgileri</th>
@@ -11,7 +11,10 @@
       <tbody>
         <template v-for="web in prod.InvOrg.webSites">
           <template v-for="supplier in web.sources">
-            <tr v-for="source in supplier.sourceParts" :key="source.sourcePartId">
+            <tr
+              v-for="source in supplier.sourceParts"
+              :key="source.sourcePartId"
+            >
               <td style="width: 35%">
                 <div class="colums is-flex">
                   <div class="column is-4">
@@ -31,7 +34,12 @@
                       :href="prod.resources[0].uri"
                       target="_blank"
                       rel="noopener noreferrer"
-                      class="button mt-2 is-primary is-outlined is-small has-text-weight-bold"
+                      class="
+                        button
+                        mt-2
+                        is-primary is-outlined is-small
+                        has-text-weight-bold
+                      "
                     >
                       <span class="icon">
                         <i class="far fa-file-pdf"></i>
@@ -52,7 +60,9 @@
                         <span class="icon has-text-primary-dark">
                           <i class="fas fa-hashtag"></i>
                         </span>
-                        <strong class="has-text-primary">{{ prod.partNum }}</strong>
+                        <strong class="has-text-primary">{{
+                          prod.partNum
+                        }}</strong>
                       </span>
                     </div>
 
@@ -78,11 +88,23 @@
                   <span>{{ prod.desc }}</span>
                   <br />
                   <strong>Kategori: </strong
-                  >{{ prod.categoryName ? prod.categoryName : 'Bilgi mevcut değil' }}
+                  >{{
+                    prod.categoryName ? prod.categoryName : 'Bilgi mevcut değil'
+                  }}
                 </div>
               </td>
-              <td style="width: 20%" v-for="(aval, i) in source.Availability" :key="i">
-                <div class="container mt-3 has-text-centered has-text-centered-mobile">
+              <td
+                style="width: 20%"
+                v-for="(aval, i) in source.Availability"
+                :key="i"
+              >
+                <div
+                  class="
+                    container
+                    mt-3
+                    has-text-centered has-text-centered-mobile
+                  "
+                >
                   <span class="icon-text">
                     <span class="icon has-text-primary-dark">
                       <i class="fas fa-boxes"></i>
@@ -90,13 +112,21 @@
                     <span>Toplam Stok</span>
                   </span>
 
-                  <p class="has-text-weight-bold">{{ getNiceNumberFormat(aval.fohQty) }}</p>
+                  <p class="has-text-weight-bold">
+                    {{ getNiceNumberFormat(aval.fohQty) }}
+                  </p>
 
-                  <span v-if="aval.fohQty > 0" class="tag my-3 is-success is-medium">
+                  <span
+                    v-if="aval.fohQty > 0"
+                    class="tag my-3 is-success is-medium"
+                  >
                     <i class="mr-2 fas fa-check"></i>
                     Stok Mevcut!
                   </span>
-                  <span v-if="aval.fohQty <= 0" class="tag is-danger mt-4 is-medium">
+                  <span
+                    v-if="aval.fohQty <= 0"
+                    class="tag is-danger mt-4 is-medium"
+                  >
                     <i class="mr-2 fas fa-times"></i>
                     Stok Bulunmuyor!
                   </span>
@@ -117,21 +147,30 @@
                     position="is-bottom"
                     multilined
                   >
-                    <i class="fas fa-shipping-fast fa-2x has-text-primary-dark"></i>
+                    <i
+                      class="fas fa-shipping-fast fa-2x has-text-primary-dark"
+                    ></i>
                     <template v-slot:content v-if="aval.pipeline.length > 0">
                       <i>Stoklara</i>
                       <br />
                       <b>{{ getNiceDateFormat(aval.pipeline[0].delivery) }} </b>
                       <i>tarihinde</i>
                       <br />
-                      <b> {{ getNiceNumberFormat(aval.pipeline[0].quantity) }} adet</b>
+                      <b>
+                        {{ getNiceNumberFormat(aval.pipeline[0].quantity) }}
+                        adet</b
+                      >
                       <br />
                       <i>ek giriş yapılması bekleniyor.</i>
                     </template>
                   </b-tooltip>
                 </div>
               </td>
-              <td style="width: 45%" v-for="(aval, i) in source.Availability" :key="i + 1">
+              <td
+                style="width: 45%"
+                v-for="(aval, i) in source.Availability"
+                :key="i + 1"
+              >
                 <!-- Stok varsa -->
                 <div class="columns mt-2" v-if="aval.fohQty > 0">
                   <div class="column is-6">
@@ -141,7 +180,13 @@
                       class="columns mb-2"
                     >
                       <div
-                        class="column my-2 mr-3 is-paddingless is-6 has-text-right has-text-primary"
+                        class="
+                          column
+                          my-2
+                          mr-3
+                          is-paddingless is-6
+                          has-text-right has-text-primary
+                        "
                       >
                         <p>{{ getNiceNumberFormat(price.minQty) }}+</p>
                       </div>
@@ -155,7 +200,13 @@
                         "
                       >
                         <p>
-                          {{ getPriceWithCurrency(price.price, supplier.currency, 4) }}
+                          {{
+                            getPriceWithCurrency(
+                              price.price,
+                              supplier.currency,
+                              4
+                            )
+                          }}
                         </p>
                       </div>
                     </div>
@@ -249,6 +300,10 @@ export default {
 
 .table {
   border: 2px solid #7957d5;
+}
+
+.table-container {
+  overflow: hidden;
 }
 
 .image.is-96x96 {

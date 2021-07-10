@@ -1,8 +1,17 @@
 <template>
   <div>
     <div class="msg">
-      <div class="notification is-success is-light p-3 mx-3 is-size-5-desktop is-size-6-mobile">
-        <b>" {{ $route.params.title }}"</b><i>no.lu ürün için Arrow.com stokları gösteriliyor...</i>
+      <div
+        class="
+          notification
+          is-success is-light
+          p-3
+          mx-3
+          is-size-5-desktop is-size-6-mobile
+        "
+      >
+        <b>" {{ $route.params.title }}"</b
+        ><i>no.lu ürün için Arrow.com stokları gösteriliyor...</i>
       </div>
     </div>
     <section class="columns mb-5 mt-3">
@@ -13,7 +22,7 @@
       <!-- Tablo görünüm -->
       <div class="column is-9">
         <div
-          class="forscrolling card pt-1 pb-1 mb-5"
+          class="card mx-1 mb-5"
           style="width: 95%"
           v-for="prod in products"
           :key="prod.itemId"
@@ -51,12 +60,6 @@ export default {
 </script>
 
 <style scoped>
-/* .forscrolling {
-  width: 1200px;
-  height: 800px;
-  overflow-x: scroll;
-} */
-
 div.msg {
   margin-top: 5rem !important;
 }
