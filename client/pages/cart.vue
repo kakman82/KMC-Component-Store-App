@@ -37,14 +37,7 @@ export default {
 
 <style scoped>
 /* Mobile görünümde sipariş tutarındaki div in ilk önce görünmesi için bu tanım yapıldı ref: https://stackoverflow.com/questions/41709977/bulma-change-stack-order-of-columns */
-@media (max-width: 767px) {
-  .for-mobile {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-}
-/* tablet için */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .for-mobile {
     display: flex;
     flex-direction: column-reverse;

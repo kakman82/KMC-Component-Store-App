@@ -8,26 +8,6 @@
     >
       {{ serverErrMsg }}
     </b-message>
-    <div class="columns">
-      <div class="column">
-        <b-field label="Ad">
-          <b-input
-            v-model="firstName"
-            required
-            validation-message="Lütfen giriş yapınız."
-          ></b-input>
-        </b-field>
-      </div>
-      <div class="column">
-        <b-field label="Soyad">
-          <b-input
-            v-model="lastName"
-            required
-            validation-message="Lütfen giriş yapınız."
-          ></b-input>
-        </b-field>
-      </div>
-    </div>
 
     <b-field label="E-posta">
       <b-input
@@ -55,8 +35,8 @@
       class="mt-6 is-primary has-text-weight-bold"
       expanded
       :disabled="checkFormValidation() ? false : true"
-      @click="userSignUp"
-      >Kayıt Ol</b-button
+      @click="userLogin"
+      >Giriş Yap</b-button
     >
   </section>
 </template>
@@ -65,12 +45,10 @@
 import lodash from '../../node_modules/lodash-es'
 
 export default {
-  name: 'SignupForm',
+  name: 'LoginForm',
   emits: ['closeAuthFormModal'],
   data() {
     return {
-      firstName: '',
-      lastName: '',
       email: '',
       password: '',
       formValid: false,
@@ -80,14 +58,7 @@ export default {
 
   methods: {
     checkFormValidation() {
-      if (
-        !this.firstName ||
-        !this.lastName ||
-        !this.email ||
-        !this.password ||
-        this.password.length < 6 ||
-        this.password.length > 10
-      ) {
+      if (!this.email || !this.password) {
         return false
       }
       if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.email)) {
@@ -95,7 +66,7 @@ export default {
       }
       return true
     },
-    async userSignUp() {
+    async userLogin() {
       if (this.checkFormValidation) {
         const reqUserData = {
           firstName: lodash.capitalize(this.firstName),
@@ -114,13 +85,7 @@ export default {
               message: response.message,
               type: 'is-success',
             })
-            // nuxt/auth tanımı;
-            this.$auth.loginWith('local', {
-              data: reqUserData,
-            })
-            // modal dialog form kapatılması
             this.$emit('closeAuthFormModal')
-            // sipariş sayfasına yönlendirme
             this.$router.push('/placeorder')
           }
         } catch (error) {

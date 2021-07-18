@@ -46,32 +46,11 @@
           <b-tabs type="is-boxed" expanded>
             <b-tab-item label="Giriş Yap" icon-pack="fas" icon="sign-in-alt">
               <!-- Login Form -->
-              <b-field
-                label="E-posta"
-                type="is-danger"
-                message="This email is invalid"
-              >
-                <b-input type="email" value="john@" maxlength="30"> </b-input>
-              </b-field>
-
-              <b-field
-                label="Şifre"
-                type="is-warning"
-                :message="[
-                  'Password is too short',
-                  'Password must have at least 8 characters',
-                ]"
-              >
-                <b-input value="123" type="password" maxlength="30"></b-input>
-              </b-field>
-              <a>Şifremi unuttum!</a>
-              <b-button class="mt-4 is-primary has-text-weight-bold" expanded
-                >Giriş Yap</b-button
-              >
+              <LoginForm @closeAuthFormModal="closeAuthModal" />
             </b-tab-item>
             <b-tab-item label="Kayıt Ol" icon-pack="fas" icon="user-plus">
               <!-- Sign-up Form -->
-              <SignupForm />
+              <SignupForm @closeAuthFormModal="closeAuthModal" />
             </b-tab-item>
           </b-tabs>
         </section>
@@ -87,10 +66,11 @@
 
 <script>
 import SignupForm from '../auth/SignupForm.vue'
+import LoginForm from '../auth/LoginForm.vue'
 import * as module from '../formatHelper'
 export default {
   name: 'CheckoutBox',
-  components: { SignupForm },
+  components: { SignupForm, LoginForm },
   data() {
     return {
       isAuthModalActive: false,
@@ -122,6 +102,9 @@ export default {
   methods: {
     createOrder() {
       this.isAuthModalActive = true
+    },
+    closeAuthModal() {
+      this.isAuthModalActive = false
     },
   },
 }
