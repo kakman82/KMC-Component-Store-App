@@ -27,9 +27,9 @@
           <template #trigger>
             <p class="is-white">
               <b-icon pack="fas" icon="user-circle" size="is-small"></b-icon>
-              <span class="ml-1 has-text-weight-medium">{{
-                $auth.user.firstName
-              }}</span>
+              <span class="ml-1 has-text-weight-medium"
+                >{{ $auth.user.firstName }} {{ $auth.user.lastName }}</span
+              >
             </p>
           </template>
           <b-dropdown-item aria-role="menuitem">
@@ -51,12 +51,14 @@
           </b-dropdown-item>
           <b-dropdown-item aria-role="listitem">
             <b-icon pack="fas" icon="sign-out-alt" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium">Çıkış</span>
+            <span class="ml-1 has-text-weight-medium" @click="userLogout"
+              >Çıkış</span
+            >
           </b-dropdown-item>
         </b-dropdown>
       </b-navbar-item>
-      <!-- Sign-up & Login Buttonları -->
-      <b-navbar-item tag="div">
+      <!-- Login Buttonları -->
+      <b-navbar-item tag="div" v-if="!$auth.loggedIn">
         <div class="buttons">
           <b-dropdown
             position="is-bottom-left"
@@ -79,24 +81,8 @@
               <form>
                 <div class="modal-card" style="width: 300px">
                   <section class="modal-card-body">
-                    <b-field label="Email">
-                      <b-input type="email" placeholder="Your email" required>
-                      </b-input>
-                    </b-field>
-                    <b-field label="Password">
-                      <b-input
-                        type="password"
-                        password-reveal
-                        placeholder="Your password"
-                        required
-                      >
-                      </b-input>
-                    </b-field>
-                    <b-checkbox>Remember me</b-checkbox>
+                    <LoginForm />
                   </section>
-                  <footer class="modal-card-foot">
-                    <b-button label="Login" type="is-primary" />
-                  </footer>
                 </div>
               </form>
             </b-dropdown-item>
@@ -107,7 +93,17 @@
   </b-navbar>
 </template>
 <script>
+import LoginForm from '../components/auth/LoginForm.vue'
 export default {
   name: 'Navbar',
+  components: { LoginForm },
+  methods: {
+    async userLogout() {
+      // bu yapı nuxt auth dan geliyor, backend tarafında haricen logout func a gerek kalmıyor
+      await this.$auth.logout()
+      // logout sonrası ana sayfaya yönlendirme;
+      this.$router.push('/')
+    },
+  },
 }
 </script>

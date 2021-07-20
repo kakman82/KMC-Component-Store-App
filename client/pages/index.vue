@@ -40,7 +40,7 @@
       </div>
     </div>
     <!-- Icon ve Kısa Başlıkların Olduğu Bölüm  -->
-    <section class="hero is-medium has-background-grey-lighter pb-0 mb-0">
+    <section class="hero is-medium has-background-white pb-0 mb-0">
       <div class="hero-body">
         <div class="columns">
           <div class="column has-text-centered">

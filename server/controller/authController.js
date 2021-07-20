@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+const Email = require('../utils/email');
 
 //* SIGN UP;
 exports.signUpUser = async (req, res) => {
@@ -18,6 +19,9 @@ exports.signUpUser = async (req, res) => {
       // userModel içerisinde pre metodu ile hash uygulanacak
       newUser.password = req.body.password;
       await newUser.save();
+
+      // welcome email gönderimi
+      await new Email(newUser).sendWelcome();
 
       // DB ye kayıt sonrası token oluşturma
       const token = jwt.sign(newUser.toJSON(), process.env.JWT_SECRET, {
@@ -66,6 +70,7 @@ exports.loginUser = async (req, res) => {
       res.status(200).json({
         success: true,
         token: token,
+        message: 'Başarıyla giriş yapıldı',
       });
     }
   } catch (error) {

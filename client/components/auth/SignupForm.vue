@@ -90,6 +90,7 @@ export default {
       ) {
         return false
       }
+      // check if it is email or not
       if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.email)) {
         return false
       }
@@ -122,11 +123,17 @@ export default {
             this.$emit('closeAuthFormModal')
             // sipariş sayfasına yönlendirme
             this.$router.push('/placeorder')
+            // form alanlarının temizlenmesi;
+            this.firstName = ''
+            this.lastName = ''
+            this.email = ''
+            this.password = ''
+            this.serverErrMsg = ''
           }
         } catch (error) {
           // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum
-          this.serverErrMsg = error.response.data.messageTR
-          console.log(error.response)
+          this.serverErrMsg = error.response.data.messageTR || error
+          console.log(error)
         }
       }
     },

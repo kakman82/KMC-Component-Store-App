@@ -15,10 +15,16 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-handlebars": "^5.3.2",
+    "express-mongo-sanitize": "^2.1.0",
     "express-rate-limit": "^5.2.6",
+    "html-to-text": "^8.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.14",
-    "tcmb-doviz": "^1.1.1"
+    "nodemailer": "^6.6.3",
+    "nodemailer-express-handlebars": "^4.0.0",
+    "tcmb-doviz": "^1.1.1",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

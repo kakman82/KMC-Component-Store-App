@@ -4,6 +4,10 @@ const cors = require('cors');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const exphbs = require('express-handlebars'); // npm i express-handlebars
+const path = require('path');
 
 //* .env;
 dotenv.config();
@@ -17,11 +21,25 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-//* MIDDLEWARES;
+//* DEFINE TEMPLATE ENGINE - EXPRESS-HANDLEBARS;
+// uzun handlebars uzantı ismi yerine .hbs kullanmak için bu şekilde tanım yaptım, ref-> https://www.npmjs.com/package/express-handlebars
+app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
+app.set('view engine', '.hbs');
+
+//* STATIC FOLDER - FOR BULMA CSS
+app.use(express.static(path.join(__dirname, 'public')));
+
+//* GLOBAL MIDDLEWARES;
 // cors hatası verdiğinde--> https://stackoverflow.com/questions/43150051/how-to-enable-cors-nodejs-with-express
 app.use(cors());
 // Logger Middleware - dev, tiny log da gösterim özelliklerinden biri https://www.npmjs.com/package/morgan
 app.use(morgan('dev'));
+// Data sanitization against NoSQL query injection - npm i express-mongo-sanitize --save
+app.use(mongoSanitize());
+// xss for prevent XSS attacks html  - npm install xss-clean --save
+// user inputları arasında herhangi bir html kodu var ise bu tagları başka simgelere convert ederek html kodu bozmuş oluyor. Html kod içerisinde zararlı js kodları bulunabilir;
+//make sure this comes before any routes
+app.use(xss());
 
 // bodyParser için deprecate uyarısı veriyor yukarıdaki satırdaki gibi yani her zamanki gibi kullanınca. Expressin 4.16 sürümünden sonrakilerde gerek yokmuş yüklemeye, expressin kendi içindeki json metodunu kullanmak yeterli ref: https://stackoverflow.com/questions/66525078/bodyparser-is-deprecated
 app.use(express.json());
@@ -36,7 +54,7 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 //* MONGODB Conn;
-const dbUrl = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@kmc-store-app.5eyad.mongodb.net/KMC?retryWrites=true&w=majority`;
+const dbUrl = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@kmc-store-app.5eyad.mongodb.net/${process.env.DATABASE_NAME}?retryWrites=true&w=majority`;
 mongoose.connect(
   dbUrl,
   {
@@ -57,10 +75,12 @@ mongoose.connect(
 const productRoutes = require('./routes/api/productRoutes');
 const currencyRateRoutes = require('./routes/api/currencyRateRoutes');
 const userRoutes = require('./routes/api/userRoutes');
+const emailTemplate = require('./routes/api/emailTemplateView');
 
 app.use('/api', productRoutes);
 app.use('/api', currencyRateRoutes);
 app.use('/api', userRoutes);
+app.use('/api', emailTemplate);
 
 //* 404 page: tanımlı route dışında bir url olduğunda ve bu url yi handle edecek bir funck da olmadığında 404 sayfa serverda bulunamadı hatası için;
 app.all('*', (req, res, next) => {

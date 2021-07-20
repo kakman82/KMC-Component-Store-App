@@ -75,6 +75,11 @@ export default {
         },
       },
     },
+    // bu şekilde bir tanım yapmazsam sepet sayfasında login olunduğunda direkt ana sayfaya yönlendirme yapıyor kendi. Bu şekilde kendim yönetebiliyorum LoginForm.vue da -  aynı zaman router/middleware ile de login değilse kullanıcı sayfaya gidememesine yönelik yönetim de sağlıyorum aşağıdaki router ile middleware dosyası içindeki authenticated.js ile
+    redirect: false,
+  },
+  router: {
+    middleware: ['authenticated'],
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
