@@ -1,8 +1,12 @@
 const mutations = {
-  setApiProducts(state, apiResponse){
+  setApiProducts(state, apiResponse) {
     state.products = apiResponse
   },
-  resetValuesForNewSeach(state){
+  setSearch(state, value) {
+    state.search = value
+  },
+  resetValuesForNewSeach(state) {
+    state.search = null
     state.products = []
     state.showOnlyHasStock = true
     state.mfrCheckboxGroup = []

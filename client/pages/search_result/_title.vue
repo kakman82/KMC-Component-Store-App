@@ -22,13 +22,25 @@
       <!-- Tablo görünüm -->
       <div class="column is-9">
         <div
+          v-if="products === null || products.length === 0"
+          class="column is-7"
+        >
+          <b-message type="is-warning" has-icon>
+            <p class="is-size-5 has-text-weight-bold">
+              Aradığınız üründe stok bulunmamaktadır!
+            </p>
+            <p class="is-size-8">
+              Ana sayfamızdan farklı bir ürün için yeniden arama yapabilirsiniz.
+            </p>
+          </b-message>
+        </div>
+        <div
           class="card mx-1 mb-5"
           style="width: 95%"
           v-for="prod in products"
           :key="prod.itemId"
         >
-          <!-- Ürün Giriş Bilgileri ProductInfoCard ve ProductTable -->
-          <!-- <ProductInfoCard :prod="prod" /> -->
+          <!-- Ürün Giriş Bilgileri ve ProductTable -->
           <ProductTable :prod="prod" />
         </div>
       </div>
@@ -42,6 +54,7 @@ import ProductInfoCard from '../../components/search-result/table-view/ProductIn
 import ProductTable from '../../components/search-result/table-view/ProductTable.vue'
 
 export default {
+  middleware: 'searched',
   components: {
     Checkboxes,
     ProductInfoCard,

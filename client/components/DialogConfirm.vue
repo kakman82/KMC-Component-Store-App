@@ -9,13 +9,12 @@
 <script>
 export default {
   name: 'DialogConfirm',
-  props: ['prodCartId'],
+  props: ['prodCartId', 'productName'],
   methods: {
     confirmCustomDelete() {
       this.$buefy.dialog.confirm({
-        title: 'Sepetten Silme',
-        message:
-          'Ürünü sepetinizden <b>silmek</b> istediğinize emin misiniz? <br/>  <small>Bu işlem geri alınamaz!</small>',
+        title: 'Sepetten Sil?',
+        message: `${this.productName} no.lu ürünü sepetinizden <b>silmek</b> istediğinize emin misiniz? <br/>  <small>Bu işlem geri alınamaz!</small>`,
         cancelText: 'Vazgeç',
         confirmText: 'Sil',
         type: 'is-danger',

@@ -9,7 +9,7 @@
           <div class="column is-7">
             <CartProductTable />
           </div>
-          <div class="column is-4">
+          <div class="column is-4" v-if="$store.state.cart.cart.length > 0">
             <CheckoutBox />
           </div>
         </div>

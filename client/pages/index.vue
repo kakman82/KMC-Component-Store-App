@@ -125,17 +125,16 @@ export default {
         )
 
         if (response.success) {
-          await this.$store.commit(
-            'products/setApiProducts',
-            response.apiProducts
-          )
-          await this.$router.push(`/search_result/${this.search_token}`)
+          this.$store.commit('products/setApiProducts', response.apiProducts)
+          this.$store.commit('products/setSearch', this.search_token)
           this.isLoading = false
+          this.$router.push(`/search_result/${this.search_token}`)
           this.search_token = ''
         }
       } catch (error) {
         this.isLoading = false
         this.search_token = ''
+        this.$store.commit('products/setSearch', this.search_token)
         this.alertError()
         console.log(error)
       }

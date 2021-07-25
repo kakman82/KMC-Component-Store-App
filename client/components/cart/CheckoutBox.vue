@@ -101,7 +101,11 @@ export default {
   },
   methods: {
     createOrder() {
-      this.isAuthModalActive = true
+      if (!this.$auth.loggedIn) {
+        this.isAuthModalActive = true
+      } else {
+        this.$router.push('/placeorder')
+      }
     },
     closeAuthModal() {
       this.isAuthModalActive = false

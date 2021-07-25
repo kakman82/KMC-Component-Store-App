@@ -6,7 +6,9 @@
         TL fiyatlama günlük TCMB Döviz Satış Kuru üzerinden yapılmaktadır.
       </h2>
       <h2 class="subtitle is-size-7">
-        *Ürün detay bilgilerini ">" simgesine tıklayarak görebilirsiniz.
+        *Ürün detay bilgilerini "
+        <i class="fas fa-chevron-right has-text-primary"></i>
+        " simgesine tıklayarak görebilirsiniz.
       </h2>
     </div>
     <div class="column is-4 is-justify-items-flex-end">

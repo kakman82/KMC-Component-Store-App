@@ -27,7 +27,10 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '~/plugins/badge.js', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -55,6 +58,8 @@ export default {
 
   //* auth yapısı için tanım: ref-> https://auth.nuxtjs.org/schemes/local/
   auth: {
+    // bu şekilde bir tanım yapmazsam sepet sayfasında login olunduğunda direkt ana sayfaya yönlendirme yapıyor kendi. Bu şekilde kendim yönetebiliyorum LoginForm.vue da -  aynı zaman router/middleware ile de login değilse kullanıcı sayfaya gidememesine yönelik yönetim de sağlıyorum aşağıdaki router ile middleware dosyası içindeki authenticated.js ile
+    redirect: false,
     strategies: {
       local: {
         token: {
@@ -75,11 +80,9 @@ export default {
         },
       },
     },
-    // bu şekilde bir tanım yapmazsam sepet sayfasında login olunduğunda direkt ana sayfaya yönlendirme yapıyor kendi. Bu şekilde kendim yönetebiliyorum LoginForm.vue da -  aynı zaman router/middleware ile de login değilse kullanıcı sayfaya gidememesine yönelik yönetim de sağlıyorum aşağıdaki router ile middleware dosyası içindeki authenticated.js ile
-    redirect: false,
   },
   router: {
-    middleware: ['authenticated'],
+    middleware: ['authenticated', 'searched'],
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},

@@ -27,6 +27,7 @@ app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
 app.set('view engine', '.hbs');
 
 //* STATIC FOLDER - FOR BULMA CSS
+// email templatede kullanmak için bu tanımı yapmıştım genel bulma css dosyasını tanımlama için çünkü cdn i mail bodysinde tanımadı - fakat bu public de işe yaramadı welcome.hbs içinde style tag arasında direk css kodlarına ekleyerek çözüm sağladım ref: https://mailtrap.io/blog/build-html-email/
 app.use(express.static(path.join(__dirname, 'public')));
 
 //* GLOBAL MIDDLEWARES;

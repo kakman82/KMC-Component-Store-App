@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer has-background-info-dark">
+  <footer class="footer has-background-info-dark" style="height: 500px">
     <div class="columns">
       <!-- Firma adı ve copyright bölümü -->
       <div class="column is-4 has-text-left has-text-centered-mobile">
@@ -8,13 +8,21 @@
         <p class="has-text-white is-italic is-size-7">Her hakkı saklıdır.</p>
       </div>
       <!-- Firma iletişim bilgileri bölümü-->
-      <div class="column is-4 has-text-white has-text-left-desktop has-text-centered-mobile">
+      <div
+        class="
+          column
+          is-4
+          has-text-white has-text-left-desktop has-text-centered-mobile
+        "
+      >
         <div class="columns is-1 m-0 p-0">
           <div class="column">
             <i class="fas fa-at"></i>
           </div>
           <div class="column is-11">
-            <a class="has-text-white" href="mailto:info@kmc-grup.com">info@kmc-grup.com</a>
+            <a class="has-text-white" href="mailto:info@kmc-grup.com"
+              >info@kmc-grup.com</a
+            >
           </div>
         </div>
         <div class="columns is-1 m-0 p-0">
@@ -35,7 +43,13 @@
         </div>
       </div>
       <!-- Sosyal medya icon bölümü -->
-      <div class="column is-4 has-text-primary has-text-right has-text-centered-mobile">
+      <div
+        class="
+          column
+          is-4
+          has-text-primary has-text-right has-text-centered-mobile
+        "
+      >
         <a href="http://www.kmcelektronik.com.tr/">
           <span class="icon has-text-white is-large">
             <i class="fab fa-linkedin fa-2x ml-1"></i>

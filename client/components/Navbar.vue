@@ -1,5 +1,6 @@
 <template>
-  <b-navbar class="is-info is-fixed-top has-shadow">
+  <!-- navbar class'a eklenen has-shadow beyaz çizgili kenarlık yapıyor  -->
+  <b-navbar class="is-info is-fixed-top">
     <!-- Logo  -->
     <template #brand>
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
@@ -13,14 +14,30 @@
     </template>
     <!-- Sayfa Navigasyon template deki end start başta ya da sonda olmasını belirliyor güzel -->
     <template #end>
-      <b-navbar-item tag="router-link" :to="{ path: '/' }">
-        <b-icon pack="fas" icon="home" size="is-small"></b-icon>
-        <span class="ml-2 has-text-weight-medium">Ana Sayfa</span>
+      <b-navbar-item class="has-text-weight-medium">
+        <b-button class="button is-info" tag="router-link" :to="{ path: '/' }">
+          <b-icon pack="fas" icon="home" size="is-small"></b-icon>
+          <span>Ana Sayfa</span>
+        </b-button>
       </b-navbar-item>
-      <b-navbar-item tag="router-link" :to="{ path: '/cart' }">
-        <b-icon pack="fas" icon="shopping-cart" size="is-small"></b-icon>
-        <span class="ml-2 has-text-weight-medium">Sepete Git</span>
+      <b-navbar-item class="has-text-weight-medium">
+        <b-button
+          class="button is-info"
+          tag="router-link"
+          :to="{ path: '/cart' }"
+        >
+          <b-icon pack="fas" icon="shopping-cart" size="is-small"></b-icon>
+          <span
+            v-if="$store.state.cart.cart.length > 0"
+            title="Badge top right"
+            class="badge"
+          >
+            {{ $store.getters['cart/getCartLength'] }}
+          </span>
+          <span>Sepete Git</span>
+        </b-button>
       </b-navbar-item>
+
       <!-- User Menu Dropdown -->
       <b-navbar-item v-if="$auth.loggedIn">
         <b-dropdown :triggers="['hover']" aria-role="list">

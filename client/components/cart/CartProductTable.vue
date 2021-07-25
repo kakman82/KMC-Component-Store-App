@@ -1,5 +1,17 @@
 <template>
   <section>
+    <div class="column has-text-left" v-if="$store.state.products.search">
+      <b-button
+        tag="router-link"
+        :to="{ path: `/search_result/${$store.state.products.search}` }"
+        type="is-primary"
+        pack="fas"
+        icon-left="arrow-left"
+        size="is-small"
+      >
+        Arama Sonuçlarına Dön
+      </b-button>
+    </div>
     <b-table
       :data="isEmpty ? [] : data"
       :bordered="isBordered"
@@ -84,11 +96,18 @@
       </b-table-column>
 
       <b-table-column label="Sil" centered v-slot="props">
-        <DialogConfirm :prodCartId="props.row.productCartId" />
+        <DialogConfirm
+          :prodCartId="props.row.productCartId"
+          :productName="props.row.productName"
+        />
       </b-table-column>
 
       <template #empty>
-        <div class="has-text-centered">Sepetinizde Ürün Bulunmuyor.</div>
+        <div class="has-text-centered has-text-primary-dark">
+          <b>Sepetinizde ürün bulunmuyor.</b> <br />
+          Ana sayfamızdan istediğiniz ürünün kod numarası ile <br />
+          arama yaparak sepete ekleme yapabilirsiniz.
+        </div>
       </template>
       <template #detail="props">
         <article class="media">
@@ -171,7 +190,7 @@ export default {
           id: cartId,
           productTotalPriceTL: priceInTL.toFixed(2) * 1,
         }
-
+        console.log('mutaya giden TL li tutar: ', objToSendMutation)
         this.$store.commit('cart/setTLPriceToCartProduct', objToSendMutation)
 
         return module.formatWithCurrencyAndDecimals(priceInTL, 'TRY', 2)

@@ -119,8 +119,6 @@ export default {
             this.$auth.loginWith('local', {
               data: reqUserData,
             })
-            // modal dialog form kapatılması
-            this.$emit('closeAuthFormModal')
             // sipariş sayfasına yönlendirme
             this.$router.push('/placeorder')
             // form alanlarının temizlenmesi;
@@ -129,6 +127,9 @@ export default {
             this.email = ''
             this.password = ''
             this.serverErrMsg = ''
+
+            // modal dialog form kapatılması
+            this.$emit('closeAuthFormModal')
           }
         } catch (error) {
           // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum

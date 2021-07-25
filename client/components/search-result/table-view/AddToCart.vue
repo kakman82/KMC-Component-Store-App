@@ -1,7 +1,11 @@
 <template>
   <div class="container mr-3">
     <b-field class="mb-6" :message="errorMsg" :type="fieldTypeObject">
-      <b-tooltip position="is-top" :triggers="['click']" :auto-close="['outside', 'escape']">
+      <b-tooltip
+        position="is-top"
+        :triggers="['click']"
+        :auto-close="['outside', 'escape']"
+      >
         <template v-slot:content>
           <p>{{ calcMessage }}</p>
         </template>
@@ -49,10 +53,10 @@ export default {
   },
   data() {
     return {
-      errorMsg: `Min: ${module.formatNumber(this.minQty, 0)}  &  Max:${module.formatNumber(
-        this.maxStock,
+      errorMsg: `Min: ${module.formatNumber(
+        this.minQty,
         0
-      )} `,
+      )}  &  Max:${module.formatNumber(this.maxStock, 0)} `,
       valid: null,
       quantity: null,
       productPrice: this.prices.resaleList[0].price,
@@ -125,11 +129,14 @@ export default {
           productManufacturer: this.product.manufacturer.mfrName,
           productDescription: this.product.desc,
           productCategory: this.product.categoryName,
-          productImage: this.product.hasDatasheet ? this.product.resources[2].uri : null,
+          productImage: this.product.hasDatasheet
+            ? this.product.resources[2].uri
+            : null,
           productSupplier: this.supplier,
           productUnitPrice: this.productPrice,
           productCurrency: this.currency,
           productTotalPrice: (this.quantity * this.productPrice).toFixed(2) * 1,
+          productTotalPriceTL: 0,
           productQuantity: this.quantity,
         }
         //console.log('Sepete Eklenen Product Object: ', cartProductData)

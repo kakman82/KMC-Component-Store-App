@@ -14,13 +14,19 @@
         v-model="email"
         type="email"
         required
-        validation-message="Lütfen geçerli bir e-posta adresi giriniz."
+        validation-message="Lütfen e-posta adresinizi giriniz."
       >
       </b-input>
     </b-field>
 
     <b-field label="Şifre">
-      <b-input v-model="password" type="password" password-reveal required>
+      <b-input
+        v-model="password"
+        type="password"
+        password-reveal
+        required
+        validation-message="Lütfen şifrenizi giriniz."
+      >
       </b-input>
     </b-field>
     <b-button
