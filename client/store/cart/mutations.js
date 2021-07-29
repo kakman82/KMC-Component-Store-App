@@ -5,7 +5,7 @@ const mutations = {
   deleteProductFromCart(state, id) {
     state.cart = state.cart.filter((el) => el.productCartId !== id)
   },
-  setExhanges(state, data) {
+  setExchanges(state, data) {
     state.currRates = data
   },
   setTLPriceToCartProduct(state, data) {
@@ -16,7 +16,6 @@ const mutations = {
       const foundCartProduct = state.cart.filter(
         (el) => el.productCartId === data.id
       )[0]
-      console.log('found Prod: ', foundCartProduct)
       // sonra bu ürüne yeni bir key value olarak ekliyorum
       foundCartProduct.productTotalPriceTL = data.productTotalPriceTL
     }

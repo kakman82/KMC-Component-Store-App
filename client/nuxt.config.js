@@ -46,7 +46,7 @@ export default {
     '@nuxtjs/axios',
     //* npm install --save-exact @nuxtjs/auth-next ile auth paketi eklendi
     //* ref: https://auth.nuxtjs.org/guide/setup
-    '@nuxtjs/auth-next',
+    //'@nuxtjs/auth-next',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -54,32 +54,6 @@ export default {
     //! Heroku deploy için bu tanım önemli fakat heroku tanımadığı için BASE_URL manuel tanımladım https://kmc-arrow-store.herokuapp.com/api olarak. ref video-> https://www.youtube.com/watch?v=nngsKhTb2BA&t=946s
     //*TODO 'https://kmc-store-app.herokuapp.com/api' || 'http://localhost:5000/api', bu eklenecek deploy sonrası, şimdilik sadece localhostu bırakıyorum
     baseUrl: 'http://localhost:5000/api',
-  },
-
-  //* auth yapısı için tanım: ref-> https://auth.nuxtjs.org/schemes/local/
-  auth: {
-    // bu şekilde bir tanım yapmazsam sepet sayfasında login olunduğunda direkt ana sayfaya yönlendirme yapıyor kendi. Bu şekilde kendim yönetebiliyorum LoginForm.vue da -  aynı zaman router/middleware ile de login değilse kullanıcı sayfaya gidememesine yönelik yönetim de sağlıyorum aşağıdaki router ile middleware dosyası içindeki authenticated.js ile
-    redirect: false,
-    strategies: {
-      local: {
-        token: {
-          property: 'token',
-          global: true,
-          required: true,
-          type: 'Bearer',
-        },
-        user: {
-          property: 'user',
-          autoFetch: true,
-        },
-        endpoints: {
-          // axios baseUrl tanımında /api yi belirttiğimiz için tekrar api ye burada gerek yok. Yoksa /api/api/auth gibi olur route
-          login: { url: '/auth/login', method: 'post' },
-          logout: { url: '/auth/logout', method: 'post' },
-          user: { url: '/auth/user', method: 'get' },
-        },
-      },
-    },
   },
   router: {
     middleware: ['authenticated', 'searched'],

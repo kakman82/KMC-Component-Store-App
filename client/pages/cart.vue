@@ -1,7 +1,7 @@
 <template>
   <div class="container is-fluid">
     <section class="section">
-      <CurrencyRates />
+      <CurrencyRates :key="componentKey" :dateTodayForCurrency="today" />
     </section>
     <section class="section is-large p-2 mb-6">
       <div class="card p-2">
@@ -9,15 +9,17 @@
           <div class="column is-7">
             <CartProductTable />
           </div>
+
           <div class="column is-4" v-if="$store.state.cart.cart.length > 0">
-            <CheckoutBox />
+            <CheckoutBox
+              :dateTodayToCheck="today"
+              @forceRerender="forceRerender"
+            />
           </div>
         </div>
       </div>
-      <!-- Footer ın sayfada tabana oturması için ekledim  -->
       <br />
     </section>
-    <!-- Footer ın sayfada tabana oturması için ekledim  -->
     <br />
   </div>
 </template>
@@ -26,17 +28,37 @@
 import CartProductTable from '../components/cart/CartProductTable.vue'
 import CurrencyRates from '../components/cart/CurrencyRates.vue'
 import CheckoutBox from '../components/cart/CheckoutBox.vue'
+import * as module from '../components/formatHelper'
 
 export default {
   components: { CartProductTable, CurrencyRates, CheckoutBox },
   head: {
     title: 'Sepet | KMC Elektronik',
   },
+  data() {
+    return {
+      componentKey: 0,
+      //today: module.formatDate(Date.now()),
+      today: '20 Haziran 2021, Pazar',
+    }
+  },
+  methods: {
+    // günün tarihi eskide kalmış ise sayfada kurların apiden alındığı componentin tekrar re-render edilmesi için
+    // ref: https://michaelnthiessen.com/force-re-render/
+    forceRerender() {
+      //this.today = module.formatDate(Date.now())
+      this.componentKey += 1
+      console.log('currency component re-render edildi...')
+    },
+  },
 }
 </script>
 
 <style scoped>
-/* Mobile görünümde sipariş tutarındaki div in ilk önce görünmesi için bu tanım yapıldı ref: https://stackoverflow.com/questions/41709977/bulma-change-stack-order-of-columns */
+/* Mobile görünümde sipariş tutarındaki div in ilk önce görünmesi için
+ bu tanım yapıldı
+ref: https://stackoverflow.com/questions/41709977/bulma-change-stack-order-of-columns 
+*/
 @media (max-width: 768px) {
   .for-mobile {
     display: flex;

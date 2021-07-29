@@ -190,7 +190,6 @@ export default {
           id: cartId,
           productTotalPriceTL: priceInTL.toFixed(2) * 1,
         }
-        console.log('mutaya giden TL li tutar: ', objToSendMutation)
         this.$store.commit('cart/setTLPriceToCartProduct', objToSendMutation)
 
         return module.formatWithCurrencyAndDecimals(priceInTL, 'TRY', 2)

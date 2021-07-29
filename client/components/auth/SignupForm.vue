@@ -63,6 +63,7 @@
 
 <script>
 import lodash from '../../node_modules/lodash-es'
+import Cookie from 'js-cookie'
 
 export default {
   name: 'SignupForm',
@@ -110,15 +111,25 @@ export default {
           response = await this.$axios.$post('/auth/signup', reqUserData)
 
           if (response.success) {
+            Cookie.set('access_token', response.token, {
+              expires: 7,
+              sameSite: 'strict',
+            })
+            // user bilgilerini store gönderme
+            this.$store.commit('setUser', {
+              id: response.user._id,
+              firstName: response.user.firstName,
+              lastName: response.user.lastName,
+              email: response.user.email,
+              role: response.user.role,
+            })
+
             this.$buefy.toast.open({
               duration: 5000,
               message: response.message,
               type: 'is-success',
             })
-            // nuxt/auth tanımı;
-            this.$auth.loginWith('local', {
-              data: reqUserData,
-            })
+
             // sipariş sayfasına yönlendirme
             this.$router.push('/placeorder')
             // form alanlarının temizlenmesi;

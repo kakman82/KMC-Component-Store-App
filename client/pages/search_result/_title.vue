@@ -30,7 +30,9 @@
               Aradığınız üründe stok bulunmamaktadır!
             </p>
             <p class="is-size-8">
-              Ana sayfamızdan farklı bir ürün için yeniden arama yapabilirsiniz.
+              Ana sayfamızdan farklı bir ürün için yeniden arama yapabilir ya da
+              <br />
+              seçim kriterinizi değiştirebilirsiniz.
             </p>
           </b-message>
         </div>

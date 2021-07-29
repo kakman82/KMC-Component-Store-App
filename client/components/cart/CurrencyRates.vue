@@ -12,9 +12,9 @@
       </h2>
     </div>
     <div class="column is-4 is-justify-items-flex-end">
-      <p class="title is-size-5-mobile">{{ today }}</p>
+      <p class="title is-size-5-mobile">{{ dateTodayForCurrency }}</p>
       <h2 class="subtitle is-size-6-mobile">
-        <b>USD: </b>{{ usdRate }} ; <b>EUR: </b> {{ euroRate }}
+        <b>USD: </b>{{ usdRate }} <b>|</b> <b>EUR: </b> {{ euroRate }}
       </h2>
     </div>
   </div>
@@ -24,10 +24,10 @@
 import * as module from '../formatHelper'
 export default {
   name: 'CurrencyRates',
+
+  props: ['dateTodayForCurrency'],
   data() {
     return {
-      today: module.formatDate(Date.now()),
-      //today: '20 Haziran 2021, Pazar',
       exchanges: [],
     }
   },
@@ -35,27 +35,29 @@ export default {
     usdRate() {
       if (this.exchanges.length > 0) {
         const usd = this.exchanges.filter((el) => el.code === 'USD')
-        return usd[0].selling
+        return module.formatNumber(usd[0].selling, 4)
       }
     },
     euroRate() {
       if (this.exchanges.length > 0) {
         const euro = this.exchanges.filter((el) => el.code === 'EUR')
-        return euro[0].selling
+        return module.formatNumber(euro[0].selling, 4)
       }
     },
   },
   created() {
     this.getExchangeRates()
+    console.log('curr componente gelen tarih: ', this.dateTodayForCurrency)
   },
   methods: {
     async getExchangeRates() {
       try {
         const response = await this.$axios.$get('/daily_rates')
         if (response.success) {
+          console.log('cur api res: ', response)
           this.currDate = response.currDate
           this.exchanges = response.exchanges
-          this.$store.commit('cart/setExhanges', response)
+          this.$store.commit('cart/setExchanges', response)
         }
       } catch (error) {
         console.log(error)

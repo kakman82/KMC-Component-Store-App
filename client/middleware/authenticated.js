@@ -1,6 +1,5 @@
-export default function ({ $auth, route, redirect }) {
-  //console.log($auth)
-  if (!$auth.loggedIn && route.path === '/placeorder') {
+export default function ({ store, route, redirect }) {
+  if (!store.getters['isLogin'] && route.path === '/placeorder') {
     return redirect('/')
   }
 }

@@ -12,20 +12,24 @@
         </div>
       </b-navbar-item>
     </template>
-    <!-- Sayfa Navigasyon template deki end start başta ya da sonda olmasını belirliyor güzel -->
+    <!-- Sayfa Navigasyon template deki end ve start başta ya da sonda olmasını belirliyor güzel -->
     <template #end>
-      <b-navbar-item class="has-text-weight-medium">
-        <b-button class="button is-info" tag="router-link" :to="{ path: '/' }">
+      <b-navbar-item
+        tag="router-link"
+        :to="{ path: '/' }"
+        class="has-text-weight-medium"
+      >
+        <a class="button is-info">
           <b-icon pack="fas" icon="home" size="is-small"></b-icon>
           <span>Ana Sayfa</span>
-        </b-button>
+        </a>
       </b-navbar-item>
-      <b-navbar-item class="has-text-weight-medium">
-        <b-button
-          class="button is-info"
-          tag="router-link"
-          :to="{ path: '/cart' }"
-        >
+      <b-navbar-item
+        class="has-text-weight-medium"
+        tag="router-link"
+        :to="{ path: '/cart' }"
+      >
+        <a class="button is-info">
           <b-icon pack="fas" icon="shopping-cart" size="is-small"></b-icon>
           <span
             v-if="$store.state.cart.cart.length > 0"
@@ -35,28 +39,26 @@
             {{ $store.getters['cart/getCartLength'] }}
           </span>
           <span>Sepete Git</span>
-        </b-button>
+        </a>
       </b-navbar-item>
 
       <!-- User Menu Dropdown -->
-      <b-navbar-item v-if="$auth.loggedIn">
+      <b-navbar-item v-if="$store.getters['isLogin']">
         <b-dropdown :triggers="['hover']" aria-role="list">
           <template #trigger>
             <p class="is-white">
               <b-icon pack="fas" icon="user-circle" size="is-small"></b-icon>
-              <span class="ml-1 has-text-weight-medium"
-                >{{ $auth.user.firstName }} {{ $auth.user.lastName }}</span
-              >
+              <span class="ml-1 has-text-weight-medium">
+                {{ $store.state.user.firstName }}
+                {{ $store.state.user.lastName }}
+              </span>
             </p>
           </template>
           <b-dropdown-item aria-role="menuitem">
             <b-icon pack="fas" icon="shopping-bag" size="is-small"></b-icon>
             <span class="ml-1 has-text-weight-medium">Siparişlerim</span>
           </b-dropdown-item>
-          <b-dropdown-item
-            aria-role="listitem"
-            v-if="$auth.user.role === 'admin'"
-          >
+          <b-dropdown-item aria-role="listitem">
             <b-icon pack="fas" icon="users-cog" size="is-small"></b-icon>
             <span class="ml-1 has-text-weight-medium">Admin Paneli</span>
           </b-dropdown-item>
@@ -75,7 +77,7 @@
         </b-dropdown>
       </b-navbar-item>
       <!-- Login Buttonları -->
-      <b-navbar-item tag="div" v-if="!$auth.loggedIn">
+      <b-navbar-item tag="div" v-if="!$store.getters['isLogin']">
         <div class="buttons">
           <b-dropdown
             position="is-bottom-left"
@@ -98,6 +100,15 @@
               <form>
                 <div class="modal-card" style="width: 300px">
                   <section class="modal-card-body">
+                    <p
+                      class="
+                        is-size-6
+                        has-text-weight-bold has-text-primary-dark
+                      "
+                    >
+                      Giriş için gerekli bilgileri giriniz:
+                    </p>
+                    <hr />
                     <LoginForm />
                   </section>
                 </div>
@@ -111,14 +122,15 @@
 </template>
 <script>
 import LoginForm from '../components/auth/LoginForm.vue'
+import Cookie from 'js-cookie'
 export default {
   name: 'Navbar',
   components: { LoginForm },
   methods: {
     async userLogout() {
-      // bu yapı nuxt auth dan geliyor, backend tarafında haricen logout func a gerek kalmıyor
-      await this.$auth.logout()
-      // logout sonrası ana sayfaya yönlendirme;
+      Cookie.remove('access_token')
+      this.$store.commit('removeUser')
+
       this.$router.push('/')
     },
   },

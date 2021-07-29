@@ -1,7 +1,9 @@
 <template>
   <section>
     <Navbar />
+
     <Nuxt keep-alive />
+
     <Footer />
   </section>
 </template>

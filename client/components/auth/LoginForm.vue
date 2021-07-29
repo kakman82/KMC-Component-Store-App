@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import Cookie from 'js-cookie'
 export default {
   name: 'LoginForm',
   emits: ['closeAuthFormModal'],
@@ -74,22 +75,35 @@ export default {
           response = await this.$axios.$post('/auth/login', reqUserData)
 
           if (response.success) {
-            this.$auth.loginWith('local', { data: reqUserData })
+            //this.$auth.loginWith('local', { data: reqUserData })
+            Cookie.set('access_token', response.token, {
+              expires: 7,
+              sameSite: 'strict',
+            })
+            // user bilgilerini store gönderme
+            this.$store.commit('setUser', {
+              id: response.user._id,
+              firstName: response.user.firstName,
+              lastName: response.user.lastName,
+              email: response.user.email,
+              role: response.user.role,
+            })
+
+            // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlendir değilse zaten sepet sayfasından login olmuş demektir ve direkt placeorder sayfasında yönlendir
+            //console.log(this.$route)
+            if (this.$route.path === '/cart') {
+              this.$router.push({ path: '/placeorder' })
+              // bu emit sepet sayfasından login olunduğu zaman modalın kapatılması için
+              this.$emit('closeAuthFormModal')
+            } else {
+              this.$router.push('/')
+            }
 
             this.$buefy.toast.open({
               duration: 5000,
               message: response.message,
               type: 'is-success',
             })
-            // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlnedir değilse zaten sepet sayfasından login olmuş demektir ve direkt placeorder sayfasında yönlendir
-            //console.log(this.$route)
-            if (this.$route.path === '/cart') {
-              this.$router.push('/placeorder')
-            } else {
-              this.$router.push('/')
-            }
-            // bu emit sepet sayfasından login olunduğu zaman modalın kapatılması için
-            this.$emit('closeAuthFormModal')
 
             this.email = ''
             this.password = ''

@@ -71,6 +71,8 @@ import * as module from '../formatHelper'
 export default {
   name: 'CheckoutBox',
   components: { SignupForm, LoginForm },
+  props: ['dateTodayToCheck'],
+  emits: ['forceRerender'],
   data() {
     return {
       isAuthModalActive: false,
@@ -100,8 +102,34 @@ export default {
     },
   },
   methods: {
+    checkTodaysDate() {
+      console.log('gelen prop: ', this.dateTodayToCheck)
+      console.log('Bugünün tarihi: ', module.formatDate(Date.now()))
+      if (module.formatDate(Date.now()) !== this.dateTodayToCheck) {
+        console.log('tarih bugün değil')
+        this.showCurrUpdateModal()
+        this.$emit('forceRerender')
+      } else {
+        console.log('tarih bugün no problem')
+      }
+    },
+
+    showCurrUpdateModal() {
+      this.$buefy.modal.open({
+        title: 'Döviz kurları kontrol ediliyor...',
+        message:
+          'Günün tarihinin eski bir tarih olduğu anlaşıldı. <br /> Tekrar kontrol ediliyor',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => this.$buefy.toast.open('Kur bilgisi güncellendi'),
+        //onConfirm: this.$emit('closeCurrCheckDialog')
+      })
+    },
+
     createOrder() {
-      if (!this.$auth.loggedIn) {
+      this.checkTodaysDate()
+
+      if (!this.$store.getters['isLogin']) {
         this.isAuthModalActive = true
       } else {
         this.$router.push('/placeorder')

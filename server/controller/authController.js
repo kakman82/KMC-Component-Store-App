@@ -31,6 +31,7 @@ exports.signUpUser = async (req, res) => {
       res.status(200).json({
         success: true,
         token: token,
+        user: newUser,
         message: 'Kullanıcı hesabı başarıyla oluşturuldu.',
       });
     } catch (error) {
@@ -52,6 +53,7 @@ exports.loginUser = async (req, res) => {
     // için select: false demiştik şimdi esasen passwordu almak istediğimiz
     // için bu şekilde çağırdık, daha sonra bu passwordu aşağıda compare edeceğiz
     const foundUser = await User.findOne({ email: req.body.email }).select('+password');
+    //console.log('server foundUser: ', foundUser);
     // comparePassword userModel den geliyor, foundUser değişkeni de userModel den geldiği için func çağrılabilir
     // bu comparePassword bize true ya da false dönecek - şifreyi compare edip
     // aslında ayrı ayrı da kontrol edip user yoksa email hatalı, şifre hatalı ise bunun mesajını da döndürebilirdim fakat hangisinin doğru olduğu anlaşılmasın diye ikisini bir if bloğunda veya || şeklinde tanıladım
@@ -70,7 +72,8 @@ exports.loginUser = async (req, res) => {
       res.status(200).json({
         success: true,
         token: token,
-        message: 'Başarıyla giriş yapıldı',
+        user: foundUser,
+        message: `Merhaba ${foundUser.firstName}, <br /> Uygulamaya başarıyla giriş yapıldı.`,
       });
     }
   } catch (error) {

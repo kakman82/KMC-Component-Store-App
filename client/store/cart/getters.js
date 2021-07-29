@@ -24,12 +24,10 @@ const getters = {
   //* TL tutar toplamı
   getCartTotalTL(state) {
     if (state.cart) {
-      console.log('cart: ', state.cart)
       let total = 0
       for (let i = 0; i < state.cart.length; i++) {
         total += state.cart[i].productTotalPriceTL
       }
-      console.log('cart TL tutar: ', total)
       return total
     } else {
       return 0
