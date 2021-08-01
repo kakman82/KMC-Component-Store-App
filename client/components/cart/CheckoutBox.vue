@@ -23,6 +23,7 @@
     </a>
     <button
       class="button is-success is-medium is-fullwidth has-text-weight-bold"
+      :disabled="$store.getters['cart/getCurrRates'] === null"
       @click="createOrder"
     >
       Sipariş Oluştur
@@ -103,34 +104,22 @@ export default {
   },
   methods: {
     checkTodaysDate() {
-      console.log('gelen prop: ', this.dateTodayToCheck)
-      console.log('Bugünün tarihi: ', module.formatDate(Date.now()))
       if (module.formatDate(Date.now()) !== this.dateTodayToCheck) {
-        console.log('tarih bugün değil')
-        this.showCurrUpdateModal()
-        this.$emit('forceRerender')
+        return false
       } else {
-        console.log('tarih bugün no problem')
+        return true
       }
     },
 
-    showCurrUpdateModal() {
-      this.$buefy.modal.open({
-        title: 'Döviz kurları kontrol ediliyor...',
-        message:
-          'Günün tarihinin eski bir tarih olduğu anlaşıldı. <br /> Tekrar kontrol ediliyor',
-        type: 'is-danger',
-        hasIcon: true,
-        onConfirm: () => this.$buefy.toast.open('Kur bilgisi güncellendi'),
-        //onConfirm: this.$emit('closeCurrCheckDialog')
-      })
-    },
-
     createOrder() {
-      this.checkTodaysDate()
-
-      if (!this.$store.getters['isLogin']) {
+      // eğer tarih bugünün değilse comp tekrar re-render etme
+      if (!this.checkTodaysDate()) {
+        return this.$emit('forceRerender')
+      }
+      // tarih ok ve kullanıcı login değilse;
+      if (!this.$store.getters['isLogin'] && this.checkTodaysDate()) {
         this.isAuthModalActive = true
+        // herşey ok se;
       } else {
         this.$router.push('/placeorder')
       }

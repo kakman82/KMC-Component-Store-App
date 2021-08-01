@@ -1,6 +1,6 @@
 const state = () => ({
   cart: [],
-  currRates: {},
+  currRates: null,
 })
 
 export default state

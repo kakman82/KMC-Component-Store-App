@@ -157,6 +157,7 @@ export default {
       isLoading: false,
       hasMobileCards: true,
       defaultOpenedDetails: [0],
+      currErrMsg: 'Kur bilgisi alınamadı!',
     }
   },
   computed: {
@@ -182,7 +183,7 @@ export default {
     },
     calcTLPrice(cartId, price, curr) {
       const allRates = this.$store.getters['cart/getCurrRates']
-      if (allRates) {
+      if (Array.isArray(allRates)) {
         const currValue = allRates.filter((el) => el.code === curr)[0].selling
         const priceInTL = price * currValue
 
@@ -194,7 +195,7 @@ export default {
 
         return module.formatWithCurrencyAndDecimals(priceInTL, 'TRY', 2)
       } else {
-        return 'Kur hatalı!'
+        return this.currErrMsg
       }
     },
   },

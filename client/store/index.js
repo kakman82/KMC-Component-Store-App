@@ -7,11 +7,12 @@ export const state = () => ({
 })
 
 export const actions = {
-  // user token bilgilerinin sayfa açılışında cookie de var ya da yok kontrol edip varsa tokeni okuması için nuxtServerInit den yararlandım. Bu metodu kullanmak için nuxt/store da index.js dosyası oluşturmak zorunlu bu nedenle haricen user için ayrı bir folder yaratmadım bu dosyada belirttim
+  /* user token bilgilerinin sayfa açılışında cookie de var ya da yok 
+  kontrol edip varsa tokeni okuması için nuxtServerInit den yararlandım. 
+  Bu metodu kullanmak için nuxt/store da index.js dosyası oluşturmak zorunlu 
+  bu nedenle haricen user için ayrı bir folder yaratmadım bu dosyada belirttim
+  */
   nuxtServerInit({ commit }, { req }) {
-    //console.log('nuxtServerInit çalıştı...')
-    //console.log('NuxtServerInit cookie okudu: ', req.headers.cookie)
-
     // headerda cookie yoksa çık
     if (!req.headers.cookie) return
 

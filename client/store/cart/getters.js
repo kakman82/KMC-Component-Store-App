@@ -1,3 +1,5 @@
+import lodash from '../../node_modules/lodash-es'
+
 const getters = {
   getCartProducts(state) {
     return state.cart
@@ -23,18 +25,20 @@ const getters = {
   },
   //* TL tutar toplamı
   getCartTotalTL(state) {
-    if (state.cart) {
+    if (state.cart && !lodash.isEmpty(state.currRates)) {
       let total = 0
       for (let i = 0; i < state.cart.length; i++) {
         total += state.cart[i].productTotalPriceTL
       }
       return total
     } else {
-      return 0
+      return 'Kur bilgisi alınamıyor!'
     }
   },
   getCurrRates(state) {
-    if (state.currRates) {
+    if (lodash.isEmpty(state.currRates)) {
+      return null
+    } else {
       return state.currRates.exchanges
     }
   },

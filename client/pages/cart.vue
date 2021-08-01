@@ -1,7 +1,11 @@
 <template>
   <div class="container is-fluid">
     <section class="section">
-      <CurrencyRates :key="componentKey" :dateTodayForCurrency="today" />
+      <CurrencyRates
+        :key="componentKey"
+        :dateTodayForCurrency="today"
+        :reRenderTimes="componentKey"
+      />
     </section>
     <section class="section is-large p-2 mb-6">
       <div class="card p-2">
@@ -38,17 +42,35 @@ export default {
   data() {
     return {
       componentKey: 0,
-      //today: module.formatDate(Date.now()),
-      today: '20 Haziran 2021, Pazar',
+      today: module.formatDate(Date.now()),
+      // curr comp re-render testi için;
+      //today: '20 Haziran 2021, Pazar',
     }
   },
   methods: {
     // günün tarihi eskide kalmış ise sayfada kurların apiden alındığı componentin tekrar re-render edilmesi için
     // ref: https://michaelnthiessen.com/force-re-render/
     forceRerender() {
-      //this.today = module.formatDate(Date.now())
       this.componentKey += 1
-      console.log('currency component re-render edildi...')
+      // günün tarihi olarak düzeltme;
+      this.today = module.formatDate(Date.now())
+      // kullanıcıya bilg msj funct çağrılması;
+      this.showCurrUpdateInfoMsg()
+      //console.log('currency component re-render edildi...')
+    },
+    showCurrUpdateInfoMsg() {
+      this.$buefy.dialog.alert({
+        title: 'Kur bilgileri güncellendi...',
+        message:
+          'Günün tarihine göre kur bilgileri güncellenmiştir. <br /> Sipariş tutarınız yeni kurlara göre revize edilmiştir. <br /> Yeni fiyatlara göre tekrar sipariş oluşturabilirsiniz. ',
+        type: 'is-warning',
+        hasIcon: true,
+        icon: 'exclamation-triangle',
+        iconPack: 'fa',
+        ariaRole: 'alertdialog',
+        ariaModal: true,
+        confirmText: 'Tamam',
+      })
     },
   },
 }
