@@ -1,16 +1,16 @@
-const nodemailer = require('nodemailer'); // npm install nodemailer
-const hbs = require('nodemailer-express-handlebars'); // npm i nodemailer-express-handlebars
-const htmlToText = require('html-to-text'); // npm i html-to-text
-const path = require('path');
+const nodemailer = require('nodemailer') // npm install nodemailer
+const hbs = require('nodemailer-express-handlebars') // npm i nodemailer-express-handlebars
+const htmlToText = require('html-to-text') // npm i html-to-text
+const path = require('path')
 
 //* Gönderilecek emailler için genel bir constructor class tanımı
-// bu class altında nodemailer config yapılacak
-
+// bu class altında nodemailer config yapısı
 module.exports = class Email {
-  constructor(user) {
-    this.to = user.email;
-    this.firstName = user.firstName;
-    this.from = `KMC Elecktronik <${process.env.EMAIL_FROM}>`;
+  constructor(user, url) {
+    this.to = user.email
+    this.firstName = user.firstName
+    this.url = url
+    this.from = `KMC Elektronik <${process.env.EMAIL_FROM}>`
   }
   //yeni bir mail transport tanımı yapıyoruz. Bu tanım production ve development ortamında göre değişiklik gösteriyor;
   newTransport() {
@@ -28,7 +28,7 @@ module.exports = class Email {
         tls: {
           rejectUnauthorized: false,
         },
-      });
+      })
 
       transporter.use(
         'compile',
@@ -41,8 +41,8 @@ module.exports = class Email {
           viewPath: path.join(__dirname, '../views/email/'),
           extName: '.hbs',
         })
-      );
-      return transporter;
+      )
+      return transporter
     } else {
       // dev ortamı -test- için mailtrap tanımı
       let transporter = nodemailer.createTransport({
@@ -52,7 +52,7 @@ module.exports = class Email {
           user: process.env.EMAIL_USERNAME,
           pass: process.env.EMAIL_PASSWORD,
         },
-      });
+      })
       transporter.use(
         'compile',
         hbs({
@@ -64,8 +64,8 @@ module.exports = class Email {
           viewPath: path.join(__dirname, '../views/email/'),
           extName: '.hbs',
         })
-      );
-      return transporter;
+      )
+      return transporter
     }
   }
 
@@ -74,20 +74,29 @@ module.exports = class Email {
     const mailOptions = {
       from: this.from,
       to: this.to,
+      //TODO bilgi için eklemiştim, sonradan silinecek cc kısmı!
       cc: 'akmankerem@gmail.com',
       subject: subject,
       template: template,
       context: {
         firstName: this.firstName,
+        url: this.url,
       },
       //TODO burası sililenebilir gerek olmayabilir maillerin spama düşmemesi için html i normal plain text e çevirmemiz önemli. Bunun için html-to-text paketinden yararlandım: npm i html-to-text
       //text: htmlToText.convert(html),
-    };
+    }
     // Transportun create edilip mailin gönderilmesi; sendMail nodemailer den geliyor
-    await this.newTransport().sendMail(mailOptions);
+    await this.newTransport().sendMail(mailOptions)
   }
   // bu sendWelcome authController içindeki signUp içinde çağırdık çünkü o zaman gidecek bu mail
   async sendWelcome() {
-    await this.send('welcome', 'KMC Elektronik Sitesine Hoşgeldiniz!');
+    await this.send('welcome', 'KMC Elektronik Sitesine Hoşgeldiniz!')
   }
-};
+  // şifre değişikliği için gönderilen email func;
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Şifre sıfırlama talebi (Sıfırlama linki 10 dakika için geçerlidir!)'
+    )
+  }
+}

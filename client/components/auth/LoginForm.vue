@@ -29,8 +29,16 @@
       >
       </b-input>
     </b-field>
+
     <b-button
-      class="mt-6 is-primary has-text-weight-bold"
+      tag="router-link"
+      to="/users/forgotPassword"
+      type="is-ghost"
+      class="pl-0"
+      >Şifremi unuttum!</b-button
+    >
+    <b-button
+      class="mt-3 is-primary has-text-weight-bold"
       expanded
       :disabled="checkFormValidation() ? false : true"
       @click="userLogin"
