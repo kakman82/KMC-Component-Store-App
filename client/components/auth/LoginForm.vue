@@ -83,7 +83,6 @@ export default {
           response = await this.$axios.$post('/auth/login', reqUserData)
 
           if (response.success) {
-            //this.$auth.loginWith('local', { data: reqUserData })
             Cookie.set('access_token', response.token, {
               expires: 7,
               sameSite: 'strict',

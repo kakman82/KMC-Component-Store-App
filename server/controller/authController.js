@@ -129,12 +129,11 @@ exports.isLoggedIn = (req, res, next) => {
 //* FORGOT PASSWORD
 
 exports.forgotPassword = async (req, res, next) => {
-  console.log('req bodye gelen: ', req.body.email)
   const user = await User.findOne({ email: req.body.email })
   if (!user) {
-    return next(
-      new Error('Bu e-posta adresine sahip kayıtlı kullanıcı bulunamadı!')
-    )
+    return res.status(401).json({
+      message: 'Bu e-posta adresine sahip kayıtlı kullanıcı bulunamadı!',
+    })
   }
   // Generate random token
   const resetToken = user.createPasswordResetToken()
@@ -142,9 +141,12 @@ exports.forgotPassword = async (req, res, next) => {
 
   // Send token to user email address;
   try {
-    const resetURL = `${req.protocol}://${req.get(
-      'host'
-    )}/api/users/resetPassword/${resetToken}`
+    // const resetURL = `${req.protocol}://${req.get(
+    //   'host'
+    // )}/api/users/resetPassword/${resetToken}`
+    // yukarıdaki yapı aynı server içinde template oluşturuken işe yarar
+    // ama client farklı bir adreste ise origin kullanmak daha elverişli ve api ifadesi client da yok
+    const resetURL = `${req.get('origin')}/users/resetPassword/${resetToken}`
 
     await new Email(user, resetURL).sendPasswordReset()
 
@@ -160,16 +162,14 @@ exports.forgotPassword = async (req, res, next) => {
     user.passwordResetExpires = undefined
     await user.save({ validateBeforeSave: false })
 
-    return next(
-      new Error(
-        'E-posta gönderiminde hata oluştu, lütfen daha sonra tekrar deneyin!'
-      )
-    )
+    return res.status(400).json({
+      message:
+        'E-posta gönderiminde hata oluştu, lütfen daha sonra tekrar deneyin!',
+    })
   }
 }
 //* RESET PASSWORD
 exports.resetPassword = async (req, res, next) => {
-  console.log(req.params)
   // req ile gelen tokeni yeniden encrypte edip db deki kayıtlı encrypte hali ile karşılaştırdım
   const hashedToken = crypto
     .createHash('sha256')
@@ -181,7 +181,10 @@ exports.resetPassword = async (req, res, next) => {
     passwordResetExpires: { $gt: Date.now() },
   })
   if (!user) {
-    return next(new Error('Link geçersiz ya da süresi dolmuş!'))
+    return res.status(401).json({
+      message:
+        'Şifre yenileme linki geçersiz ya da süresi dolmuş! <br /> Şifremi unuttum adımından yeniden istek yapılmalıdır.',
+    })
   }
   // herşey ok ise;
   user.password = req.body.password
@@ -192,6 +195,6 @@ exports.resetPassword = async (req, res, next) => {
   await user.save()
 
   // login için gerekli olacak olan token ı üretim res ile gönderiyoruz
-  const msg = `Merhaba ${user.firstName}, <br /> Şifre başarıyla değiştirildi.`
+  const msg = `Merhaba ${user.firstName}, <br /> Şifre başarıyla değiştirildi ve uygulamaya giriş yapıldı.`
   createSendToken(user, 200, res, msg)
 }

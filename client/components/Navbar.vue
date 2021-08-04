@@ -44,7 +44,7 @@
 
       <!-- User Menu Dropdown -->
       <b-navbar-item v-if="$store.getters['isLogin']">
-        <b-dropdown :triggers="['hover']" aria-role="list">
+        <b-dropdown :triggers="['hover']" aria-role="list" append-to-body>
           <template #trigger>
             <p class="is-white">
               <b-icon pack="fas" icon="user-circle" size="is-small"></b-icon>
@@ -77,45 +77,40 @@
         </b-dropdown>
       </b-navbar-item>
       <!-- Login Buttonları -->
-      <b-navbar-item tag="div" v-if="!$store.getters['isLogin']">
-        <div class="buttons">
-          <b-dropdown
-            position="is-bottom-left"
-            append-to-body
-            aria-role="menu"
-            trap-focus
+      <b-navbar-item v-if="!$store.getters['isLogin']">
+        <b-dropdown
+          position="is-bottom-left"
+          append-to-body
+          aria-role="menu"
+          trap-focus
+        >
+          <template #trigger>
+            <div class="button is-info">
+              <b-icon pack="fas" icon="sign-in-alt" size="is-small"></b-icon>
+              <span class="has-text-weight-medium">Giriş Yap</span>
+            </div>
+          </template>
+          <b-dropdown-item
+            aria-role="menu-item"
+            :focusable="false"
+            custom
+            paddingless
           >
-            <template #trigger>
-              <div class="button is-info">
-                <b-icon pack="fas" icon="sign-in-alt" size="is-small"></b-icon>
-                <span class="has-text-weight-medium">Giriş Yap</span>
+            <form>
+              <div class="modal-card" style="width: 300px">
+                <section class="modal-card-body">
+                  <p
+                    class="is-size-6 has-text-weight-bold has-text-primary-dark"
+                  >
+                    Giriş için gerekli bilgileri giriniz:
+                  </p>
+                  <hr />
+                  <LoginForm />
+                </section>
               </div>
-            </template>
-            <b-dropdown-item
-              aria-role="menu-item"
-              :focusable="false"
-              custom
-              paddingless
-            >
-              <form>
-                <div class="modal-card" style="width: 300px">
-                  <section class="modal-card-body">
-                    <p
-                      class="
-                        is-size-6
-                        has-text-weight-bold has-text-primary-dark
-                      "
-                    >
-                      Giriş için gerekli bilgileri giriniz:
-                    </p>
-                    <hr />
-                    <LoginForm />
-                  </section>
-                </div>
-              </form>
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
+            </form>
+          </b-dropdown-item>
+        </b-dropdown>
       </b-navbar-item>
     </template>
   </b-navbar>

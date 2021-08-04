@@ -7,25 +7,30 @@
           Şifre yenileme linkini gönderebilmemiz için e-posta adresini
           girmelisin
         </h2>
-        <b-message
-          v-if="errMsg"
-          type="is-danger"
-          has-icon
-          icon-size="is-medium"
-        >
-          {{ errMsg }}
-        </b-message>
-        <div class="box">
-          <b-field label="E-posta">
+        <div class="box container" style="width: 70%">
+          <b-message
+            v-if="errMsg"
+            type="is-danger"
+            has-icon
+            icon-size="is-medium"
+          >
+            {{ errMsg }}
+          </b-message>
+          <b-field label="E-posta" class="mb-5">
             <b-input
               v-model="email"
               type="email"
               required
-              validation-message="Lütfen e-posta adresinizi giriniz."
+              :validation-message="validMsg"
             >
             </b-input>
           </b-field>
-          <b-button type="is-primary" expanded @click="forgotPassword"
+          <b-button
+            type="is-primary"
+            expanded
+            :loading="isLoading"
+            :disabled="!validation"
+            @click="forgotPassword"
             >Şifremi Yenile!</b-button
           >
         </div>
@@ -43,16 +48,41 @@ export default {
     return {
       email: '',
       errMsg: '',
+      validMsg: '',
+      isLoading: false,
     }
+  },
+  computed: {
+    validation() {
+      if (
+        !this.email ||
+        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.email)
+      ) {
+        this.validMsg = 'Lütfen geçerli bir e-posta adresi giriniz.'
+        return false
+      } else {
+        return true
+      }
+    },
   },
   methods: {
     async forgotPassword() {
+      if (this.errMsg) {
+        this.errMsg = ''
+      }
       try {
+        this.isLoading = true
         const response = await this.$axios.$post('users/forgotPassword', {
           email: this.email.toLowerCase(),
         })
+
         if (response.success) {
           this.$router.push('/')
+
+          this.email = ''
+          this.errMsg = ''
+          this.validMsg = ''
+          this.isLoading = false
 
           this.$buefy.toast.open({
             type: 'is-success',
@@ -61,9 +91,9 @@ export default {
           })
         }
       } catch (error) {
-        console.log(error)
-        this.errMsg =
-          'E-posta adresi hatalı ya da bu adrese sahip kullanıcı bulunmuyor!'
+        //console.log(error.response.data)
+        this.isLoading = false
+        this.errMsg = error.response.data.message
       }
     },
   },

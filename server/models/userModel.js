@@ -116,7 +116,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest('hex')
 
-  console.log({ resetToken }, this.passwordResetToken)
+  //console.log({ resetToken }, this.passwordResetToken)
   // tokenin geçerlilik süresi için modeldeki alanın tanımlanması 10 dakika miliseconde cinsinden
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000
 
