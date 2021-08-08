@@ -32,7 +32,7 @@
 import CartProductTable from '../components/cart/CartProductTable.vue'
 import CurrencyRates from '../components/cart/CurrencyRates.vue'
 import CheckoutBox from '../components/cart/CheckoutBox.vue'
-import * as module from '../components/formatHelper'
+import * as module from '../plugins/formatHelper'
 
 export default {
   components: { CartProductTable, CurrencyRates, CheckoutBox },

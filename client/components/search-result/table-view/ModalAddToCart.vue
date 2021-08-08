@@ -15,7 +15,11 @@
             <div class="media">
               <div class="media-left">
                 <figure class="image is-96x96 p-1">
-                  <img v-if="product.productImage" :src="product.productImage" alt="Image" />
+                  <img
+                    v-if="product.productImage"
+                    :src="product.productImage"
+                    alt="Image"
+                  />
                   <div v-else class="mt-3 has-text-centered">
                     <i class="far fa-image fa-4x has-text-centered"></i>
                   </div>
@@ -39,7 +43,10 @@
               </p>
               <p class="is-7 mt-5"><b>Tutar: </b>{{ oneProductTotalPrice }}</p>
               <h1 class="is-size-7">
-                <i> ({{ product.productQuantity }} adet x {{ product.productUnitPrice }}) </i>
+                <i>
+                  ({{ product.productQuantity }} adet x
+                  {{ product.productUnitPrice }})
+                </i>
               </h1>
             </div>
           </div>
@@ -52,10 +59,16 @@
                   <b>{{ cartTotalPrice }} </b>
                 </h1>
 
-                <button class="button is-primary is-fullwidth" @click="goToCart">
+                <button
+                  class="button is-primary is-fullwidth"
+                  @click="goToCart"
+                >
                   Sepete Git ({{ $store.getters['cart/getCartLength'] }} ürün)
                 </button>
-                <button class="button is-outlined is-default is-fullwidth mt-3" @click="closeModal">
+                <button
+                  class="button is-outlined is-default is-fullwidth mt-3"
+                  @click="closeModal"
+                >
                   Alışverişe Devam Et
                 </button>
               </div>
@@ -68,7 +81,7 @@
 </template>
 
 <script>
-import * as module from '../../formatHelper'
+import * as module from '../../../plugins/formatHelper'
 export default {
   name: 'ModalAddToCart',
   props: { isActive: Boolean },
@@ -83,7 +96,11 @@ export default {
     cartTotalPrice() {
       // Farklı döviz cinsleri olursa diye sepet toplamında döviz simgesi gösterilmedi...
       const value = this.$store.getters['cart/getCartTotal']
-      const niceFormat = module.formatWithCurrencyAndDecimals(value, this.cartCurrency, 2)
+      const niceFormat = module.formatWithCurrencyAndDecimals(
+        value,
+        this.cartCurrency,
+        2
+      )
       return niceFormat
     },
     oneProductTotalPrice() {

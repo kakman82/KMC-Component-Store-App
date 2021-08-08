@@ -37,7 +37,7 @@
 
 <script>
 import ModalAddToCart from './ModalAddToCart.vue'
-import * as module from '../../formatHelper.js'
+import * as module from '../../../plugins/formatHelper.js'
 
 export default {
   name: 'AddToCart',

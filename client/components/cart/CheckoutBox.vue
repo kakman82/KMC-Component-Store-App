@@ -1,13 +1,15 @@
 <template>
   <article class="panel is-info">
-    <p class="panel-heading has-text-centered">Sipariş Tutarı</p>
+    <p class="panel-heading has-text-centered">Sepet Tutarı</p>
 
     <a class="panel-block is-justify-content-space-between">
       <b>Sepet Toplamı:</b>
       <p><i class="fas fa-lira-sign fa-1x"></i> {{ cartTotalTL }}</p>
     </a>
     <a class="panel-block is-justify-content-space-between">
-      <b>Hizmet Bedeli<small>(%10)</small>:</b>
+      <b
+        >Hizmet Bedeli<small>(%{{ serviceFee }})</small>:</b
+      >
       <p><i class="fas fa-lira-sign fa-1x"></i> {{ serviceFeeTL }}</p>
     </a>
     <a class="panel-block is-justify-content-space-between">
@@ -26,7 +28,7 @@
       :disabled="$store.getters['cart/getCurrRates'] === null"
       @click="createOrder"
     >
-      Sipariş Oluştur
+      Sepeti Onayla
     </button>
     <!-- Auth Modal Kısmı - Login & Sign-up Components -->
     <div class="modal" :class="{ 'is-active': isAuthModalActive }">
@@ -68,7 +70,7 @@
 <script>
 import SignupForm from '../auth/SignupForm.vue'
 import LoginForm from '../auth/LoginForm.vue'
-import * as module from '../formatHelper'
+import * as module from '../../plugins/formatHelper'
 export default {
   name: 'CheckoutBox',
   components: { SignupForm, LoginForm },
@@ -77,30 +79,44 @@ export default {
   data() {
     return {
       isAuthModalActive: false,
+      serviceFee: null,
+      totalTL: null,
+      feeTL: null,
+      taxTL: null,
+      grandTotalTL: null,
     }
   },
   computed: {
-    getCartTotalTLValue() {
-      return this.$store.getters['cart/getCartTotalTL']
-    },
     cartTotalTL() {
-      return module.formatNumber(this.getCartTotalTLValue, 2)
+      const getVal = this.$store.getters['cart/getCartTotalTL']
+      getVal > 0 ? (this.totalTL = getVal.toFixed(2) * 1) : 0
+      return module.formatNumber(this.totalTL, 2)
     },
     serviceFeeTL() {
-      const fee = this.getCartTotalTLValue * 0.1
-      return module.formatNumber(fee, 2)
+      const feeVal = this.totalTL * (this.serviceFee / 100)
+      this.feeTL = feeVal.toFixed(2) * 1
+      return module.formatNumber(feeVal, 2)
     },
     taxFee() {
-      const total = this.getCartTotalTLValue + this.getCartTotalTLValue * 0.1
-      const tax = total * 0.18
-      return module.formatNumber(tax, 2)
+      const taxVal = (this.totalTL + this.feeTL) * 0.18
+      this.taxTL = taxVal.toFixed(2) * 1
+      return module.formatNumber(taxVal, 2)
     },
     sumTotal() {
-      const totalWithFee =
-        this.getCartTotalTLValue + this.getCartTotalTLValue * 0.1
-      const addTax = totalWithFee + totalWithFee * 0.18
-      return module.formatNumber(addTax, 2)
+      const all = this.totalTL + this.feeTL + this.taxTL
+      this.grandTotalTL = all.toFixed(2) * 1
+      return module.formatNumber(all, 2)
     },
+  },
+  async created() {
+    try {
+      const response = await this.$axios.$get('/serviceFee')
+      if (response.success) {
+        this.serviceFee = response.data.fees[0].serviceFee
+      }
+    } catch (error) {
+      console.log(error)
+    }
   },
   methods: {
     checkTodaysDate() {
@@ -121,6 +137,14 @@ export default {
         this.isAuthModalActive = true
         // herşey ok se;
       } else {
+        const amounts = {
+          cartTotalTL: this.totalTL,
+          cartFeeTL: this.feeTL,
+          cartTaxTL: this.taxTL,
+          orderTotalTL: this.grandTotalTL,
+          serviceFeeVal: this.serviceFee,
+        }
+        this.$store.commit('order/setOrderAmounts', amounts)
         this.$router.push('/placeorder')
       }
     },

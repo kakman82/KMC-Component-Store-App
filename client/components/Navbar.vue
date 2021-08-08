@@ -44,15 +44,15 @@
 
       <!-- User Menu Dropdown -->
       <b-navbar-item v-if="$store.getters['isLogin']">
-        <b-dropdown :triggers="['hover']" aria-role="list" append-to-body>
+        <b-dropdown position="is-bottom-left" aria-role="menu" append-to-body>
           <template #trigger>
-            <p class="is-white">
+            <a class="button is-info">
               <b-icon pack="fas" icon="user-circle" size="is-small"></b-icon>
               <span class="ml-1 has-text-weight-medium">
                 {{ $store.state.user.firstName }}
                 {{ $store.state.user.lastName }}
               </span>
-            </p>
+            </a>
           </template>
           <b-dropdown-item aria-role="menuitem">
             <b-icon pack="fas" icon="shopping-bag" size="is-small"></b-icon>
@@ -74,21 +74,44 @@
               >Çıkış</span
             >
           </b-dropdown-item>
+          <hr />
+          <b-dropdown-item has-link aria-role="menuitem">
+            <a href="https://google.com" target="_blank">
+              <b-icon icon="link"></b-icon>
+              Google (link)
+            </a>
+          </b-dropdown-item>
+          <b-dropdown-item value="home" aria-role="menuitem">
+            <b-icon icon="home"></b-icon>
+            Home
+          </b-dropdown-item>
+          <b-dropdown-item value="products" aria-role="menuitem">
+            <b-icon icon="cart"></b-icon>
+            Products
+          </b-dropdown-item>
+          <b-dropdown-item value="blog" disabled aria-role="menuitem">
+            <b-icon icon="book-open"></b-icon>
+            Blog
+          </b-dropdown-item>
+          <hr class="dropdown-divider" aria-role="menuitem" />
+          <b-dropdown-item value="settings">
+            <b-icon icon="settings"></b-icon>
+            Settings
+          </b-dropdown-item>
+          <b-dropdown-item value="logout" aria-role="menuitem">
+            <b-icon icon="logout"></b-icon>
+            Logout
+          </b-dropdown-item>
         </b-dropdown>
       </b-navbar-item>
       <!-- Login Buttonları -->
       <b-navbar-item v-if="!$store.getters['isLogin']">
-        <b-dropdown
-          position="is-bottom-left"
-          append-to-body
-          aria-role="menu"
-          trap-focus
-        >
+        <b-dropdown position="is-bottom-left" append-to-body aria-role="menu">
           <template #trigger>
-            <div class="button is-info">
+            <a class="button is-info">
               <b-icon pack="fas" icon="sign-in-alt" size="is-small"></b-icon>
               <span class="has-text-weight-medium">Giriş Yap</span>
-            </div>
+            </a>
           </template>
           <b-dropdown-item
             aria-role="menu-item"

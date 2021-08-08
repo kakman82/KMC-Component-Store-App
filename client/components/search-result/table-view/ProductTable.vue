@@ -257,7 +257,7 @@
 
 <script>
 import AddToCart from '../table-view/AddToCart.vue'
-import * as module from '../../formatHelper.js'
+import * as module from '../../../plugins/formatHelper.js'
 import { format } from 'date-fns'
 
 export default {

@@ -6,9 +6,9 @@
         TL fiyatlama günlük TCMB Döviz Satış Kuru üzerinden yapılmaktadır.
       </h2>
       <h2 class="subtitle is-size-7">
-        *Ürün detay bilgilerini "
+        *Ürün detay bilgilerini görmek için "
         <i class="fas fa-chevron-right has-text-primary"></i>
-        " simgesine tıklayarak görebilirsiniz.
+        " simgesine tıkla
       </h2>
     </div>
     <div class="column is-4 is-justify-items-flex-end">
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import * as module from '../formatHelper'
+import * as module from '../../plugins/formatHelper'
 export default {
   name: 'CurrencyRates',
   props: ['dateTodayForCurrency', 'reRenderTimes'],

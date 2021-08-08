@@ -77,17 +77,19 @@ export default {
         })
 
         if (response.success) {
-          this.$router.push('/')
-
           this.email = ''
           this.errMsg = ''
           this.validMsg = ''
           this.isLoading = false
 
-          this.$buefy.toast.open({
-            type: 'is-success',
+          this.$buefy.dialog.confirm({
+            title: 'Şifre sıfırlama linki gönderildi!',
             message: response.message,
-            duration: 10000,
+            confirmText: 'Tamam',
+            type: 'is-success',
+            hasIcon: true,
+            canCancel: false,
+            onConfirm: () => this.$router.push('/'),
           })
         }
       } catch (error) {

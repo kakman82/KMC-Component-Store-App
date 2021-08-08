@@ -142,7 +142,7 @@
 
 <script>
 import DialogConfirm from '../DialogConfirm.vue'
-import * as module from '../formatHelper'
+import * as module from '../../plugins/formatHelper'
 export default {
   name: 'CartProductTable',
   components: { DialogConfirm },

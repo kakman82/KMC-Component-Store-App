@@ -17,6 +17,8 @@ const createSendToken = (user, status, res, message) => {
 }
 
 //* SIGN UP;
+//* @route: POST /api/auth/signup
+//* @access: Public
 exports.signUpUser = async (req, res) => {
   // gelen req de hiç bir bilgi yok ise - aslında bunu frontend tarafında validate edip requesti gönderiyorum... bu if bloğuna çok gerek yok aslında ama yine de ekledim;
   if (
@@ -64,6 +66,8 @@ exports.signUpUser = async (req, res) => {
 }
 
 //* LOGIN;
+//* @route: POST /api/auth/login
+//* @access: Public
 exports.loginUser = async (req, res) => {
   try {
     // +password ile- Çünkü model tanımında passwordun query sonucunda gözükmemesi
@@ -96,7 +100,8 @@ exports.loginUser = async (req, res) => {
   }
 }
 
-//* IS LOGGED IN? - Verify token;
+//* IS LOGGED IN? - Verify token func;
+//* @desc: check the user si logged in
 exports.isLoggedIn = (req, res, next) => {
   // token bilgisi requestin x-access-token ya da authorization parametresinde yer alıyor
   let token = req.headers['x-access-token'] || req.headers['authorization']
@@ -127,7 +132,8 @@ exports.isLoggedIn = (req, res, next) => {
 }
 
 //* FORGOT PASSWORD
-
+//* @route: POST /api/users/forgotPassword
+//* @access: Public
 exports.forgotPassword = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email })
   if (!user) {
@@ -169,6 +175,8 @@ exports.forgotPassword = async (req, res, next) => {
   }
 }
 //* RESET PASSWORD
+//* @route: PATCH /api/users/resetPassword/:token'
+//* @access: Public
 exports.resetPassword = async (req, res, next) => {
   // req ile gelen tokeni yeniden encrypte edip db deki kayıtlı encrypte hali ile karşılaştırdım
   const hashedToken = crypto
@@ -183,7 +191,7 @@ exports.resetPassword = async (req, res, next) => {
   if (!user) {
     return res.status(401).json({
       message:
-        'Şifre yenileme linki geçersiz ya da süresi dolmuş! <br /> Şifremi unuttum adımından yeniden istek yapılmalıdır.',
+        'Şifre yenileme linki geçersiz ya da süresi dolmuş! Şifremi unuttum adımından yeniden istek yapılmalıdır.',
     })
   }
   // herşey ok ise;
