@@ -19,7 +19,7 @@ const addressSchema = new mongoose.Schema(
       required: [true, 'Lütfen şirketinizin adını giriniz!'],
     },
     phone: {
-      type: Number,
+      type: String,
       required: [true, 'Lütfen telefon numarası giriniz!'],
     },
     province: {
@@ -42,7 +42,6 @@ const addressSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Lütfen adres başlığı bilgisini giriniz!'],
     },
-    description: String,
   },
   {
     // created ve updated at alanlarında tam gmt saati göstermesi için;

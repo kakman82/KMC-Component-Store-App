@@ -1,4 +1,3 @@
-import cookieParser from 'cookie-parser' // npm i cookie-parser
 import jwtDecode from 'jwt-decode' // npm i jwt-decode
 import lodash from '../node_modules/lodash-es'
 

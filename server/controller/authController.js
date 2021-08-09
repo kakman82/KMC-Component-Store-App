@@ -104,6 +104,7 @@ exports.loginUser = async (req, res) => {
 //* @desc: check the user si logged in
 exports.isLoggedIn = (req, res, next) => {
   // token bilgisi requestin x-access-token ya da authorization parametresinde yer alıyor
+  // client tarafından servera gönderirken parametre adını tanımlayabiliyoruz
   let token = req.headers['x-access-token'] || req.headers['authorization']
 
   if (token) {

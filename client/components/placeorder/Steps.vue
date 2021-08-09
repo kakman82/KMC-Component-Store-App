@@ -26,7 +26,7 @@
         </article>
         <button
           class="button mt-2 is-primary is-small"
-          @click="isAuthModalActive = true"
+          @click="isAddressModalActive = true"
         >
           <span class="icon">
             <i class="fas fa-edit"></i>
@@ -136,7 +136,7 @@
         </b-button>
       </template>
     </b-steps>
-    <div class="modal" :class="{ 'is-active': isAuthModalActive }">
+    <div class="modal" :class="{ 'is-active': isAddressModalActive }">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head has-text-centered">
@@ -147,14 +147,14 @@
           <button
             class="delete"
             aria-label="close"
-            @click="isAuthModalActive = false"
+            @click="isAddressModalActive = false"
           ></button>
         </header>
         <section class="modal-card-body">
-          <AddAddress />
+          <AddAddress @closeAddAddressModal="closeModal" />
         </section>
         <footer class="modal-card-foot is-justify-content-flex-end">
-          <button class="button is-small" @click="isAuthModalActive = false">
+          <button class="button is-small" @click="isAddressModalActive = false">
             Kapat
           </button>
         </footer>
@@ -186,8 +186,13 @@ export default {
       mobileMode: 'minimalist',
 
       radio: null,
-      isAuthModalActive: false,
+      isAddressModalActive: false,
     }
+  },
+  methods: {
+    closeModal() {
+      this.isAddressModalActive = false
+    },
   },
 }
 </script>

@@ -7,7 +7,8 @@ const PttAddress = require('../models/pttAddressModel')
 exports.createAddress = async (req, res) => {
   try {
     const newAddress = new Address()
-    // user id, authController/isLoggedIn func dan gelecek
+    // user id, authController/isLoggedIn func dan gelecek -decoded=current user
+    // req.headers ile gönderilen token dan buluyor user bilgisini
     newAddress.user = req.decoded._id
     newAddress.firstName = req.body.firstName
     newAddress.lastName = req.body.lastName
@@ -18,7 +19,6 @@ exports.createAddress = async (req, res) => {
     newAddress.neighbourhood = req.body.neighbourhood
     newAddress.fullAddress = req.body.fullAddress
     newAddress.title = req.body.title
-    newAddress.description = req.body.description
 
     await newAddress.save()
 
@@ -70,6 +70,7 @@ exports.getProvinces = async (req, res) => {
     const response = await PttAddress.find({})
       .select('province')
       .sort({ province: 'asc' })
+      .collation({ locale: 'tr' })
       .distinct('province')
 
     res.status(200).json({
@@ -93,6 +94,7 @@ exports.getDistricts = async (req, res) => {
     const response = await PttAddress.find({ province: req.params.province })
       .select('district')
       .sort({ district: 'asc' })
+      .collation({ locale: 'tr' })
       .distinct('district')
 
     res.status(200).json({
@@ -119,6 +121,7 @@ exports.getNeighbourhoods = async (req, res) => {
     })
       .select('neighbourhood')
       .sort({ neighbourhood: 'asc' })
+      .collation({ locale: 'tr' })
       .distinct('neighbourhood')
 
     res.status(200).json({
