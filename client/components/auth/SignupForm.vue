@@ -14,7 +14,7 @@
           <b-input
             v-model="firstName"
             required
-            validation-message="Lütfen giriş yapınız."
+            validation-message="Bu alan zorunludur."
           ></b-input>
         </b-field>
       </div>
@@ -23,7 +23,7 @@
           <b-input
             v-model="lastName"
             required
-            validation-message="Lütfen giriş yapınız."
+            validation-message="Bu alan zorunludur."
           ></b-input>
         </b-field>
       </div>
@@ -34,7 +34,7 @@
         v-model="email"
         type="email"
         required
-        validation-message="Lütfen geçerli bir e-posta adresi giriniz."
+        validation-message="Geçerli bir e-posta adresi girilmelidir."
       >
       </b-input>
     </b-field>
@@ -105,7 +105,8 @@ export default {
           email: this.email.toLowerCase(),
           password: this.password,
         }
-        // server error message kısmına consol dan ulaşmak için response try catch bloğu dışında tanımladım ki, catch içinde ulaşabileyim yoksa response not defined hatası alıyorum
+        // server error message kısmına consol dan ulaşmak için response try catch bloğu dışında tanımladım ki,
+        // catch içinde ulaşabileyim yoksa response not defined hatası alıyorum
         let response = ''
         try {
           response = await this.$axios.$post('/auth/signup', reqUserData)
@@ -131,7 +132,7 @@ export default {
             })
 
             // sipariş sayfasına yönlendirme
-            this.$router.push('/placeorder')
+            this.$router.push('/checkout')
             // form alanlarının temizlenmesi;
             this.firstName = ''
             this.lastName = ''

@@ -15,7 +15,7 @@
           </div>
 
           <div class="column is-4" v-if="$store.state.cart.cart.length > 0">
-            <CheckoutBox
+            <CartSummary
               :dateTodayToCheck="today"
               @forceRerender="forceRerender"
             />
@@ -31,11 +31,11 @@
 <script>
 import CartProductTable from '../components/cart/CartProductTable.vue'
 import CurrencyRates from '../components/cart/CurrencyRates.vue'
-import CheckoutBox from '../components/cart/CheckoutBox.vue'
+import CartSummary from '../components/cart/CartSummary.vue'
 import * as module from '../plugins/formatHelper'
 
 export default {
-  components: { CartProductTable, CurrencyRates, CheckoutBox },
+  components: { CartProductTable, CurrencyRates, CartSummary },
   head: {
     title: 'Sepet | KMC Elektronik',
   },
@@ -48,7 +48,8 @@ export default {
     }
   },
   methods: {
-    // günün tarihi eskide kalmış ise sayfada kurların apiden alındığı componentin tekrar re-render edilmesi için
+    // günün tarihi eskide kalmış ise sayfada kurların apiden alındığı componentin
+    // tekrar re-render edilmesi için
     // ref: https://michaelnthiessen.com/force-re-render/
     forceRerender() {
       this.componentKey += 1

@@ -138,18 +138,20 @@
     </template>
   </b-navbar>
 </template>
+
 <script>
 import LoginForm from '../components/auth/LoginForm.vue'
-import Cookie from 'js-cookie'
 export default {
   name: 'Navbar',
   components: { LoginForm },
   methods: {
-    async userLogout() {
-      Cookie.remove('access_token')
-      this.$store.commit('removeUser')
-
-      this.$router.push('/')
+    userLogout() {
+      const toastMsg = {
+        type: 'is-success',
+        duration: 5000,
+        message: 'Uygulamadan başarıyla çıkış yapılmıştır.',
+      }
+      this.$store.commit('logout', toastMsg)
     },
   },
 }

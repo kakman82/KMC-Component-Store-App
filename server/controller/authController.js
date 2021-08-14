@@ -79,11 +79,12 @@ exports.loginUser = async (req, res) => {
     //console.log('server foundUser: ', foundUser);
     // comparePassword userModel den geliyor, foundUser değişkeni de userModel den geldiği için func çağrılabilir
     // bu comparePassword bize true ya da false dönecek - şifreyi compare edip
-    // aslında ayrı ayrı da kontrol edip user yoksa email hatalı, şifre hatalı ise bunun mesajını da döndürebilirdim fakat hangisinin doğru olduğu anlaşılmasın diye ikisini bir if bloğunda veya || şeklinde tanıladım
+    // aslında ayrı ayrı da kontrol edip user yoksa email hatalı, şifre hatalı ise bunun mesajını da döndürebilirdim
+    // fakat hangisinin doğru olduğu anlaşılmasın diye ikisini bir if bloğunda veya || şeklinde tanıladım
     if (!user || !user.comparePassword(req.body.password)) {
       // email ya da şifreden birisi ya da her ikisi birden false ise;
       res.status(403).json({
-        status: 'failed',
+        success: false,
         message: 'E-posta ya da şifre hatalı!',
       })
       // eğer email ve şifre her ikisi de doğru ise;
@@ -94,7 +95,7 @@ exports.loginUser = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      status: 'failed',
+      success: false,
       message: error.message,
     })
   }
@@ -114,7 +115,7 @@ exports.isLoggedIn = (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         res.json({
-          status: 'failed',
+          success: false,
           message:
             'Failed to authenticate! The user belonging to this token does no longer exist!',
           error: err,
@@ -126,7 +127,7 @@ exports.isLoggedIn = (req, res, next) => {
     })
   } else {
     res.json({
-      status: 'failed',
+      success: false,
       message: 'No token provided',
     })
   }

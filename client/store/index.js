@@ -1,8 +1,14 @@
 import jwtDecode from 'jwt-decode' // npm i jwt-decode
 import lodash from '../node_modules/lodash-es'
+import Cookie from 'js-cookie' // npm i js-cookie
+import { ToastProgrammatic as Toast } from '../node_modules/buefy'
 
 export const state = () => ({
   user: {},
+  userAddresses: [],
+  selectedAddress: [],
+  openAddAddressModal: false,
+  openUpdateAddressModal: false,
 })
 
 export const actions = {
@@ -26,6 +32,7 @@ export const actions = {
         lastName: decoded.lastName,
         email: decoded.email,
         role: decoded.role,
+        tokenExpiresIn: decoded.exp * 1000,
       }
       commit('setUser', userInfo)
     }
@@ -36,8 +43,32 @@ export const mutations = {
   setUser(state, userData) {
     state.user = userData
   },
-  removeUser(state) {
+  setUserAddresses(state, payload) {
+    state.userAddresses = payload
+  },
+  addUserAddress(state, payload) {
+    state.userAddresses.unshift(payload)
+  },
+  setSelectedAddress(state, payload) {
+    state.selectedAddress = payload
+  },
+  setAddressModalStatus(state, payload) {
+    if (payload === 'add') return (state.openAddAddressModal = true)
+    if (payload === 'update') return (state.openUpdateAddressModal = true)
+  },
+  resetAddressModalStatus(state, payload) {
+    if (payload === 'add') return (state.openAddAddressModal = false)
+    if (payload === 'update') return (state.openUpdateAddressModal = false)
+  },
+  logout(state, payload) {
     state.user = {}
+    Cookie.remove('access_token')
+    this.$router.push('/')
+    Toast.open({
+      type: payload.type,
+      duration: payload.duration,
+      message: payload.message,
+    })
   },
 }
 
@@ -48,5 +79,8 @@ export const getters = {
     } else {
       return true
     }
+  },
+  getUserAddresses(state) {
+    return state.userAddresses
   },
 }

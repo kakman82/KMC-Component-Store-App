@@ -40,9 +40,8 @@ exports.createAddress = async (req, res) => {
 //* @access: Private
 exports.getAllAddresses = async (req, res) => {
   try {
-    const addresses = await Address.find({ user: req.decoded._id }).populate({
-      path: 'user',
-      select: 'firstName lastName',
+    const addresses = await Address.find({ user: req.decoded._id }).sort({
+      updatedAt: 'desc',
     })
     res.status(200).json({
       success: true,

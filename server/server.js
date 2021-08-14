@@ -8,6 +8,7 @@ const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const exphbs = require('express-handlebars') // npm i express-handlebars
 const path = require('path')
+const getFolderSize = require('get-folder-size') // npm i get-folder-size@^2
 
 //* .env;
 dotenv.config()
@@ -20,6 +21,14 @@ process.on('uncaughtException', (err) => {
   console.log(err.name, err.message)
   process.exit(1)
 })
+//* Get Folder Size Info;
+getFolderSize(path.join(__dirname), function (err, size) {
+  if (err) {
+    throw err
+  }
+  //console.log(size + ' bytes')
+  console.log('Server Folder Size: ', (size / 1024 / 1024).toFixed(2) + ' Mb')
+})
 
 //* DEFINE TEMPLATE ENGINE - EXPRESS-HANDLEBARS;
 // uzun handlebars uzantı ismi yerine .hbs kullanmak için bu şekilde tanım yaptım, ref-> https://www.npmjs.com/package/express-handlebars
@@ -27,7 +36,9 @@ app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', '.hbs')
 
 //* STATIC FOLDER - FOR BULMA CSS
-// email templatede kullanmak için bu tanımı yapmıştım genel bulma css dosyasını tanımlama için çünkü cdn i mail bodysinde tanımadı - fakat bu public de işe yaramadı welcome.hbs içinde style tag arasında direk css kodlarına ekleyerek çözüm sağladım ref: https://mailtrap.io/blog/build-html-email/
+// email templatede kullanmak için bu tanımı yapmıştım genel bulma css dosyasını tanımlama için çünkü cdn i mail bodysinde tanımadı
+//- fakat bu public de işe yaramadı welcome.hbs içinde style tag arasında direk css kodlarına ekleyerek çözüm sağladım
+//ref: https://mailtrap.io/blog/build-html-email/
 app.use(express.static(path.join(__dirname, 'public')))
 
 //* GLOBAL MIDDLEWARES;
@@ -38,7 +49,8 @@ app.use(morgan('dev'))
 // Data sanitization against NoSQL query injection - npm i express-mongo-sanitize --save
 app.use(mongoSanitize())
 // xss for prevent XSS attacks html  - npm install xss-clean --save
-// user inputları arasında herhangi bir html kodu var ise bu tagları başka simgelere convert ederek html kodu bozmuş oluyor. Html kod içerisinde zararlı js kodları bulunabilir;
+// user inputları arasında herhangi bir html kodu var ise bu tagları başka simgelere convert ederek html kodu bozmuş oluyor.
+// Html kod içerisinde zararlı js kodları bulunabilir;
 //make sure this comes before any routes
 app.use(xss())
 

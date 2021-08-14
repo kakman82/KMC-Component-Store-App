@@ -14,7 +14,7 @@
         v-model="email"
         type="email"
         required
-        validation-message="Lütfen e-posta adresinizi giriniz."
+        validation-message="E-posta adresi girilmelidir!"
       >
       </b-input>
     </b-field>
@@ -25,7 +25,7 @@
         type="password"
         password-reveal
         required
-        validation-message="Lütfen şifrenizi giriniz."
+        validation-message="Şifre bilgisi girilmelidir!"
       >
       </b-input>
     </b-field>
@@ -49,6 +49,8 @@
 
 <script>
 import Cookie from 'js-cookie'
+import jwtDecode from 'jwt-decode'
+
 export default {
   name: 'LoginForm',
   emits: ['closeAuthFormModal'],
@@ -84,9 +86,9 @@ export default {
 
           if (response.success) {
             Cookie.set('access_token', response.token, {
-              expires: 7,
               sameSite: 'strict',
             })
+            const decoded = jwtDecode(response.token)
             // user bilgilerini store gönderme
             this.$store.commit('setUser', {
               id: response.user._id,
@@ -94,12 +96,14 @@ export default {
               lastName: response.user.lastName,
               email: response.user.email,
               role: response.user.role,
+              tokenExpiresIn: decoded.exp * 1000,
             })
 
-            // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlendir değilse zaten sepet sayfasından login olmuş demektir ve direkt placeorder sayfasında yönlendir
+            // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlendir
+            // değilse zaten sepet sayfasından login olmuş demektir ve direkt checkout sayfasında yönlendir
             //console.log(this.$route)
             if (this.$route.path === '/cart') {
-              this.$router.push({ path: '/placeorder' })
+              this.$router.push({ path: '/checkout' })
               // bu emit sepet sayfasından login olunduğu zaman modalın kapatılması için
               this.$emit('closeAuthFormModal')
             } else {
