@@ -160,6 +160,7 @@
           ></b-input>
         </b-field>
       </ValidationProvider>
+
       <ValidationProvider rules="required" v-slot="{ errors, valid }">
         <b-field
           label="Adres Başlığı"

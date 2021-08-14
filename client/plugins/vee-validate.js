@@ -9,7 +9,7 @@ extend('required', {
 
 extend('email', {
   ...email,
-  message: 'This field must be a valid email',
+  message: 'Geçerli bir e-posta adresi girilmelidir!',
 })
 
 extend('confirmed', {
@@ -20,6 +20,11 @@ extend('confirmed', {
 extend('length', {
   ...length,
   message: 'This field must have 2 options',
+})
+
+extend('passwordLength', {
+  message: 'En az 6 en çok 10 karakter içermelidir',
+  validate: (value) => value.length >= 6 && value.length <= 10,
 })
 
 extend('phone', {
