@@ -28,8 +28,7 @@ extend('passwordLength', {
 })
 
 extend('phone', {
-  message:
-    'Başında 0 olarak 05231231212 veya 0523 123 12 12 şeklinde girilmelidir!',
+  message: '05231231212 veya 0523 123 12 12 şeklinde girilmelidir!',
   validate: (value) =>
     // https://github.com/mgulener/turkiye-regex-kaliplari
     // diğer tel no ları için;

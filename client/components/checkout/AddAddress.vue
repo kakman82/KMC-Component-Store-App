@@ -106,6 +106,7 @@
                 size="is-small"
                 placeholder="İlçe seçimi"
                 expanded
+                :disabled="!selectedProvince"
                 @input="getNeighbourhoods"
               >
                 <option
@@ -132,6 +133,7 @@
                 size="is-small"
                 placeholder="Mahalle seçimi"
                 expanded
+                :disabled="!selectedDistrict"
               >
                 <option
                   v-for="(neighbourhood, index) in neighbourhoods"
@@ -173,10 +175,10 @@
       </ValidationProvider>
 
       <b-button
-        class="mt-6 is-primary has-text-weight-bold is-small"
+        class="mt-5 is-primary has-text-weight-bold is-small"
         expanded
         @click="handleSubmit(submit)"
-        >Adres Ekle</b-button
+        >Kaydet</b-button
       >
     </section>
   </ValidationObserver>
@@ -185,7 +187,6 @@
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import Cookie from 'js-cookie'
-import lodash from '../../node_modules/lodash-es'
 
 export default {
   name: 'AddAddress',
@@ -209,8 +210,11 @@ export default {
     }
   },
   async created() {
+    // birden fazla api call 304 http almamak için bu şartı ekledim
+    if (this.provinces.length > 0) return
+
     try {
-      const res = await this.$axios.$get('/pttAddresses/provinces')
+      const res = await this.$axios.$get('/users/pttAddresses/provinces')
       if (res.success) {
         this.provinces = res.provinces
       }
@@ -222,7 +226,7 @@ export default {
     async getDistricts() {
       try {
         const res = await this.$axios.$get(
-          `/pttAddresses/${this.selectedProvince}`
+          `/users/pttAddresses/${this.selectedProvince}`
         )
         if (res.success) {
           this.districts = res.districts
@@ -234,7 +238,7 @@ export default {
     async getNeighbourhoods() {
       try {
         const res = await this.$axios.$get(
-          `/pttAddresses/${this.selectedProvince}/${this.selectedDistrict}`
+          `/users/pttAddresses/${this.selectedProvince}/${this.selectedDistrict}`
         )
         if (res.success) {
           this.neighbourhoods = res.neighbourhoods
@@ -247,24 +251,25 @@ export default {
       let response = ''
       try {
         const newAddress = {
-          firstName: lodash.capitalize(this.firstName),
-          lastName: lodash.capitalize(this.lastName),
-          companyName: lodash.capitalize(this.companyName),
+          firstName: this.firstName,
+          lastName: this.lastName,
+          companyName: this.companyName,
           phone: this.phone,
-          province: lodash.capitalize(this.selectedProvince),
-          district: lodash.capitalize(this.selectedDistrict),
-          neighbourhood: lodash.capitalize(this.selectedNeighbourhood),
-          fullAddress: lodash.capitalize(this.fullAddress),
-          title: lodash.capitalize(this.addressTitle),
+          province: this.selectedProvince,
+          district: this.selectedDistrict,
+          neighbourhood: this.selectedNeighbourhood,
+          fullAddress: this.fullAddress,
+          title: this.addressTitle,
         }
-        const token = Cookie.get('access_token')
-        response = await this.$axios.$post('/users/addresses', newAddress, {
-          // server tarafın user bilgisine ulaşabilmesi için -isLoggedIn metodu -
-          // tokenı headers a set edip gönderiyorum
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        })
+        // server tarafın user bilgisine ulaşabilmesi için -isLoggedIn metodu -
+        // tokenı headers a set edip gönderiyordum daha sonra axios için plugin tanımladım
+
+        //const token = Cookie.get('access_token')
+        // const headers = {
+        //   authorization: `Bearer ${token}`,
+        // }
+
+        response = await this.$axios.$post('/users/addresses', newAddress)
         if (response.error && response.error.name === 'TokenExpiredError') {
           return this.$store.commit('logout', {
             type: 'is-danger',
@@ -272,8 +277,9 @@ export default {
             message: `Oturum süreniz dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!`,
           })
         }
+
         if (response.success) {
-          this.$store.commit('addUserAddress', newAddress)
+          this.$store.commit('addUserAddress', response.address)
           this.$store.commit('resetAddressModalStatus', 'add')
           this.$buefy.toast.open({
             type: 'is-success',

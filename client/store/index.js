@@ -9,6 +9,7 @@ export const state = () => ({
   selectedAddress: [],
   openAddAddressModal: false,
   openUpdateAddressModal: false,
+  //addressIdToUpdate: null,
 })
 
 export const actions = {
@@ -46,8 +47,31 @@ export const mutations = {
   setUserAddresses(state, payload) {
     state.userAddresses = payload
   },
-  addUserAddress(state, payload) {
-    state.userAddresses.unshift(payload)
+  addUserAddress(state, newAddress) {
+    state.userAddresses.unshift(newAddress)
+  },
+  // update edilecek adresi storedan getters ile çekebilmek için
+  addressToUpdate(state, payload) {
+    state.addressIdToUpdate = payload
+  },
+  updateUserAddress(state, payload) {
+    const addressToUpdate = state.userAddresses.filter(
+      (el) => el._id === payload._id
+    )[0]
+    addressToUpdate.firstName = payload.firstName
+    addressToUpdate.lastName = payload.lastName
+    addressToUpdate.companyName = payload.companyName
+    addressToUpdate.phone = payload.phone
+    addressToUpdate.province = payload.province
+    addressToUpdate.district = payload.district
+    addressToUpdate.neighbourhood = payload.neighbourhood
+    addressToUpdate.fullAddress = payload.fullAddress
+    addressToUpdate.title = payload.title
+    addressToUpdate.createdAt = payload.createdAt
+    addressToUpdate.updatedAt = payload.updatedAt
+  },
+  deleteAddress(state, id) {
+    state.userAddresses = state.userAddresses.filter((el) => el._id !== id)
   },
   setSelectedAddress(state, payload) {
     state.selectedAddress = payload
@@ -69,6 +93,9 @@ export const mutations = {
       duration: payload.duration,
       message: payload.message,
     })
+    // user logout olduktan sonra hem vuex hem de daha önceden created ile
+    // alınmış dataların refresh edilmesi için komple sayfayı reload etmek için;
+    location.reload()
   },
 }
 
@@ -82,5 +109,21 @@ export const getters = {
   },
   getUserAddresses(state) {
     return state.userAddresses
+  },
+  getModalType(state) {
+    let type = ''
+    if (state.openAddAddressModal === true) {
+      type = 'add'
+    }
+    if (state.openUpdateAddressModal === true) {
+      type = 'update'
+    }
+    return type
+  },
+  getAddressToUpdate(state) {
+    const address = state.userAddresses.filter(
+      (el) => el._id === state.addressIdToUpdate
+    )
+    return address
   },
 }

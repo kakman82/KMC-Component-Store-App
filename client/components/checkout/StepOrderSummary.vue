@@ -78,6 +78,7 @@ export default {
 
       if (this.stepInfo === 1) {
         alert('Sipariş onaylandı hadi iyisin....')
+        //TODO  sipariş onay logic buradaki if bloğu altında olacak
       }
     },
   },

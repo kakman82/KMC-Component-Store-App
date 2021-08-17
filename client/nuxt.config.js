@@ -32,6 +32,7 @@ export default {
     { src: '~/plugins/badge.js', mode: 'client' },
     { src: '~/plugins/formatHelper.js', mode: 'client' },
     { src: '~/plugins/vee-validate.js', mode: 'client' },
+    { src: '~/plugins/axios.js' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

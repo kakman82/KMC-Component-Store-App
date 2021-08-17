@@ -15,37 +15,9 @@
       </span>
       <span>Yeni Adres Ekle</span>
     </button>
-    <div
-      class="modal"
-      :class="{ 'is-active': $store.state.openAddAddressModal }"
-    >
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head has-text-centered">
-          <p class="modal-card-title is-size-5 has-text-weight-bold">
-            Yeni Adres Oluştur
-          </p>
 
-          <button
-            class="delete"
-            aria-label="close"
-            @click="$store.commit('resetAddressModalStatus', 'add')"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <!-- Add New Address -->
-          <AddAddress />
-        </section>
-        <footer class="modal-card-foot is-justify-content-flex-end">
-          <button
-            class="button is-small"
-            @click="$store.commit('resetAddressModalStatus', 'add')"
-          >
-            Kapat
-          </button>
-        </footer>
-      </div>
-    </div>
+    <AddressModal />
+
     <section class="hero" v-show="getAddresses.length === 0">
       <div class="hero-body">
         <article class="message is-warning">
@@ -61,22 +33,22 @@
       </div>
     </section>
     <div class="is-flex is-flex-wrap-wrap">
-      <DeliveryAddresses
-        v-for="(data, index) in getAddresses"
+      <AddressList
+        v-for="(addressData, index) in getAddresses"
         :key="index"
-        :address="data"
+        :address="addressData"
       />
     </div>
   </div>
 </template>
 
 <script>
-import DeliveryAddresses from './DeliveryAddresses.vue'
-import AddAddress from './AddAddress.vue'
+import AddressList from './AddressList.vue'
+import AddressModal from './AddressModal.vue'
 
 export default {
   name: 'StepAddress',
-  components: { DeliveryAddresses, AddAddress },
+  components: { AddressList, AddressModal },
   computed: {
     getAddresses() {
       return this.$store.getters['getUserAddresses']

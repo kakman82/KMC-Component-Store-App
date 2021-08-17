@@ -6,16 +6,25 @@ const router = express.Router()
 
 router.post('/users/addresses', isLoggedIn, addressController.createAddress)
 router.get('/users/addresses', isLoggedIn, addressController.getAllAddresses)
+router.patch('/users/address/:id', isLoggedIn, addressController.updateAddress)
+router.delete('/users/address/:id', isLoggedIn, addressController.deleteAddress)
 
-//* Select form için İl-ilçe-mah bilgilerinin alınması - ek olarak isLoggedIn çağırmaya gerek duymadım
-//* çünkü adres sayfasına gelmeden önce login kontrolü yapıyorum
+//* PTT Address routes;
 // Get provinces names
-router.get('/pttAddresses/provinces', addressController.getProvinces)
+router.get(
+  '/users/pttAddresses/provinces',
+  isLoggedIn,
+  addressController.getProvinces
+)
 // Get district names by given province name
-router.get('/pttAddresses/:province', addressController.getDistricts)
+router.get(
+  '/users/pttAddresses/:province',
+  isLoggedIn,
+  addressController.getDistricts
+)
 // Get neighbourhood name by given province and district names
 router.get(
-  '/pttAddresses/:province/:district',
+  '/users/pttAddresses/:province/:district',
   addressController.getNeighbourhoods
 )
 

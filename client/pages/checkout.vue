@@ -25,7 +25,7 @@
           >
             <article class="message is-info">
               <div class="message-body">
-                Aşağıda sipariş detayları belirtilmiştir. Onay verildğinde
+                Aşağıda sipariş detayları belirtilmiştir. Onay verildiğinde
                 sipariş bize ulaşacaktır.
               </div>
             </article>
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import Cookie from 'js-cookie'
 import StepAddress from '../components/checkout/StepAddress.vue'
 import StepOrderSummary from '../components/checkout/StepOrderSummary.vue'
 export default {
@@ -58,13 +57,9 @@ export default {
     }
   },
   async created() {
-    const token = Cookie.get('access_token')
     try {
-      const response = await this.$axios.$get('/users/addresses', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const response = await this.$axios.$get('/users/addresses')
+
       if (response.error && response.error.name === 'TokenExpiredError') {
         return this.$store.commit('logout', {
           type: 'is-danger',
@@ -74,8 +69,7 @@ export default {
         })
       }
       if (response.success) {
-        this.addresses = response.addresses
-        this.$store.commit('setUserAddresses', this.addresses)
+        this.$store.commit('setUserAddresses', response.addresses)
       }
     } catch (error) {
       console.log(error)
