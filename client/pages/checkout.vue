@@ -23,12 +23,7 @@
             icon-pack="fas"
             icon="check-circle"
           >
-            <article class="message is-info">
-              <div class="message-body">
-                Aşağıda sipariş detayları belirtilmiştir. Onay verildiğinde
-                sipariş bize ulaşacaktır.
-              </div>
-            </article>
+            <StepOrderDetails @go-previous="previous" />
           </b-step-item>
         </b-steps>
       </div>
@@ -41,6 +36,7 @@
 
 <script>
 import StepAddress from '../components/checkout/StepAddress.vue'
+import StepOrderDetails from '../components/checkout/StepOrderDetails.vue'
 import StepOrderSummary from '../components/checkout/StepOrderSummary.vue'
 export default {
   // sadece login olmuş kullanıcıların bu sayfaya erişebilmesi için;
@@ -48,7 +44,7 @@ export default {
   head: {
     title: 'Sipariş Onay | KMC Elektronik',
   },
-  components: { StepAddress, StepOrderSummary },
+  components: { StepAddress, StepOrderDetails, StepOrderSummary },
   data() {
     return {
       activeStep: 0,
@@ -78,6 +74,9 @@ export default {
   methods: {
     next() {
       this.activeStep = 1
+    },
+    previous() {
+      this.activeStep = 0
     },
   },
 }

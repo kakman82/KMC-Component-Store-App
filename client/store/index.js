@@ -126,4 +126,7 @@ export const getters = {
     )
     return address
   },
+  getSelectedAddress(state) {
+    return state.selectedAddress
+  },
 }

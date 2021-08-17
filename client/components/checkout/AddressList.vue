@@ -18,7 +18,7 @@
             <i class="fas fa-edit has-text-primary"></i>
           </span>
         </button>
-        <button class="button is-white p-2" @click="onDelete(address._id)">
+        <button class="button is-white p-2 mr-2" @click="onDelete(address._id)">
           <span class="icon">
             <i class="far fa-trash-alt has-text-danger"></i>
           </span>
@@ -77,7 +77,6 @@ export default {
           `/users/address/${addressId}`
         )
         if (response.success) {
-          console.log('mutationa gidecek olan id:', addressId)
           this.$store.commit('deleteAddress', addressId)
           this.$buefy.toast.open({
             type: 'is-success',

@@ -72,7 +72,15 @@ export default {
         this.stepInfo === 0 &&
         this.$store.state.selectedAddress.length === 0
       ) {
-        return alert('Hoop önce adres seçilmelidir!')
+        return this.$buefy.dialog.alert({
+          title: 'Dikkat!',
+          message: 'Önce adres seçilmelidir...',
+          type: 'is-warning',
+          hasIcon: true,
+          icon: 'exclamation-triangle',
+          iconPack: 'fas',
+          confirmText: 'Tamam',
+        })
       }
       this.$emit('nextStep')
 
