@@ -48,9 +48,10 @@ export default {
   props: ['address'],
   data() {
     return {
-      selected: [],
+      selected: '',
     }
   },
+
   methods: {
     onUpdate(id) {
       // seçilen adresi id ile store dan updateforma getirmek için

@@ -41,15 +41,23 @@
         {{ buttonText }}
       </button>
     </article>
+    <b-loading :is-full-page="isFullPage" v-model="isLoading"></b-loading>
   </div>
 </template>
 
 <script>
+import uniqid from 'uniqid' // npm install uniqid
 import * as module from '../../plugins/formatHelper.js'
 export default {
   name: 'StepOrderSummary',
   props: ['stepInfo'],
   emits: ['nextStep'],
+  data() {
+    return {
+      isLoading: false,
+      isFullPage: true,
+    }
+  },
   computed: {
     orderSummary() {
       const data = this.$store.state.order.amounts
@@ -85,8 +93,54 @@ export default {
       this.$emit('nextStep')
 
       if (this.stepInfo === 1) {
-        alert('Sipariş onaylandı hadi iyisin....')
-        //TODO  sipariş onay logic buradaki if bloğu altında olacak
+        this.createOrder()
+      }
+    },
+    async createOrder() {
+      try {
+        this.isLoading = true
+        const deliveryAddress = this.$store.getters['getSelectedAddress'][0]
+        const cartProducts = this.$store.getters['cart/getCartProducts']
+        const orderData = {
+          // mongodb id si çok uzun olduğu için daha kısa bir unique id paketi kullandım
+          orderId: uniqid('KMC-', uniqid.time()),
+          deliveryAddressId: deliveryAddress._id,
+          products: cartProducts,
+        }
+        const response = await this.$axios.$post('/users/orders', orderData)
+        if (response.success) {
+          this.isLoading = false
+          //TODO sipariş verildikten sonra vuex deki cart&order verileri temizlencek
+          //TODO aynı zamanda localstorage dan da temizlendiği emin olunacak
+          //TODO Siparişiniz alındı modal mesajı ile birlikte ana sayfaya yönlendirme yapılacak
+
+          this.$store.commit('cart/resetCart')
+          this.$store.commit('order/resetOrderAmounts')
+
+          this.$buefy.dialog.confirm({
+            title: 'Sipariş alınmıştır...',
+            message: `
+                      <b>${response.order.orderId}</b> no.lu siparişin durumunu kullanıcı menüsünden görüntüleyebilirsin. <br /> 
+                      Teşekkür eder, sağlıklı günler dileriz. <br /> 
+                      KMC Elektronik.
+                      `,
+            type: 'is-success',
+            hasIcon: true,
+            icon: 'thumbs-up',
+            iconPack: 'far',
+            confirmText: 'Tamam',
+            canCancel: false,
+            onConfirm: () => this.$router.push('/'),
+          })
+        }
+      } catch (error) {
+        this.isLoading = false
+        this.$buefy.toast.open({
+          type: 'is-danger',
+          duration: 5000,
+          message: error.message,
+        })
+        console.log(error)
       }
     },
   },

@@ -182,18 +182,25 @@ export default {
       )
     },
     calcTLPrice(cartId, price, curr) {
-      const allRates = this.$store.getters['cart/getCurrRates']
-      if (Array.isArray(allRates)) {
-        const currValue = allRates.filter((el) => el.code === curr)[0].selling
-        const priceInTL = price * currValue
+      const apiCurrRateResult = this.$store.getters['cart/getCurrRates']
 
-        const objToSendMutation = {
+      if (apiCurrRateResult && apiCurrRateResult.exchanges.length > 0) {
+        const apiCurrArray = apiCurrRateResult.exchanges
+        const currInfo = apiCurrArray.filter((el) => el.code === curr)[0]
+        const priceTL = price * currInfo.selling
+
+        const dataToSendMutation = {
           id: cartId,
-          productTotalPriceTL: priceInTL.toFixed(2) * 1,
+          productTotalPriceTL: priceTL.toFixed(2) * 1,
+          productCurrencyValue: currInfo.selling,
+          productCurrencyDate: apiCurrRateResult.currDate,
         }
-        this.$store.commit('cart/setTLPriceToCartProduct', objToSendMutation)
+        this.$store.commit(
+          'cart/setTLPriceAndCurrInfoToCartProduct',
+          dataToSendMutation
+        )
 
-        return module.formatWithCurrencyAndDecimals(priceInTL, 'TRY', 2)
+        return module.formatWithCurrencyAndDecimals(priceTL, 'TRY', 2)
       } else {
         return this.currErrMsg
       }

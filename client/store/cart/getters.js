@@ -25,21 +25,25 @@ const getters = {
   },
   //* TL tutar toplamı
   getCartTotalTL(state) {
-    if (state.cart && !lodash.isEmpty(state.currRates)) {
+    let isCurrArrEmpty = lodash.isEmpty(state.currRates)
+
+    if (state.cart && !isCurrArrEmpty) {
       let total = 0
       for (let i = 0; i < state.cart.length; i++) {
         total += state.cart[i].productTotalPriceTL
       }
       return total
     } else {
-      return 'Kur bilgisi alınamıyor!'
+      while (!isCurrArrEmpty) {
+        location.reload()
+      }
     }
   },
   getCurrRates(state) {
     if (lodash.isEmpty(state.currRates)) {
       return null
     } else {
-      return state.currRates.exchanges
+      return state.currRates
     }
   },
   getCartCurrencyInfo(state) {

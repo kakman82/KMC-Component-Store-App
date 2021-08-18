@@ -72,9 +72,12 @@ export const mutations = {
   },
   deleteAddress(state, id) {
     state.userAddresses = state.userAddresses.filter((el) => el._id !== id)
+    state.selectedAddress = state.selectedAddress.filter(
+      (val) => val._id !== id
+    )
   },
   setSelectedAddress(state, payload) {
-    state.selectedAddress = payload
+    state.selectedAddress.unshift(payload)
   },
   setAddressModalStatus(state, payload) {
     if (payload === 'add') return (state.openAddAddressModal = true)

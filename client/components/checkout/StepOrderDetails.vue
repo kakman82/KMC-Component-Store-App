@@ -20,7 +20,7 @@
           Değiştir
         </b-button>
       </header>
-      <div class="card-content">
+      <div class="card-content" v-if="selectedAddress">
         <p class="subtitle">
           {{ selectedAddress.firstName }} {{ selectedAddress.lastName }}
         </p>
@@ -120,7 +120,7 @@
             <th class="is-hidden-mobile">
               <div class="th-wrap is-centered"></div>
             </th>
-            <th class="is-hidden-mobile">
+            <th class="is-hidden-mobile" v-if="totalTL">
               <div class="th-wrap is-justify-content-flex-end">
                 {{ niceFormat(totalTL.cartTotalTL) }}
               </div>
@@ -151,7 +151,7 @@ export default {
   },
   computed: {
     selectedAddress() {
-      return this.$store.getters['getSelectedAddress']
+      return this.$store.getters['getSelectedAddress'][0]
     },
     data() {
       return this.$store.getters['cart/getCartProducts']

@@ -137,6 +137,8 @@ export default {
           productCurrency: this.currency,
           productTotalPrice: (this.quantity * this.productPrice).toFixed(2) * 1,
           productTotalPriceTL: 0,
+          productCurrencyValue: 0,
+          productCurrencyDate: '',
           productQuantity: this.quantity,
         }
         //console.log('Sepete Eklenen Product Object: ', cartProductData)
