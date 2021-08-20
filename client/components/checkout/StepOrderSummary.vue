@@ -33,6 +33,13 @@
           {{ niceFormat(orderSummary.orderTotalTL) }}
         </b>
       </a>
+      <div class="is-flex m-2" v-if="stepInfo === 1">
+        <b-checkbox v-model="isChecked"></b-checkbox>
+        <small>
+          <a @click="confirmConditionsModal">Hizmet Şartları'nı</a>
+          okudum, onaylıyorum.</small
+        >
+      </div>
 
       <button
         class="button is-success is-medium is-fullwidth has-text-weight-bold"
@@ -56,6 +63,7 @@ export default {
     return {
       isLoading: false,
       isFullPage: true,
+      isChecked: false,
     }
   },
   computed: {
@@ -92,8 +100,11 @@ export default {
       }
       this.$emit('nextStep')
 
-      if (this.stepInfo === 1) {
-        this.createOrder()
+      if (this.stepInfo === 1 && !this.isChecked)
+        return this.confirmConditionsModal()
+
+      if (this.stepInfo === 1 && this.isChecked) {
+        return this.createOrder()
       }
     },
     async createOrder() {
@@ -114,16 +125,17 @@ export default {
         if (response.success) {
           this.isLoading = false
           //TODO mail testi için commente almıştım, vuex deki cart&order verileri temizlencek
-          //this.$store.commit('cart/resetCart')
-          //this.$store.commit('order/resetOrderAmounts')
+          this.$store.commit('cart/resetCart')
+          this.$store.commit('order/resetOrderAmounts')
+          this.$store.commit('resetSelectedAddress')
 
           this.$buefy.dialog.confirm({
             title: response.message,
             message: `
                       <b>${response.order.orderNo}</b> no.lu siparişin durumunu kullanıcı menüsünden takip edebilirsin. <br />
-                      Bilgilendirme e-postası gönderilmiştir. 
+                      Bilgilendirme e-postası gönderilmiştir.
                       <hr />
-                      Teşekkür eder, sağlıklı günler dileriz. <br /> 
+                      Teşekkür eder, sağlıklı günler dileriz. <br />
                       <b>
                         KMC Elektronik.
                       </b>
@@ -146,6 +158,35 @@ export default {
         })
         console.log(error)
       }
+    },
+    confirmConditionsModal() {
+      this.$buefy.dialog.confirm({
+        title: 'Hizmet Şartları',
+        message: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Fusce id fermentum quam. Proin sagittis,
+                        nibh id hendrerit imperdiet, elit sapien laoreet elit,
+                        ac scelerisque diam velit in nisl. Nunc maximus ex non
+                        laoreet semper. Nunc scelerisque, libero sit amet pretium dignissim,
+                        augue purus placerat justo,
+                        sit amet porttitor dui metus in nisl.
+                        Nulla non leo placerat, porta metus eu, laoreet risus.
+                        Etiam lacinia, purus eu luctus maximus, elit ex viverra tellus,
+                        sit amet sodales quam dui nec odio.
+                        Nullam porta mollis est. Quisque aliquet malesuada fringilla.
+                        Pellentesque volutpat lacus at ante posuere,
+                        non pulvinar ante porta. Proin viverra eu massa nec porta.
+                        Aliquam rhoncus velit quis sem hendrerit,
+                        ut dictum nisl accumsan. Maecenas erat enim, scelerisque non ligula ac,
+                        eleifend venenatis ligula.
+                        Praesent molestie mauris sed elit posuere, non malesuada libero gravida.
+                        In hac habitasse platea dictumst.
+                        Pellentesque habitant morbi tristique senectus
+                        et netus et malesuada fames ac turpis egestas.`,
+        cancelText: 'Kapat',
+        confirmText: 'Onaylıyorum',
+        type: 'is-success',
+        onConfirm: () => (this.isChecked = true),
+      })
     },
   },
 }

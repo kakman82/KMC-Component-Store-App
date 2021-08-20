@@ -104,9 +104,9 @@
 
       <template #empty>
         <div class="has-text-centered has-text-primary-dark">
-          <b>Sepetinizde ürün bulunmuyor.</b> <br />
-          Ana sayfamızdan istediğiniz ürünün kod numarası ile <br />
-          arama yaparak sepete ekleme yapabilirsiniz.
+          <b>Sepette ürün bulunmuyor.</b> <br />
+          Ana sayfamızdan istenilen ürünün kod numarası ile <br />
+          arama yaparak sepete ekleme yapabilirsin.
         </div>
       </template>
       <template #detail="props">

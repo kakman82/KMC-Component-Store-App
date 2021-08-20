@@ -55,6 +55,10 @@
             </a>
           </template>
           <b-dropdown-item aria-role="menuitem">
+            <b-icon pack="fas" icon="user" size="is-small"></b-icon>
+            <span class="ml-1 has-text-weight-medium">Hesabım</span>
+          </b-dropdown-item>
+          <b-dropdown-item aria-role="menuitem">
             <b-icon pack="fas" icon="shopping-bag" size="is-small"></b-icon>
             <span class="ml-1 has-text-weight-medium">Siparişlerim</span>
           </b-dropdown-item>
@@ -62,45 +66,14 @@
             <b-icon pack="fas" icon="users-cog" size="is-small"></b-icon>
             <span class="ml-1 has-text-weight-medium">Admin Paneli</span>
           </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item>
+
           <hr class="dropdown-divider" aria-role="listitem" />
-          <b-dropdown-item aria-role="listitem">
-            <b-icon pack="fas" icon="cog" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium">Ayarlar</span>
-          </b-dropdown-item>
+
           <b-dropdown-item aria-role="listitem">
             <b-icon pack="fas" icon="sign-out-alt" size="is-small"></b-icon>
             <span class="ml-1 has-text-weight-medium" @click="userLogout"
               >Çıkış</span
             >
-          </b-dropdown-item>
-          <hr />
-          <b-dropdown-item has-link aria-role="menuitem">
-            <a href="https://google.com" target="_blank">
-              <b-icon icon="link"></b-icon>
-              Google (link)
-            </a>
-          </b-dropdown-item>
-          <b-dropdown-item value="home" aria-role="menuitem">
-            <b-icon icon="home"></b-icon>
-            Home
-          </b-dropdown-item>
-          <b-dropdown-item value="products" aria-role="menuitem">
-            <b-icon icon="cart"></b-icon>
-            Products
-          </b-dropdown-item>
-          <b-dropdown-item value="blog" disabled aria-role="menuitem">
-            <b-icon icon="book-open"></b-icon>
-            Blog
-          </b-dropdown-item>
-          <hr class="dropdown-divider" aria-role="menuitem" />
-          <b-dropdown-item value="settings">
-            <b-icon icon="settings"></b-icon>
-            Settings
-          </b-dropdown-item>
-          <b-dropdown-item value="logout" aria-role="menuitem">
-            <b-icon icon="logout"></b-icon>
-            Logout
           </b-dropdown-item>
         </b-dropdown>
       </b-navbar-item>

@@ -79,6 +79,9 @@ export const mutations = {
   setSelectedAddress(state, payload) {
     state.selectedAddress.unshift(payload)
   },
+  resetSelectedAddress(state) {
+    state.selectedAddress = []
+  },
   setAddressModalStatus(state, payload) {
     if (payload === 'add') return (state.openAddAddressModal = true)
     if (payload === 'update') return (state.openUpdateAddressModal = true)

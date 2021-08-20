@@ -5,7 +5,10 @@
       <h2 class="subtitle is-size-6-mobile mb-2">
         TL fiyatlama günlük TCMB Döviz Satış Kuru üzerinden yapılmaktadır.
       </h2>
-      <h2 class="subtitle is-size-7">
+      <h2
+        class="subtitle is-size-7"
+        v-if="$store.getters['cart/getCartProducts'].length > 0"
+      >
         *Ürün detay bilgilerini görmek için "
         <i class="fas fa-chevron-right has-text-primary"></i>
         " simgesine tıkla
