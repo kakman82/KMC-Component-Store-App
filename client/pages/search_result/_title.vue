@@ -27,12 +27,13 @@
         >
           <b-message type="is-warning" has-icon>
             <p class="is-size-5 has-text-weight-bold">
-              Aradığınız üründe stok bulunmamaktadır!
+              Bu üründe stok bulunmamaktadır!
             </p>
             <p class="is-size-8">
               Ana sayfamızdan farklı bir ürün için yeniden arama yapabilir ya da
               <br />
-              seçim kriterinizi değiştirebilirsiniz.
+              bu ürün için sol taraftaki menüden seçim kriterlerini
+              değiştirebilirsin.
             </p>
           </b-message>
         </div>

@@ -177,4 +177,7 @@ export default {
     1.8
   ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
+.card {
+  border: 1px solid #7957d5;
+}
 </style>

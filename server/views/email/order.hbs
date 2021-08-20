@@ -1,0 +1,242 @@
+<!doctype html>
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"  xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"> 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Learning how to code an HTML email</title>
+<style>
+{{!-- CSS will be here --}}
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  position: relative;
+  width: auto;
+}
+.card {
+  background-color: white;
+  border: 1px solid #00d1b2;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  color: #4a4a4a;
+  max-width: 100%;
+  position: relative;
+}
+.p-3 {
+  padding: 0.75rem !important;
+}
+.m-3 {
+  margin: 0.75rem !important;
+}
+.has-text-primary {
+  color: #00d1b2 !important;
+}
+.is-flex {
+  display: flex !important;
+}
+.is-capitalized {
+  text-transform: capitalize !important;
+}
+.is-size-7 {
+  font-size: 0.75rem !important;
+}
+.image {
+  display: block;
+  position: relative;
+}
+.image.is-48x48 {
+  height: 48px;
+  width: 48px;
+}
+.table {
+  background-color: white;
+  color: #363636;
+}
+
+.table td,
+.table th {
+  border: 1px solid #dbdbdb;
+  border-width: 0 0 1px;
+  padding: 0.5em 0.75em;
+  vertical-align: top;
+}
+
+.table td.is-narrow,
+.table th.is-narrow {
+  white-space: nowrap;
+  width: 1%;
+}
+
+.table.is-narrow td,
+.table.is-narrow th {
+  padding: 0.25em 0.5em;
+}
+
+
+.table thead {
+  background-color: transparent;
+}
+
+.table thead td,
+.table thead th {
+  border-width: 0 0 2px;
+  color: #363636;
+}
+
+.table tfoot {
+  background-color: transparent;
+}
+
+.table tfoot td,
+.table tfoot th {
+  border-width: 2px 0 0;
+  color: #363636;
+}
+
+.table tbody {
+  background-color: transparent;
+}
+
+.table tbody tr:last-child td,
+.table tbody tr:last-child th {
+  border-bottom-width: 0;
+}
+
+.table.is-bordered td,
+.table.is-bordered th {
+  border-width: 1px;
+}
+
+.table.is-bordered tr:last-child td,
+.table.is-bordered tr:last-child th {
+  border-bottom-width: 1px;
+}
+.table.is-hoverable.is-striped tbody tr:not(.is-selected):hover {
+  background-color: #fafafa;
+}
+
+.table.is-hoverable.is-striped tbody tr:not(.is-selected):hover:nth-child(even) {
+  background-color: whitesmoke;
+}
+
+.table.is-striped tbody tr:not(.is-selected):nth-child(even) {
+  background-color: #fafafa;
+}
+
+.media {
+  align-items: flex-start;
+  display: flex;
+  text-align: inherit;
+}
+
+.media .content:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+.content figure img {
+  display: inline-block;
+}
+
+</style>
+</head>
+<body>
+   <div class="container">
+       <div class="card p-3 m-3">
+            <div class="content is-medium">
+                <h3 class="has-text-primary">Merhaba {{firstName}},</h3>
+                <p>Sipariş onaylanmıştır.</p>
+                <div class="is-flex">  
+                    <b>Sipariş Numarası:</b>
+                    <b class="has-text-primary">{{order.orderNo}}</b> 
+                </div> 
+                <br />
+                <p>Teşekkür eder, sağlıklı günler dileriz.</p>
+                <b>KMC Elektronik.</b>
+            </div>          
+        </div>
+        
+        <div class="card p-3 m-3">
+            <header class="card-header">
+                  <p class="card-header-title has-text-primary">
+                      Sipariş Bilgileri
+                  </p>
+            </header>
+            <div class="card-content">
+                <table class="table is-bordered is-striped is-narrow">
+                  <thead>
+                    <tr>
+                      <th>Ürün</th>
+                      <th>Kod</th>
+                      <th>Üretici</th>
+                      <th>Adet</th>
+                      <th>Tutar</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th></th>
+                      <th>Toplam:</th>
+                      <th></th>
+                      <th></th>
+                      <th class="has-text-right">{{niceFormatTL order.total 2}} TL</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    {{#each order.products}}
+                    <tr>
+                        <td>
+                          <figure class="image">
+                            <p class="image is-48x48">
+                              <img src={{productImage}} />
+                            </p>
+                          </figure>
+                        </td>
+                        <td>{{productName}}</td>
+                        <td>{{productManufacturer}}</td>
+                        <td>{{productQuantity}}</td>
+                        <td class="has-text-right">{{niceFormatTL productTotalPriceTL 2}} TL</td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>                           
+            </div>
+            <div class="box">
+              <div class="media">
+                <div class="media-content">
+                  <div class="content">
+                    <p>KDV Dahil Toplam Tutar: <strong>{{niceFormatTL order.sumTotal 2}} TL</strong></p>
+                    <p><small>KDV: {{niceFormatTL order.tax 2}} TL</small></p>
+                    <p><small>Hizmet Bedeli(%{{niceFormatTL order.serviceFeeRate 2}}): {{niceFormatTL order.serviceFee 2}} TL</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="card p-3 m-3">
+            <header class="card-header">
+                <p class="card-header-title has-text-primary">
+                    Teslimat Bilgileri
+                </p>
+            </header>
+            <div class="card-content">
+                <b>
+                {{  deliveryAddress.firstName }} {{ deliveryAddress.lastName }}
+                </b>
+                <p>{{ deliveryAddress.companyName }}</p>
+                <p class="is-capitalized">
+                {{ deliveryAddress.neighbourhood }}
+                {{ deliveryAddress.fullAddress }}
+                </p>
+                <p>{{ deliveryAddress.district }}/{{ deliveryAddress.province }}</p>
+                <p class="is-size-7">Tel: {{ deliveryAddress.phone }}</p>
+                <br>
+                <u>2 hafta içerisinde teslim edilmesi planlanmaktadır.</u>
+            </div>
+        </div>
+   </div>   
+</body>
+</html>

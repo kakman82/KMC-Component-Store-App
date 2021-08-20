@@ -12,7 +12,7 @@
         <b-numberinput
           v-model="quantity"
           controls-position="compact"
-          placeholder="Adet Giriniz"
+          placeholder="Adet Gir"
           @input="qtyInputValidation($event), getQtyPrice()"
           @click="getQtyPrice()"
         >
@@ -101,7 +101,7 @@ export default {
         this.errorMsg = `Paketin (${this.packSize}) katları kadar olmalı`
       } else {
         this.valid = true
-        this.errorMsg = 'Adet uygun, sepete ekleyebilirsiniz.'
+        this.errorMsg = 'Adet seçimi uygun, sepete eklenebilir.'
       }
     },
     getQtyPrice() {

@@ -32,7 +32,13 @@ getFolderSize(path.join(__dirname), function (err, size) {
 
 //* DEFINE TEMPLATE ENGINE - EXPRESS-HANDLEBARS;
 // uzun handlebars uzantı ismi yerine .hbs kullanmak için bu şekilde tanım yaptım, ref-> https://www.npmjs.com/package/express-handlebars
-app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine(
+  '.hbs',
+  exphbs({
+    defaultLayout: 'main',
+    extname: '.hbs',
+  })
+)
 app.set('view engine', '.hbs')
 
 //* STATIC FOLDER - FOR BULMA CSS

@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema(
   {
-    orderId: {
+    orderNo: {
       type: String,
     },
     status: {
@@ -13,6 +13,11 @@ const orderSchema = new mongoose.Schema(
     products: {
       type: Array,
     },
+    tax: Number,
+    serviceFee: Number,
+    serviceFeeRate: Number,
+    total: Number,
+    sumTotal: Number,
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

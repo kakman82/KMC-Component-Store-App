@@ -101,28 +101,32 @@ export default {
         this.isLoading = true
         const deliveryAddress = this.$store.getters['getSelectedAddress'][0]
         const cartProducts = this.$store.getters['cart/getCartProducts']
+        const orderAmounts = this.$store.getters['order/getOrderAmounts']
         const orderData = {
           // mongodb id si çok uzun olduğu için daha kısa bir unique id paketi kullandım
-          orderId: uniqid('KMC-', uniqid.time()),
+          orderNo: uniqid('KMC-', uniqid.time()),
           deliveryAddressId: deliveryAddress._id,
           products: cartProducts,
+          orderAmounts: orderAmounts,
         }
+
         const response = await this.$axios.$post('/users/orders', orderData)
         if (response.success) {
           this.isLoading = false
-          //TODO sipariş verildikten sonra vuex deki cart&order verileri temizlencek
-          //TODO aynı zamanda localstorage dan da temizlendiği emin olunacak
-          //TODO Siparişiniz alındı modal mesajı ile birlikte ana sayfaya yönlendirme yapılacak
-
-          this.$store.commit('cart/resetCart')
-          this.$store.commit('order/resetOrderAmounts')
+          //TODO mail testi için commente almıştım, vuex deki cart&order verileri temizlencek
+          //this.$store.commit('cart/resetCart')
+          //this.$store.commit('order/resetOrderAmounts')
 
           this.$buefy.dialog.confirm({
-            title: 'Sipariş alınmıştır...',
+            title: response.message,
             message: `
-                      <b>${response.order.orderId}</b> no.lu siparişin durumunu kullanıcı menüsünden görüntüleyebilirsin. <br /> 
+                      <b>${response.order.orderNo}</b> no.lu siparişin durumunu kullanıcı menüsünden takip edebilirsin. <br />
+                      Bilgilendirme e-postası gönderilmiştir. 
+                      <hr />
                       Teşekkür eder, sağlıklı günler dileriz. <br /> 
-                      KMC Elektronik.
+                      <b>
+                        KMC Elektronik.
+                      </b>
                       `,
             type: 'is-success',
             hasIcon: true,

@@ -1,16 +1,17 @@
 const nodemailer = require('nodemailer') // npm install nodemailer
 const hbs = require('nodemailer-express-handlebars') // npm i nodemailer-express-handlebars
-const htmlToText = require('html-to-text') // npm i html-to-text
 const path = require('path')
 
 //* Gönderilecek emailler için genel bir constructor class tanımı
 // bu class altında nodemailer config yapısı
 module.exports = class Email {
-  constructor(user, url) {
+  constructor(user, url, order, address) {
     this.to = user.email
     this.firstName = user.firstName
     this.url = url
     this.from = `KMC Elektronik <${process.env.EMAIL_FROM}>`
+    this.order = order
+    this.address = address
   }
   //yeni bir mail transport tanımı yapıyoruz. Bu tanım production ve development ortamında göre değişiklik gösteriyor;
   newTransport() {
@@ -81,9 +82,20 @@ module.exports = class Email {
       context: {
         firstName: this.firstName,
         url: this.url,
+        order: this.order,
+        deliveryAddress: this.address,
+        // bu şekilde template içinde kullanılabilecek helper func tanımlamak mümkün
+        // ref https://www.youtube.com/watch?v=WaetjCYgB4U
+        helpers: {
+          niceFormatTL: (value, digits) => {
+            const formatted = Intl.NumberFormat('tr-TR', {
+              minimumFractionDigits: digits,
+              maximumFractionDigits: digits,
+            }).format(value)
+            return formatted
+          },
+        },
       },
-      //TODO burası sililenebilir gerek olmayabilir maillerin spama düşmemesi için html i normal plain text e çevirmemiz önemli. Bunun için html-to-text paketinden yararlandım: npm i html-to-text
-      //text: htmlToText.convert(html),
     }
     // Transportun create edilip mailin gönderilmesi; sendMail nodemailer den geliyor
     await this.newTransport().sendMail(mailOptions)
@@ -98,5 +110,8 @@ module.exports = class Email {
       'passwordReset',
       'Şifre sıfırlama talebi (Sıfırlama linki 10 dakika için geçerlidir!)'
     )
+  }
+  async sendOrderInfo(orderNumber) {
+    await this.send('order', `Sipariş alındı (#:${orderNumber})`)
   }
 }

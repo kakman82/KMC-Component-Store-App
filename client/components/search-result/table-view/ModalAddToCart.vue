@@ -5,7 +5,7 @@
     <div class="modal-card" style="width: 640px">
       <header class="modal-card-head">
         <p class="modal-card-title has-text-success-dark is-success">
-          <i class="far fa-check-circle mr-2"></i>Ürün sepetinize eklenmiştir.
+          <i class="far fa-check-circle mr-2"></i>Ürün sepete eklenmiştir.
         </p>
         <button class="delete" aria-label="close" @click="closeModal"></button>
       </header>
