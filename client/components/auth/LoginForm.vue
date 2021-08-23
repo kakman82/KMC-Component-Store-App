@@ -19,22 +19,13 @@
         </b-field>
       </ValidationProvider>
 
-      <ValidationProvider
-        rules="required|passwordLength"
-        v-slot="{ errors, valid }"
-      >
+      <ValidationProvider rules="required" v-slot="{ errors, valid }">
         <b-field
           label="Şifre"
           :type="{ 'is-danger': errors[0], 'is-success': valid }"
           :message="errors"
         >
-          <b-input
-            v-model="password"
-            type="password"
-            password-reveal
-            minlength="6"
-            maxlength="10"
-          >
+          <b-input v-model="password" type="password" password-reveal>
           </b-input>
         </b-field>
       </ValidationProvider>
@@ -89,15 +80,10 @@ export default {
             sameSite: 'strict',
           })
           const decoded = jwtDecode(response.token)
-          // user bilgilerini store gönderme
-          this.$store.commit('setUser', {
-            id: response.user._id,
-            firstName: response.user.firstName,
-            lastName: response.user.lastName,
-            email: response.user.email,
-            role: response.user.role,
-            tokenExpiresIn: decoded.exp * 1000,
-          })
+          // user bilgilerine serverdan gelen token bilgisini de ekleyip store gönderme
+          response.user.exp = decoded.exp
+
+          this.$store.commit('setUser', response.user)
 
           // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlendir
           // değilse zaten sepet sayfasından login olmuş demektir ve direkt checkout sayfasında yönlendir

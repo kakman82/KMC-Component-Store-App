@@ -1,5 +1,6 @@
 <template>
-  <footer class="footer has-background-info-dark" style="height: 750px">
+  <!-- style="height: 750px" -->
+  <footer class="footer has-background-info-dark">
     <div class="columns">
       <!-- Firma adı ve copyright bölümü -->
       <div class="column is-4 has-text-left has-text-centered-mobile">

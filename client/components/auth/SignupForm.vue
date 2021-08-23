@@ -94,8 +94,9 @@ export default {
   methods: {
     async submit() {
       const reqUserData = {
-        firstName: lodash.capitalize(this.firstName),
-        lastName: lodash.capitalize(this.lastName),
+        // https://stackoverflow.com/questions/38084396/lodash-title-case-uppercase-first-letter-of-every-word
+        firstName: lodash.startCase(lodash.camelCase(this.firstName)),
+        lastName: lodash.startCase(lodash.camelCase(this.lastName)),
         email: this.email.toLowerCase(),
         password: this.password,
       }
@@ -109,14 +110,11 @@ export default {
           Cookie.set('access_token', response.token, {
             sameSite: 'strict',
           })
-          // user bilgilerini store gönderme
-          this.$store.commit('setUser', {
-            id: response.user._id,
-            firstName: response.user.firstName,
-            lastName: response.user.lastName,
-            email: response.user.email,
-            role: response.user.role,
-          })
+          const decoded = jwtDecode(response.token)
+          // user bilgilerine serverdan gelen token bilgisini de ekleyip store gönderme
+          response.user.exp = decoded.exp
+
+          this.$store.commit('setUser', response.user)
 
           this.$buefy.toast.open({
             duration: 5000,

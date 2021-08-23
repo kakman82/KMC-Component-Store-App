@@ -42,8 +42,22 @@
         </a>
       </b-navbar-item>
 
+      <b-navbar-item
+        v-if="$store.getters['isLogin']"
+        tag="router-link"
+        :to="{ path: '/users/myaccount' }"
+        class="has-text-weight-medium"
+      >
+        <a class="button is-info">
+          <b-icon pack="fas" icon="user-circle" size="is-small"></b-icon>
+          <span>
+            {{ $store.state.user.firstName }}
+          </span>
+        </a>
+      </b-navbar-item>
+
       <!-- User Menu Dropdown -->
-      <b-navbar-item v-if="$store.getters['isLogin']">
+      <!-- <b-navbar-item v-if="$store.getters['isLogin']">
         <b-dropdown position="is-bottom-left" aria-role="menu" append-to-body>
           <template #trigger>
             <a class="button is-info">
@@ -54,29 +68,59 @@
               </span>
             </a>
           </template>
-          <b-dropdown-item aria-role="menuitem">
-            <b-icon pack="fas" icon="user" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium">Hesabım</span>
+          <b-dropdown-item aria-role="menuitem" class="px-3 py-0">
+            <b-button
+              class="p-0"
+              type="is-light"
+              icon-pack="fas"
+              icon-left="user"
+              tag="nuxt-link"
+              :to="{ path: `/users/myaccount/${$store.state.user.id}` }"
+            >
+              Hesabım
+            </b-button>
           </b-dropdown-item>
-          <b-dropdown-item aria-role="menuitem">
-            <b-icon pack="fas" icon="shopping-bag" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium">Siparişlerim</span>
+
+          <b-dropdown-item aria-role="menuitem" class="px-3 py-0">
+            <b-button
+              class="p-0"
+              type="is-light"
+              icon-pack="fas"
+              icon-left="shopping-bag"
+              tag="nuxt-link"
+              :to="{ path: `/users/myorders/${$store.state.user.id}` }"
+            >
+              Siparişlerim
+            </b-button>
           </b-dropdown-item>
-          <b-dropdown-item aria-role="listitem">
-            <b-icon pack="fas" icon="users-cog" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium">Admin Paneli</span>
+          <b-dropdown-item aria-role="menuitem" class="px-3 py-0">
+            <b-button
+              class="p-0"
+              type="is-light"
+              icon-pack="fas"
+              icon-left="users-cog"
+              tag="nuxt-link"
+              :to="{ path: `/users/admin/${$store.state.user.id}` }"
+            >
+              Admin Paneli
+            </b-button>
           </b-dropdown-item>
 
           <hr class="dropdown-divider" aria-role="listitem" />
 
-          <b-dropdown-item aria-role="listitem">
-            <b-icon pack="fas" icon="sign-out-alt" size="is-small"></b-icon>
-            <span class="ml-1 has-text-weight-medium" @click="userLogout"
-              >Çıkış</span
+          <b-dropdown-item aria-role="menuitem" class="px-3 py-0">
+            <b-button
+              class="p-0 has-text-primary"
+              type="is-light"
+              icon-pack="fas"
+              icon-left="sign-out-alt"
+              @click="userLogout"
             >
+              Çıkış Yap
+            </b-button>
           </b-dropdown-item>
         </b-dropdown>
-      </b-navbar-item>
+      </b-navbar-item> -->
       <!-- Login Buttonları -->
       <b-navbar-item v-if="!$store.getters['isLogin']">
         <b-dropdown position="is-bottom-left" append-to-body aria-role="menu">
@@ -95,12 +139,6 @@
             <form>
               <div class="modal-card" style="width: 300px">
                 <section class="modal-card-body">
-                  <p
-                    class="is-size-6 has-text-weight-bold has-text-primary-dark"
-                  >
-                    Giriş için gerekli bilgileri giriniz:
-                  </p>
-                  <hr />
                   <LoginForm />
                 </section>
               </div>
@@ -117,15 +155,5 @@ import LoginForm from '../components/auth/LoginForm.vue'
 export default {
   name: 'Navbar',
   components: { LoginForm },
-  methods: {
-    userLogout() {
-      const toastMsg = {
-        type: 'is-success',
-        duration: 5000,
-        message: 'Uygulamadan başarıyla çıkış yapılmıştır.',
-      }
-      this.$store.commit('logout', toastMsg)
-    },
-  },
 }
 </script>

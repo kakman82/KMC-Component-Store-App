@@ -1,5 +1,6 @@
 import lodash from '../../node_modules/lodash-es'
 import deepdash from '../../node_modules/deepdash-es'
+import { fil } from 'date-fns/locale'
 const _ = deepdash(lodash)
 
 export default {
@@ -7,23 +8,24 @@ export default {
     let apiProducts = [...state.products]
     let filteredProducts = []
 
-    // sadece stoklu olanlar ya da tamamı
+    // sadece stoklu olanlar gelsin;
     if (state.showOnlyHasStock) {
       let hasStock = _.filterDeep(apiProducts, 'inStock', {
         childrenPath: ['InvOrg.webSites', 'sources', 'sourceParts'],
       })
       filteredProducts = hasStock
-    } else {
-      filteredProducts = apiProducts
     }
+    // stok şartı yoksa tamamı gelsin;
+    if (!state.showOnlyHasStock) filteredProducts = apiProducts
+
     // mfrName de bir seçim var ise;
-    if (state.mfrCheckboxGroup.length > 0) {
+    if (!lodash.isEmpty(state.mfrCheckboxGroup)) {
       filteredProducts = filteredProducts.filter((el) =>
         state.mfrCheckboxGroup.includes(el.manufacturer.mfrName)
       )
     }
     // suppliers da bir seçim var ise;
-    if (state.supplierCheckboxGroup.length > 0) {
+    if (!lodash.isEmpty(state.supplierCheckboxGroup)) {
       filteredProducts = _.filterDeep(
         filteredProducts,
         function (value) {
@@ -37,7 +39,9 @@ export default {
   getManufacturerNames(state) {
     if (state.products) {
       // duplicateleri kaldırmak için ...new Set() yapısından yararlandım
-      const manufacturers = [...new Set(state.products.map((el) => el.manufacturer.mfrName))].sort()
+      const manufacturers = [
+        ...new Set(state.products.map((el) => el.manufacturer.mfrName)),
+      ].sort()
 
       return manufacturers
     }

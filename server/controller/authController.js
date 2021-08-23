@@ -208,3 +208,24 @@ exports.resetPassword = async (req, res, next) => {
   const msg = `Merhaba ${user.firstName}, <br /> Şifre başarıyla değiştirildi ve uygulamaya giriş yapıldı.`
   createSendToken(user, 200, res, msg)
 }
+
+//* UPDATE PASSWORD by already loggedin user;
+//* @route: PATCH /api/users/profile/updateMyPassword
+//* @access: Private
+exports.updatePassword = async (req, res) => {
+  //console.log('servera gelen reg.body: ', req.body)
+
+  const user = await User.findById(req.body.userId).select('+password')
+
+  if (!(await user.comparePassword(req.body.currentPassword))) {
+    return res.status(401).json({
+      message: 'Mevcut şifre hatalıdır!',
+    })
+  }
+  // herşey ok ise;
+  user.password = req.body.newPassword
+
+  await user.save()
+
+  createSendToken(user, 200, res, 'Şifre başarıyla değiştirilmiştir!')
+}

@@ -43,3 +43,22 @@ exports.createOrder = async (req, res) => {
     })
   }
 }
+
+//* @desc: Get all orders by given user id
+//* @route: GET /api/users/orders/:id
+//* @access: Private
+exports.getUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.params.id })
+
+    res.status(200).json({
+      success: true,
+      orders: orders,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}

@@ -76,7 +76,6 @@ exports.updateAddress = async (req, res) => {
         runValidators: true,
       }
     )
-    console.log(addressToUpdate)
     res.status(200).json({
       success: true,
       message: 'Adres başarıyla güncellenmiştir.',

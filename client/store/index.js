@@ -9,7 +9,7 @@ export const state = () => ({
   selectedAddress: [],
   openAddAddressModal: false,
   openUpdateAddressModal: false,
-  //addressIdToUpdate: null,
+  addressIdToUpdate: '',
 })
 
 export const actions = {
@@ -27,21 +27,21 @@ export const actions = {
 
     // decode işlemi oldu ise gerekli user bilgisinin state kaydı için mutationa gönder;
     if (decoded) {
-      const userInfo = {
-        id: decoded._id,
-        firstName: decoded.firstName,
-        lastName: decoded.lastName,
-        email: decoded.email,
-        role: decoded.role,
-        tokenExpiresIn: decoded.exp * 1000,
-      }
-      commit('setUser', userInfo)
+      commit('setUser', decoded)
     }
   },
 }
 
 export const mutations = {
-  setUser(state, userData) {
+  setUser(state, payload) {
+    const userData = {
+      id: payload._id,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+      role: payload.role,
+      tokenExpiresIn: payload.exp * 1000,
+    }
     state.user = userData
   },
   setUserAddresses(state, payload) {
@@ -91,7 +91,9 @@ export const mutations = {
     if (payload === 'update') return (state.openUpdateAddressModal = false)
   },
   logout(state, payload) {
-    state.user = {}
+    console.log('mutation logout çalıştı')
+    state.user = ''
+    console.log('logout sonrası user: ', state.user)
     Cookie.remove('access_token')
     this.$router.push('/')
     Toast.open({
@@ -134,5 +136,8 @@ export const getters = {
   },
   getSelectedAddress(state) {
     return state.selectedAddress
+  },
+  getUser(state) {
+    return state.user
   },
 }

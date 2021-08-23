@@ -57,7 +57,6 @@ const getters = {
       if (removeDuplicates.length === 1) {
         return removeDuplicates
       } else {
-        console.log('Sepette birden fazla döviz cinsine sahip ürün var!!!')
         return null
       }
     }

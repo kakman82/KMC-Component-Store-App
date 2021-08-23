@@ -7,7 +7,12 @@ const orderSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Tedarik Aşamasında', 'Yola Çıktı', 'Teslim Edildi'],
+      enum: [
+        'Tedarik Aşamasında',
+        'Yola Çıktı',
+        'Teslim Edildi',
+        'İptal Edildi',
+      ],
       default: 'Tedarik Aşamasında',
     },
     products: {
