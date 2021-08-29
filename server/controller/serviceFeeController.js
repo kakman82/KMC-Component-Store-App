@@ -23,7 +23,7 @@ exports.createServiceFee = async (req, res) => {
   }
 }
 
-//* @desc: Get latest service fee valu
+//* @desc: Get latest service fee value
 //* @route: GET /api/serviceFee
 //* @access: Public
 exports.getServiceFee = async (req, res) => {

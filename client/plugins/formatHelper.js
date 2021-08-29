@@ -27,3 +27,10 @@ export function formatDate(date) {
   })
   return niceDate
 }
+
+export function formatDateWithoutDay(date) {
+  const niceDate = format(new Date(date), 'dd.MM.yyyy ', {
+    locale: tr,
+  })
+  return niceDate
+}

@@ -65,6 +65,7 @@
       <b-button
         class="mt-6 is-primary has-text-weight-bold"
         expanded
+        :loading="isLoading"
         @click="handleSubmit(submit)"
         >Kayıt Ol</b-button
       >
@@ -76,6 +77,7 @@
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import lodash from '../../node_modules/lodash-es'
 import Cookie from 'js-cookie'
+import jwtDecode from 'jwt-decode'
 
 export default {
   name: 'SignupForm',
@@ -88,6 +90,7 @@ export default {
       email: '',
       password: '',
       serverErrMsg: '',
+      isLoading: false,
     }
   },
 
@@ -104,6 +107,7 @@ export default {
       // catch içinde ulaşabileyim yoksa response not defined hatası alıyorum
       let response = ''
       try {
+        this.isLoading = true
         response = await this.$axios.$post('/auth/signup', reqUserData)
 
         if (response.success) {
@@ -121,6 +125,7 @@ export default {
             message: response.message,
             type: 'is-success',
           })
+          this.isLoading = false
 
           // sipariş sayfasına yönlendirme
           this.$router.push('/checkout')
@@ -135,9 +140,14 @@ export default {
           this.$emit('closeAuthFormModal')
         }
       } catch (error) {
+        this.isLoading = false
         // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum
-        this.serverErrMsg = error.response.data.messageTR || error
-        console.log(error)
+        if (error.response) {
+          return (this.serverErrMsg = error.response.data.messageTR)
+        } else {
+          this.serverErrMsg = error.message
+          console.log(error)
+        }
       }
     },
   },

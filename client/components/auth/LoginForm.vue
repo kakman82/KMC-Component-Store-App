@@ -40,6 +40,7 @@
       <b-button
         class="mt-3 is-primary has-text-weight-bold"
         expanded
+        :loading="isLoading"
         @click="handleSubmit(submit)"
         >Giriş Yap</b-button
       >
@@ -61,6 +62,7 @@ export default {
       email: '',
       password: '',
       serverErrMsg: '',
+      isLoading: false,
     }
   },
 
@@ -73,8 +75,9 @@ export default {
       // server error message kısmına consol dan ulaşmak için response try catch bloğu dışında tanımladım ki, catch içinde ulaşabileyim yoksa response not defined hatası alıyorum
       let response = ''
       try {
+        this.isLoading = true
         response = await this.$axios.$post('/auth/login', reqUserData)
-
+        if (!response.success) return (this.serverErrMsg = response.message)
         if (response.success) {
           Cookie.set('access_token', response.token, {
             sameSite: 'strict',
@@ -95,6 +98,7 @@ export default {
           } else {
             this.$router.push('/')
           }
+          this.isLoading = false
 
           this.$buefy.toast.open({
             duration: 5000,
@@ -107,9 +111,15 @@ export default {
           this.serverErrMsg = ''
         }
       } catch (error) {
+        this.isLoading = false
         // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum
-        this.serverErrMsg = error.response.data.message
-        //console.log(error.response)
+        if (error.response) {
+          //console.log(error.response)
+          return (this.serverErrMsg = error.response.data.message)
+        } else {
+          this.serverErrMsg = error.message
+          console.log(error)
+        }
       }
     },
   },

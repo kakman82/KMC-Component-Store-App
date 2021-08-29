@@ -65,7 +65,10 @@ export default {
         })
       }
       if (response.success) {
-        this.$store.commit('setUserAddresses', response.addresses)
+        const activeAddresses = response.addresses.filter(
+          (el) => el.active === true
+        )
+        this.$store.commit('setUserAddresses', activeAddresses)
       }
     } catch (error) {
       console.log(error)

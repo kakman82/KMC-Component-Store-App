@@ -42,6 +42,10 @@ const addressSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Lütfen adres başlığı bilgisini giriniz!'],
     },
+    active: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     // created ve updated at alanlarında tam gmt saati göstermesi için;

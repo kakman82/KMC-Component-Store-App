@@ -1,17 +1,33 @@
 <template>
   <section>
     <Navbar />
-    <section class="section is-small">
-      <section class="section">
+    <section class="section is-small mb-0">
+      <section
+        class="
+          section
+          is-flex is-flex-direction-row is-justify-content-space-between
+        "
+      >
         <h1 class="title has-text-primary">Kullanıcı Hesabım</h1>
-        <hr class="solid" />
+        <b-button
+          class="is-justify-content-flex-end"
+          type="is-danger"
+          label="Çıkış Yap"
+          icon-pack="fas"
+          icon-left="sign-out-alt"
+          @click="userLogout"
+        ></b-button>
       </section>
-      <section class="section">
+      <hr class="solid mt-0" />
+      <section>
         <div class="columns">
           <div class="column is-3">
             <div class="sidebar-page">
               <section class="sidebar-layout">
-                <div class="box">
+                <div
+                  class="box has-background-primary-light"
+                  style="height: 600px"
+                >
                   <b-menu>
                     <b-menu-list label="Menu">
                       <b-button
@@ -27,8 +43,9 @@
                       >
                       </b-button>
                       <b-menu-item
+                        v-show="$store.state.user.role === 'admin'"
                         icon-pack="fas"
-                        icon="users-cog"
+                        icon="cogs"
                         :active="isActive"
                         expanded
                       >
@@ -39,19 +56,54 @@
                             :icon="props.expanded ? 'menu-down' : 'menu-up'"
                           ></b-icon>
                         </template>
-                        <b-menu-item
-                          icon="account"
+                        <b-button
+                          class="has-text-left"
+                          type="is-ghost"
+                          icon-pack="fas"
                           label="Dashboard"
-                        ></b-menu-item>
-
-                        <b-menu-item
-                          icon="cash-multiple"
+                          icon-left="chart-line"
+                          tag="router-link"
+                          :to="{
+                            path: '/users/myaccount/admin/dashboard',
+                          }"
+                        >
+                        </b-button>
+                        <b-button
+                          class="has-text-left"
+                          type="is-ghost"
+                          icon-pack="fas"
                           label="Kullanıcı Yönetimi"
-                        ></b-menu-item>
-                        <b-menu-item
-                          icon="cash-multiple"
+                          icon-left="users-cog"
+                          tag="router-link"
+                          :to="{
+                            path: '/users/myaccount/admin/user_accounts',
+                          }"
+                        >
+                        </b-button>
+                        <b-button
+                          class="has-text-left"
+                          type="is-ghost"
+                          icon-pack="fas"
+                          label="Sipariş Yönetimi"
+                          icon-left="truck-moving"
+                          tag="router-link"
+                          :to="{
+                            path: '/users/myaccount/admin/order-management',
+                          }"
+                        >
+                        </b-button>
+                        <b-button
+                          class="has-text-left"
+                          type="is-ghost"
+                          icon-pack="fas"
                           label="Hizmet Bedeli Tanımı"
-                        ></b-menu-item>
+                          icon-left="percent"
+                          tag="router-link"
+                          :to="{
+                            path: '/users/myaccount/admin/service-fee',
+                          }"
+                        >
+                        </b-button>
                       </b-menu-item>
                       <b-button
                         class="has-text-left"
@@ -61,6 +113,18 @@
                         label="Şifre Değiştirme"
                         tag="router-link"
                         to="/users/myaccount/change-password"
+                      >
+                      </b-button>
+                      <b-button
+                        class="has-text-left"
+                        type="is-ghost"
+                        icon-pack="fas"
+                        label="Adreslerim"
+                        icon-left="address-book"
+                        tag="router-link"
+                        :to="{
+                          path: '/users/myaccount/addresses',
+                        }"
                       >
                       </b-button>
                       <b-button
@@ -77,23 +141,9 @@
                       </b-button>
                     </b-menu-list>
                     <b-menu-list>
-                      <b-menu-item
-                        label="Adreslerim"
-                        icon-pack="fas"
-                        icon="address-book"
-                        tag="router-link"
-                        to="/users/myaccount/profile"
-                      ></b-menu-item>
-                    </b-menu-list>
-                    <b-menu-list>
-                      <b-menu-item
-                        label="Siparişlerim ESKİ"
-                        icon-pack="fas"
-                        icon="shopping-bag"
-                      ></b-menu-item>
-                    </b-menu-list>
-                    <b-menu-list label="_____">
+                      <hr class="solid" />
                       <b-button
+                        class="mt-6"
                         type="is-danger"
                         label="Çıkış Yap"
                         icon-pack="fas"

@@ -88,19 +88,21 @@ exports.updateAddress = async (req, res) => {
     })
   }
 }
-//* @desc: Deleting existing address
+//* @desc: Deleting existing address - set active property to false!
 //* @route: DELETE /api/users/address/:id
 //* @access: Private
 exports.deleteAddress = async (req, res) => {
   try {
-    const addressToDelete = await Address.findById(req.params.id)
+    // not delete set active field to false
+    const addressToDelete = await Address.findByIdAndUpdate(req.params.id, {
+      active: false,
+    })
     if (!addressToDelete) {
       res.status(400).json({
         success: false,
         message: 'Bu ID bilgisine ait bir adres bulunamadı!',
       })
     }
-    await addressToDelete.deleteOne()
     res.status(200).json({
       success: true,
       message: 'Adres başarılı olarak silinmiştir.',

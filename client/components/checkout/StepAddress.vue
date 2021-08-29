@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <article class="message is-info">
+    <article class="message is-info" v-show="$route.path === '/checkout'">
       <div class="message-body">
         Kayıtlı teslimat adreslerinden birini seçerek onay kısmına
         ilerleyebilirsin.

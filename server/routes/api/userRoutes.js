@@ -27,5 +27,20 @@ router.patch(
   authController.isLoggedIn,
   userController.updateUserProfile
 )
+// get all users by only admin role;
+router.get(
+  '/users',
+  authController.isLoggedIn,
+  authController.isUserRoleAllowed('admin'),
+  userController.getAllUsers
+)
+
+// update one user only by admin role
+router.patch(
+  '/users',
+  authController.isLoggedIn,
+  authController.isUserRoleAllowed('admin'),
+  userController.updateOneUserByAdmin
+)
 
 module.exports = router

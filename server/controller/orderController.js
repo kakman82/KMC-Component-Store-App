@@ -50,6 +50,10 @@ exports.createOrder = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.params.id })
+      .sort({
+        createdAt: 'desc',
+      })
+      .populate('deliveryAddress')
 
     res.status(200).json({
       success: true,

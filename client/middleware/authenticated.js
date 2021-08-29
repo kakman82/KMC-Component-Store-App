@@ -7,6 +7,14 @@ export default function ({ store, route, redirect }) {
     return redirect('/')
   }
 
+  if (
+    store.getters['isLogin'] &&
+    store.state.user.role !== 'admin' &&
+    route.path.includes('admin')
+  ) {
+    return redirect('/')
+  }
+
   if (store.state.user) {
     const sessioUserTokenTimeValue = store.state.user.tokenExpiresIn
 

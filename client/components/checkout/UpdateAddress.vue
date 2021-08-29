@@ -174,6 +174,7 @@
       <b-button
         class="mt-6 is-primary has-text-weight-bold is-small"
         expanded
+        :loading="isLoading"
         @click="handleSubmit(submit)"
         >Kaydet</b-button
       >
@@ -191,6 +192,7 @@ export default {
   data() {
     return {
       serverErrMsg: null,
+      isLoading: false,
       companyName: '',
       firstName: '',
       lastName: '',
@@ -203,7 +205,6 @@ export default {
       selectedNeighbourhood: '',
       fullAddress: '',
       addressTitle: '',
-      kerem: '',
     }
   },
   computed: {
@@ -263,6 +264,7 @@ export default {
       }
     },
     async submit() {
+      this.isLoading = true
       let response = ''
       try {
         const addressToUpdate = {
@@ -292,6 +294,7 @@ export default {
         if (response.success) {
           this.$store.commit('updateUserAddress', response.updatedAddress)
           this.$store.commit('resetAddressModalStatus', 'update')
+          this.isLoading = false
           this.$buefy.toast.open({
             type: 'is-success',
             duration: 3000,
@@ -308,10 +311,13 @@ export default {
           this.addressTitle = ''
         }
       } catch (error) {
+        this.isLoading = false
         if (response.error) {
-          this.serverErrMsg = response.error.data.message
+          return (this.serverErrMsg = response.error.data.message)
+        } else {
+          this.serverErrMsg = error.message
+          console.log(error)
         }
-        console.log(error)
       }
     },
   },

@@ -36,6 +36,7 @@ exports.signUpUser = async (req, res) => {
       const newUser = new User()
       newUser.firstName = req.body.firstName
       newUser.lastName = req.body.lastName
+      newUser.role = req.body.role || 'customer'
       newUser.email = req.body.email
       // userModel içerisinde pre metodu ile hash uygulanacak
       newUser.password = req.body.password
@@ -122,6 +123,7 @@ exports.isLoggedIn = (req, res, next) => {
         })
       } else {
         req.decoded = decoded
+        //console.log('isLoggedIn decoded: ', req.decoded)
         next()
       }
     })
@@ -130,6 +132,19 @@ exports.isLoggedIn = (req, res, next) => {
       success: false,
       message: 'No token provided',
     })
+  }
+}
+
+//* User Role Restrict Function
+exports.isUserRoleAllowed = (...roles) => {
+  return (req, res, next) => {
+    //console.log('role allowed func: ', req.decoded)
+    if (!roles.includes(req.decoded.role)) {
+      return res.status(403).json({
+        message: 'Bu işlem için yetki bulunmuyor!',
+      })
+    }
+    next()
   }
 }
 

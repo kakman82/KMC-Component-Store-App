@@ -24,7 +24,7 @@
         <p class="subtitle">
           {{ selectedAddress.firstName }} {{ selectedAddress.lastName }}
         </p>
-        <p>{{ selectedAddress.companyName }}</p>
+        <p class="is-capitalized">{{ selectedAddress.companyName }}</p>
         <p class="is-capitalized">
           {{ selectedAddress.neighbourhood }}
           {{ selectedAddress.fullAddress }}

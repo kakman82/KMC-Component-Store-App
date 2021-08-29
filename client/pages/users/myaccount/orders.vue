@@ -2,13 +2,33 @@
   <div class="card">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Siparişlerim</p>
+      <b-tooltip
+        label="Sipariş son durum bilgisini görmek için yenile"
+        type="is-primary is-light"
+        position="is-left"
+        size="is-small"
+        multilined
+      >
+        <b-button
+          class="m-3"
+          type="is-primary"
+          size="is-small"
+          outlined
+          icon-pack="fas"
+          icon-left="sync-alt"
+          @click="getUserOrders"
+          >Yenile
+        </b-button>
+      </b-tooltip>
     </header>
     <div class="card-content">
-      <h2 class="subtitle is-size-7">
-        *Sipariş içeriğindeki ürünleri ve detay bilgilerini görmek için "
-        <i class="fas fa-chevron-right has-text-primary"></i>
-        " simgesine tıkla
-      </h2>
+      <div class="is-flex is-justify-content-space-between mb-3">
+        <h2 v-show="orders.length > 0" class="subtitle is-size-7">
+          *Sipariş içeriğindeki ürünleri ve detay bilgilerini görmek için "
+          <i class="fas fa-chevron-right has-text-primary"></i>
+          " simgesine tıkla
+        </h2>
+      </div>
       <div class="content">
         <b-table
           :data="isEmpty ? [] : orders"
@@ -26,6 +46,7 @@
           :detail-transition="transitionName"
           ref="table"
           paginated
+          :pagination-simple="isSimple"
           pagination-size="is-small"
           pagination-position="both"
           per-page="5"
@@ -36,8 +57,8 @@
         >
           <b-table-column
             field="orderNo"
-            label="Sipariş #"
-            width="50"
+            label="Sipariş No."
+            width="120px"
             v-slot="props"
           >
             {{ props.row.orderNo }}
@@ -53,6 +74,28 @@
             {{ niceDateFormat(props.row.createdAt) }}
           </b-table-column>
 
+          <b-table-column label="Ürün Adedi" centered v-slot="props">
+            {{ props.row.products.length }}
+          </b-table-column>
+
+          <b-table-column
+            field="serviceFee"
+            label="Hizmet Bedeli"
+            numeric
+            centered
+            v-slot="props"
+          >
+            {{ niceFormat(props.row.serviceFee, 2) }} TL
+          </b-table-column>
+          <b-table-column
+            field="tax"
+            label="KDV"
+            numeric
+            centered
+            v-slot="props"
+          >
+            {{ niceFormat(props.row.tax, 2) }} TL
+          </b-table-column>
           <b-table-column
             field="sumTotal"
             label="Sipariş Toplamı"
@@ -64,11 +107,9 @@
           </b-table-column>
 
           <b-table-column field="status" label="Durum" centered v-slot="props">
-            {{ props.row.status }}
-          </b-table-column>
-
-          <b-table-column label="Yenile Butonu" centered>
-            <b-button icon-pack="fas" icon-right="sync-alt"></b-button>
+            <span class="tag" :class="tagType(props.row.status)">
+              {{ props.row.status }}
+            </span>
           </b-table-column>
 
           <template #empty>
@@ -78,35 +119,72 @@
               arama yaparak sepete ekleme yapabilir ve sipariş verebilirsin.
             </div>
           </template>
-          <!-- <template #detail="props">
-            <article class="media">
-              <figure class="media-left mt-1">
-                <p class="image is-96x96">
-                  <img class="zoom p-1" :src="props.row.productImage" />
-                </p>
-              </figure>
-              <div class="media-content">
-                <div class="content">
-                  <p>
-                    <b class="has-text-primary-dark">{{
-                      props.row.productName
-                    }}</b>
-                    <br />
-                    <strong>{{ props.row.productManufacturer }}</strong>
-                    <br />
-                    <b
-                      ><small
-                        ><i class="fas fa-truck-moving"></i>
-                        {{ props.row.productSupplier }}</small
-                      ></b
-                    >
-                    <br />
-                    {{ props.row.productDescription }}
-                  </p>
-                </div>
+          <template #detail="props">
+            <template v-for="product in props.row.products">
+              <div class="box" :key="product._id">
+                <nav class="level">
+                  <div class="level-item has-text-centered">
+                    <div>
+                      <p class="heading">Ürün</p>
+                      <p class="image is-32x32 mt-1">
+                        <img class="zoom" :src="product.productImage" />
+                      </p>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div>
+                      <p class="heading">Kod</p>
+                      <p class="is-size-6">{{ product.productName }}</p>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div>
+                      <p class="heading">Üretici</p>
+                      <p class="is-size-6">{{ product.productManufacturer }}</p>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div>
+                      <p class="heading">Adet</p>
+                      <p class="is-size-6">
+                        {{ niceFormat(product.productQuantity, 0) }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div>
+                      <p class="heading">Tutar</p>
+                      <p class="is-size-6">
+                        {{ niceFormat(product.productTotalPriceTL, 2) }} TL
+                      </p>
+                    </div>
+                  </div>
+                </nav>
               </div>
-            </article>
-          </template> -->
+            </template>
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title has-text-primary">
+                  Teslimat Bilgileri
+                </p>
+              </header>
+              <div class="card-content">
+                <p class="subtitle">
+                  {{ props.row.deliveryAddress.firstName }}
+                  {{ props.row.deliveryAddress.lastName }}
+                </p>
+                <p class="is-capitalized">
+                  {{ props.row.deliveryAddress.companyName }}
+                </p>
+                <p class="is-capitalized">
+                  {{ props.row.deliveryAddress.neighbourhood }}
+                  {{ props.row.deliveryAddress.fullAddress }}
+                  {{ props.row.deliveryAddress.district }} /
+                  {{ props.row.deliveryAddress.province }}
+                </p>
+              </div>
+            </div>
+          </template>
         </b-table>
       </div>
     </div>
@@ -119,12 +197,11 @@ export default {
   layout: 'usermenu',
   middleware: 'authenticated',
   head: {
-    title: 'Şiparişlerim | KMC Elektronik',
+    title: 'Siparişlerim | KMC Elektronik',
   },
   data() {
     return {
       orders: [],
-      orderProducts: [],
 
       isEmpty: false,
       isBordered: true,
@@ -134,6 +211,7 @@ export default {
       isFocusable: true,
       isLoading: false,
       hasMobileCards: true,
+      isSimple: true,
       defaultOpenedDetails: [0],
     }
   },
@@ -155,7 +233,18 @@ export default {
       return module.formatNumber(val, digit)
     },
     niceDateFormat(value) {
-      return module.formatDate(value)
+      return module.formatDateWithoutDay(value)
+    },
+    tagType(value) {
+      if (value === 'Teslim Edildi') {
+        return 'is-success'
+      } else if (value === 'Tedarik Aşamasında') {
+        return 'is-info'
+      } else if (value === 'Yola Çıktı') {
+        return 'is-warning'
+      } else if (value === 'İptal Edildi') {
+        return 'is-danger'
+      }
     },
     async getUserOrders() {
       try {
@@ -164,7 +253,6 @@ export default {
         )
         if (response.success) {
           this.orders = response.orders
-          this.orderProducts = response.orders.map((el) => el.products)
         }
       } catch (error) {
         console.log(error)
@@ -174,4 +262,10 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.zoom:hover {
+  transform: scale(
+    2
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+</style>

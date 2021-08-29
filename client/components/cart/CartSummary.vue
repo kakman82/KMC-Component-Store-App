@@ -136,16 +136,18 @@ export default {
       if (!this.$store.getters['isLogin'] && this.checkTodaysDate()) {
         this.isAuthModalActive = true
       }
-      // herşey ok se;
-      const amounts = {
-        cartTotalTL: this.totalTL,
-        cartFeeTL: this.feeTL,
-        cartTaxTL: this.taxTL,
-        orderTotalTL: this.grandTotalTL,
-        serviceFeeRate: this.serviceFee,
+      // tarih ok ve kullanıcı da login olmuşsa;
+      if (this.$store.getters['isLogin'] && this.checkTodaysDate()) {
+        const amounts = {
+          cartTotalTL: this.totalTL,
+          cartFeeTL: this.feeTL,
+          cartTaxTL: this.taxTL,
+          orderTotalTL: this.grandTotalTL,
+          serviceFeeRate: this.serviceFee,
+        }
+        this.$store.commit('order/setOrderAmounts', amounts)
+        this.$router.push('/checkout')
       }
-      this.$store.commit('order/setOrderAmounts', amounts)
-      this.$router.push('/checkout')
     },
     closeAuthModal() {
       this.isAuthModalActive = false

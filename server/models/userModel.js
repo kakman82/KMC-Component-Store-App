@@ -124,4 +124,11 @@ userSchema.methods.createPasswordResetToken = function () {
   return resetToken
 }
 
+//* 5- Only active users can be fetch in find queries;
+// findOne kullanmamın sebebi user active: false olduğunda login ve forgot password yapmasını engellemek. Bu iki durumda da findOne kullandım. Tüm find lar şeklinde tanımlamadım çünkü admin userin active:false olduğunu görmesi ya da yapması için find ya da findByIdAndUpdate metodları gerekli
+userSchema.pre('findOne', function (next) {
+  this.find({ active: { $ne: false } })
+  next()
+})
+
 module.exports = mongoose.model('User', userSchema)
