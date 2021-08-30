@@ -56,6 +56,8 @@ export default {
       const suppliers = [...new Set(names)].sort()
 
       return suppliers
+    } else {
+      return null
     }
   },
 }

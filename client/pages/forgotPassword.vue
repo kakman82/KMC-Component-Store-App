@@ -16,23 +16,29 @@
           >
             {{ errMsg }}
           </b-message>
-          <b-field label="E-posta" class="mb-5">
-            <b-input
-              v-model="email"
-              type="email"
-              required
-              :validation-message="validMsg"
+          <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+            <ValidationProvider
+              rules="required|email"
+              v-slot="{ errors, valid }"
             >
-            </b-input>
-          </b-field>
-          <b-button
-            type="is-primary"
-            expanded
-            :loading="isLoading"
-            :disabled="!validation"
-            @click="forgotPassword"
-            >Şifremi Yenile!</b-button
-          >
+              <b-field
+                label="E-posta"
+                :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                :message="errors"
+              >
+                <b-input v-model="email" type="email"> </b-input>
+              </b-field>
+            </ValidationProvider>
+
+            <b-button
+              class="mt-3"
+              type="is-primary"
+              expanded
+              :loading="isLoading"
+              @click="handleSubmit(forgotPassword)"
+              >Şifremi Yenile!
+            </b-button>
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -40,7 +46,9 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 export default {
+  components: { ValidationObserver, ValidationProvider },
   head: {
     title: 'Şifre Yenileme | KMC Elektronik',
   },
@@ -48,22 +56,8 @@ export default {
     return {
       email: '',
       errMsg: '',
-      validMsg: '',
       isLoading: false,
     }
-  },
-  computed: {
-    validation() {
-      if (
-        !this.email ||
-        !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this.email)
-      ) {
-        this.validMsg = 'Lütfen geçerli bir e-posta adresi giriniz.'
-        return false
-      } else {
-        return true
-      }
-    },
   },
   methods: {
     async forgotPassword() {
@@ -72,14 +66,13 @@ export default {
       }
       try {
         this.isLoading = true
-        const response = await this.$axios.$post('users/forgotPassword', {
+        const response = await this.$axios.$post('auth/forgotPassword', {
           email: this.email.toLowerCase(),
         })
 
         if (response.success) {
           this.email = ''
           this.errMsg = ''
-          this.validMsg = ''
           this.isLoading = false
 
           this.$buefy.dialog.confirm({
@@ -93,9 +86,15 @@ export default {
           })
         }
       } catch (error) {
-        //console.log(error.response.data)
         this.isLoading = false
-        this.errMsg = error.response.data.message
+        // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum
+        if (error.response) {
+          //console.log(error.response)
+          return (this.errMsg = error.response.data.message)
+        } else {
+          this.errMsg = error.message
+          console.log(error)
+        }
       }
     },
   },

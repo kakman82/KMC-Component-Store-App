@@ -49,11 +49,17 @@
           <b-tabs type="is-boxed" expanded>
             <b-tab-item label="Giriş Yap" icon-pack="fas" icon="sign-in-alt">
               <!-- Login Form -->
-              <LoginForm @closeAuthFormModal="closeAuthModal" />
+              <LoginForm
+                @closeAuthFormModal="closeAuthModal"
+                @call-create-order="createOrder"
+              />
             </b-tab-item>
             <b-tab-item label="Kayıt Ol" icon-pack="fas" icon="user-plus">
               <!-- Sign-up Form -->
-              <SignupForm @closeAuthFormModal="closeAuthModal" />
+              <SignupForm
+                @closeAuthFormModal="closeAuthModal"
+                @call-create-order="createOrder"
+              />
             </b-tab-item>
           </b-tabs>
         </section>

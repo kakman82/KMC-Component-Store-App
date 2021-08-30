@@ -82,7 +82,7 @@ import jwtDecode from 'jwt-decode'
 export default {
   name: 'SignupForm',
   components: { ValidationObserver, ValidationProvider },
-  emits: ['closeAuthFormModal'],
+  emits: ['closeAuthFormModal', 'call-create-order'],
   data() {
     return {
       firstName: '',
@@ -126,18 +126,17 @@ export default {
             type: 'is-success',
           })
           this.isLoading = false
+          // modal dialog form kapatılması
+          this.$emit('closeAuthFormModal')
+          // CarSummary.vue daki create orderın tekrar çağrılması bu sayede amountlar store a set edilip /checkout sayfasına oto yönledirecek
+          this.$emit('call-create-order')
 
-          // sipariş sayfasına yönlendirme
-          this.$router.push('/checkout')
           // form alanlarının temizlenmesi;
           this.firstName = ''
           this.lastName = ''
           this.email = ''
           this.password = ''
           this.serverErrMsg = ''
-
-          // modal dialog form kapatılması
-          this.$emit('closeAuthFormModal')
         }
       } catch (error) {
         this.isLoading = false

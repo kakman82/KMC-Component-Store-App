@@ -18,7 +18,10 @@ exports.getProducts = async (req, res) => {
         Accept: 'application/json',
       },
     })
-    const apiProducts = apiResponse.data.itemserviceresult.data[0].PartList
+    const apiProducts =
+      apiResponse.data.itemserviceresult.data[0].PartList.filter(
+        (el) => el.status === 'Active'
+      )
     res.status(200).json({
       success: true,
       products: apiProducts.length,

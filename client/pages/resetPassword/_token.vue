@@ -16,26 +16,36 @@
           >
             {{ errMsg }}
           </b-message>
-          <b-field label="Yeni Şifre">
-            <b-input
-              v-model="newPassword"
-              type="password"
-              required
-              password-reveal
-              minlength="6"
-              maxlength="10"
-              validation-message="En az 6 en çok 10 karakter olmalıdır."
+          <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+            <ValidationProvider
+              rules="required|passwordLength"
+              vid="password"
+              name="Password"
+              v-slot="{ errors, valid }"
             >
-            </b-input>
-          </b-field>
-          <b-button
-            type="is-primary"
-            expanded
-            :loading="isLoading"
-            :disabled="!validation"
-            @click="resetPassword"
-            >Yeni Şifremi Oluştur!</b-button
-          >
+              <b-field
+                label="Yeni Şifre"
+                :type="{ 'is-danger': errors[0], 'is-success': valid }"
+                :message="errors"
+              >
+                <b-input
+                  v-model="newPassword"
+                  type="password"
+                  password-reveal
+                  minlength="6"
+                  maxlength="10"
+                >
+                </b-input>
+              </b-field>
+            </ValidationProvider>
+            <b-button
+              type="is-primary"
+              expanded
+              :loading="isLoading"
+              @click="handleSubmit(resetPassword)"
+              >Yeni Şifremi Oluştur!
+            </b-button>
+          </ValidationObserver>
         </div>
       </div>
     </div>
@@ -43,8 +53,11 @@
 </template>
 
 <script>
+import { ValidationObserver, ValidationProvider } from 'vee-validate'
 import Cookie from 'js-cookie'
+import jwtDecode from 'jwt-decode'
 export default {
+  components: { ValidationObserver, ValidationProvider },
   head: {
     title: 'Yeni Şifre Oluşturma | KMC Elektronik',
   },
@@ -54,19 +67,6 @@ export default {
       errMsg: '',
       isLoading: false,
     }
-  },
-  computed: {
-    validation() {
-      if (
-        !this.newPassword ||
-        this.newPassword.length < 6 ||
-        this.newPassword.length > 10
-      ) {
-        return false
-      } else {
-        return true
-      }
-    },
   },
   methods: {
     async resetPassword() {
@@ -79,7 +79,7 @@ export default {
         this.isLoading = true
         const resetToken = this.$route.params.token
         response = await this.$axios.$patch(
-          `/users/resetPassword/${resetToken}`,
+          `/auth/resetPassword/${resetToken}`,
           { password: this.newPassword }
         )
         if (response.success) {
@@ -95,25 +95,24 @@ export default {
           })
 
           Cookie.set('access_token', response.token, {
-            expires: 7,
             sameSite: 'strict',
           })
-          // user bilgilerini store gönderme
-          this.$store.commit('setUser', {
-            id: response.user._id,
-            firstName: response.user.firstName,
-            lastName: response.user.lastName,
-            email: response.user.email,
-            role: response.user.role,
-          })
+
+          const decoded = jwtDecode(response.token)
+          // user bilgilerine serverdan gelen token bilgisini de ekleyip store gönderme
+          response.user.exp = decoded.exp
+
+          this.$store.commit('setUser', response.user)
         }
       } catch (error) {
-        //console.log(error.response)
         this.isLoading = false
+        // serverdan gelen hata mesajına ve diğer detaylara error.response olarak erişebiliyorum
         if (error.response) {
-          this.errMsg = error.response.data.message
+          //console.log(error.response)
+          return (this.errMsg = error.response.data.message)
         } else {
-          this.errMsg = error
+          this.errMsg = error.message
+          console.log(error)
         }
       }
     },

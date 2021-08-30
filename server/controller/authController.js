@@ -169,7 +169,7 @@ exports.forgotPassword = async (req, res, next) => {
     // )}/api/users/resetPassword/${resetToken}`
     // yukarıdaki yapı aynı server içinde template oluşturuken işe yarar
     // ama client farklı bir adreste ise origin kullanmak daha elverişli ve api ifadesi client da yok
-    const resetURL = `${req.get('origin')}/users/resetPassword/${resetToken}`
+    const resetURL = `${req.get('origin')}/resetPassword/${resetToken}`
 
     await new Email(user, resetURL).sendPasswordReset()
 

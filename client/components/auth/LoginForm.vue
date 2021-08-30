@@ -32,7 +32,7 @@
 
       <b-button
         tag="router-link"
-        to="/users/forgotPassword"
+        :to="{ path: '/forgotPassword' }"
         type="is-ghost"
         class="pl-0"
         >Şifremi unuttum!</b-button
@@ -56,7 +56,7 @@ import jwtDecode from 'jwt-decode'
 export default {
   name: 'LoginForm',
   components: { ValidationObserver, ValidationProvider },
-  emits: ['closeAuthFormModal'],
+  emits: ['closeAuthFormModal', 'call-create-order'],
   data() {
     return {
       email: '',
@@ -92,9 +92,10 @@ export default {
           // değilse zaten sepet sayfasından login olmuş demektir ve direkt checkout sayfasında yönlendir
           //console.log(this.$route)
           if (this.$route.path === '/cart') {
-            this.$router.push({ path: '/checkout' })
             // bu emit sepet sayfasından login olunduğu zaman modalın kapatılması için
             this.$emit('closeAuthFormModal')
+            // CarSummary.vue daki create orderın tekrar çağrılması bu sayede amountlar store a set edilip /checkout sayfasına oto yönledirecek
+            this.$emit('call-create-order')
           } else {
             this.$router.push('/')
           }
