@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const serviceFeeSchema = new mongoose.Schema(
   {
     serviceFee: {
-      type: Number,
+      type: mongoose.Types.Decimal128,
       required: [true, 'Lütfen servis hizmet bedel oranını giriniz.'],
     },
   },

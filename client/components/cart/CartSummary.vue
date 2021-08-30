@@ -112,7 +112,8 @@ export default {
     try {
       const response = await this.$axios.$get('/serviceFee')
       if (response.success) {
-        this.serviceFee = response.data.fees[0].serviceFee
+        // db den dönen veri en son kaydedilen sıralamasında - 0 index en son olan
+        this.serviceFee = response.fees[0].serviceFee.$numberDecimal
       }
     } catch (error) {
       console.log(error)

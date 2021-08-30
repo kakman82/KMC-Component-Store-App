@@ -1,18 +1,18 @@
 const ServiceFee = require('../models/serviceFeeModel')
 
-//* @desc: Saving service fee value to the db
+//* @desc: Saving service fee value to the db by ADMIN
 //* @route: POST /api/serviceFee
-//* @access: Public
+//* @access: Private & ADMIN
 exports.createServiceFee = async (req, res) => {
   try {
     const newFee = new ServiceFee()
     newFee.serviceFee = req.body.serviceFee
     await newFee.save()
+
     res.status(200).json({
       success: true,
-      data: {
-        newFee,
-      },
+      message: 'Yeni oran başarıyla kaydedildi.',
+      newFee,
     })
   } catch (error) {
     console.log(error)
@@ -28,12 +28,10 @@ exports.createServiceFee = async (req, res) => {
 //* @access: Public
 exports.getServiceFee = async (req, res) => {
   try {
-    const fee = await ServiceFee.find().sort({ createdAt: 'desc' }).limit(1)
+    const fees = await ServiceFee.find().sort({ createdAt: 'desc' })
     res.status(200).json({
       success: true,
-      data: {
-        fees: fee,
-      },
+      fees,
     })
   } catch (error) {
     console.log(error)

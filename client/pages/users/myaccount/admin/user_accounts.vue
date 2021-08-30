@@ -147,7 +147,7 @@ export default {
   middleware: 'authenticated',
   components: { AddUser, UpdateUser },
   head: {
-    title: 'Kul.Yönetimi | KMC Elektronik',
+    title: 'Kullanıcı Yön. | KMC Elektronik',
   },
   data() {
     return {

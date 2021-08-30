@@ -1,5 +1,11 @@
 // https://codesandbox.io/s/veevalidate-components-buefy-znj4u?file=/src/components/Form.vue
-import { required, confirmed, length, email } from 'vee-validate/dist/rules' //  npm i vee-validate@^3
+import {
+  required,
+  confirmed,
+  length,
+  email,
+  double,
+} from 'vee-validate/dist/rules' //  npm i vee-validate@^3
 import { extend } from 'vee-validate'
 
 extend('required', {
@@ -20,6 +26,12 @@ extend('confirmed', {
 extend('length', {
   ...length,
   message: 'This field must have 2 options',
+})
+
+extend('double', {
+  ...double,
+  message:
+    'Değer sayısal olmalı ve ondalık kısım nokta ile belirtilerek iki basamaklı olmalıdır - %14.75 veya %10.00 gibi...',
 })
 
 extend('passwordLength', {

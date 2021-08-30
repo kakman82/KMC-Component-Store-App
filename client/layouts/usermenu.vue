@@ -95,8 +95,8 @@
                         <b-button
                           class="has-text-left"
                           type="is-ghost"
-                          icon-pack="fas"
                           label="Hizmet Bedeli Tanımı"
+                          icon-pack="fas"
                           icon-left="percent"
                           tag="router-link"
                           :to="{
