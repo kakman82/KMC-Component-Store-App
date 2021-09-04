@@ -37,7 +37,13 @@
                 :type="{ 'is-danger': errors[0], 'is-success': valid }"
                 :message="errors"
               >
-                <b-input v-model="newPassword" type="password"></b-input>
+                <b-input
+                  v-model="newPassword"
+                  type="password"
+                  password-reveal
+                  minlength="6"
+                  maxlength="10"
+                ></b-input>
               </b-field>
             </ValidationProvider>
 
@@ -51,7 +57,11 @@
                 :type="{ 'is-danger': errors[0], 'is-success': valid }"
                 :message="errors"
               >
-                <b-input v-model="newPasswordConfirm" type="password">
+                <b-input
+                  v-model="newPasswordConfirm"
+                  type="password"
+                  password-reveal
+                >
                 </b-input>
               </b-field>
             </ValidationProvider>

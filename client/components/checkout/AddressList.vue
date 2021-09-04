@@ -1,5 +1,5 @@
 <template>
-  <div class="card m-5" style="width: 250px">
+  <div class="card m-5" style="width: 300px">
     <header class="card-header">
       <p class="card-header-title">
         <b-radio
@@ -110,5 +110,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.card-header {
+  word-break: break-all;
 }
 </style>

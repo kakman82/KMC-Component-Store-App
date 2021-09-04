@@ -190,10 +190,6 @@ export default {
       }
       this.$store.commit('logout', toastMsg)
     },
-    makeActive() {
-      alert('makeActive çalışıyor tıklayınca')
-      this.isActive = true
-    },
   },
 }
 </script>

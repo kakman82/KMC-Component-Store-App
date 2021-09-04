@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <div class="msg">
-      <div
-        class="
-          notification
-          is-success is-light
-          p-3
-          mx-3
-          is-size-5-desktop is-size-6-mobile
-        "
-      >
-        <b>" {{ $route.params.title }}"</b
-        ><i>no.lu ürün için Arrow.com stokları gösteriliyor...</i>
+  <section>
+    <div class="columns mt-6 mx-3">
+      <div class="column is-6 mt-5">
+        <div class="notification is-success is-light">
+          <b>" {{ $route.params.title }}"</b
+          ><i>no.lu ürün için Arrow.com stokları gösteriliyor...</i>
+        </div>
+      </div>
+
+      <div class="column is-6 mt-5">
+        <SearchBar />
       </div>
     </div>
     <section class="columns mb-5 mt-3">
@@ -48,11 +46,12 @@
         </div>
       </div>
     </section>
-  </div>
+  </section>
 </template>
 
 <script>
 import Checkboxes from '../../components/search-result/Checkboxes.vue'
+import SearchBar from '../../components/search-result/SearchBar.vue'
 import ProductInfoCard from '../../components/search-result/table-view/ProductInfoCard.vue'
 import ProductTable from '../../components/search-result/table-view/ProductTable.vue'
 
@@ -62,10 +61,7 @@ export default {
     Checkboxes,
     ProductInfoCard,
     ProductTable,
-  },
-
-  data() {
-    return {}
+    SearchBar,
   },
   computed: {
     products() {
