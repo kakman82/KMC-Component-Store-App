@@ -3,8 +3,9 @@
     <div class="card-content">
       <div class="content">
         <b-message :title="titleMsg" type="is-info" has-icon :closable="false">
-          Sol taraftaki menüde listenen alanlardan seçimler yaparak <br />
-          kullanıcı bilgilerini güncelleyebilir, şifreni değiştirebilirsin.
+          Menüde listenen bölümlerden seçimler yaparak <br />
+          kullanıcı bilgilerini, adreslerini güncelleyebilir, şifreni
+          değiştirebilirsin.
           <br />
           <br />
           Henüz teslim edilmemiş siparişlerinin durumunu ve geçmiş tüm

@@ -12,17 +12,6 @@
           {{ serverErrMsg }}
         </b-message>
       </div>
-      <ValidationProvider rules="required" v-slot="{ errors, valid }">
-        <b-field
-          label="Şirket Adı"
-          custom-class="is-small"
-          :type="{ 'is-danger': errors[0], 'is-success': valid }"
-          :message="errors"
-        >
-          <b-input v-model="companyName" size="is-small"></b-input>
-        </b-field>
-      </ValidationProvider>
-
       <div class="columns">
         <div class="column">
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
@@ -167,7 +156,11 @@
           :type="{ 'is-danger': errors[0], 'is-success': valid }"
           :message="errors"
         >
-          <b-input v-model="addressTitle" size="is-small"></b-input>
+          <b-input
+            v-model="addressTitle"
+            size="is-small"
+            maxlength="25"
+          ></b-input>
         </b-field>
       </ValidationProvider>
 
@@ -213,7 +206,6 @@ export default {
     },
   },
   created() {
-    this.companyName = this.currentAddress.companyName
     this.firstName = this.currentAddress.firstName
     this.lastName = this.currentAddress.lastName
     this.phone = this.currentAddress.phone
@@ -270,7 +262,6 @@ export default {
         const addressToUpdate = {
           firstName: this.firstName,
           lastName: this.lastName,
-          companyName: this.companyName,
           phone: this.phone,
           province: this.selectedProvince,
           district: this.selectedDistrict,
@@ -302,7 +293,6 @@ export default {
           })
           this.firstName = ''
           this.lastName = ''
-          this.companyName = ''
           this.phone = ''
           this.selectedProvince = ''
           this.selectedDistrict = ''

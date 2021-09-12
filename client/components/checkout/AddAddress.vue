@@ -12,22 +12,12 @@
           {{ serverErrMsg }}
         </b-message>
       </div>
-      <ValidationProvider rules="required" v-slot="{ errors, valid }">
-        <b-field
-          label="Şirket Adı"
-          custom-class="is-small"
-          :type="{ 'is-danger': errors[0], 'is-success': valid }"
-          :message="errors"
-        >
-          <b-input v-model="companyName" size="is-small"></b-input>
-        </b-field>
-      </ValidationProvider>
 
       <div class="columns">
         <div class="column">
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field
-              label="Ad"
+              label="Teslim Edilecek Kişi Ad"
               custom-class="is-small"
               :type="{ 'is-danger': errors[0], 'is-success': valid }"
               :message="errors"
@@ -39,7 +29,7 @@
         <div class="column">
           <ValidationProvider rules="required" v-slot="{ errors, valid }">
             <b-field
-              label="Soyad"
+              label="Teslim Edilecek Kişi Soyad"
               custom-class="is-small"
               :type="{ 'is-danger': errors[0], 'is-success': valid }"
               :message="errors"
@@ -170,7 +160,11 @@
           :type="{ 'is-danger': errors[0], 'is-success': valid }"
           :message="errors"
         >
-          <b-input v-model="addressTitle" size="is-small"></b-input>
+          <b-input
+            v-model="addressTitle"
+            size="is-small"
+            maxlength="25"
+          ></b-input>
         </b-field>
       </ValidationProvider>
 
@@ -187,7 +181,6 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
-import Cookie from 'js-cookie'
 
 export default {
   name: 'AddAddress',
@@ -197,7 +190,6 @@ export default {
     return {
       serverErrMsg: null,
       isLoading: false,
-      companyName: '',
       firstName: '',
       lastName: '',
       phone: null,
@@ -256,7 +248,6 @@ export default {
         const newAddress = {
           firstName: this.firstName,
           lastName: this.lastName,
-          companyName: this.companyName,
           phone: this.phone,
           province: this.selectedProvince,
           district: this.selectedDistrict,
@@ -264,14 +255,6 @@ export default {
           fullAddress: this.fullAddress,
           title: this.addressTitle,
         }
-        // server tarafın user bilgisine ulaşabilmesi için -isLoggedIn metodu -
-        // tokenı headers a set edip gönderiyordum daha sonra axios için plugin tanımladım
-
-        //const token = Cookie.get('access_token')
-        // const headers = {
-        //   authorization: `Bearer ${token}`,
-        // }
-
         response = await this.$axios.$post('/users/addresses', newAddress)
         if (response.error && response.error.name === 'TokenExpiredError') {
           return this.$store.commit('logout', {
@@ -292,7 +275,6 @@ export default {
           })
           this.firstName = ''
           this.lastName = ''
-          this.companyName = ''
           this.phone = ''
           this.selectedProvince = ''
           this.selectedDistrict = ''

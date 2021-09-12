@@ -11,7 +11,7 @@
         >
           <b-step-item
             step="1"
-            label="Adres Seçimi"
+            label="Teslimat Adresi"
             icon-pack="fas"
             icon="map-marked-alt"
           >
@@ -19,6 +19,14 @@
           </b-step-item>
           <b-step-item
             step="2"
+            label="Fatura Adresi ve Ödeme"
+            icon-pack="fas"
+            icon="money-bill-wave"
+          >
+            <BillAddressAndPayment />
+          </b-step-item>
+          <b-step-item
+            step="3"
             label="Sipariş Onayı"
             icon-pack="fas"
             icon="check-circle"
@@ -38,13 +46,19 @@
 import StepAddress from '../components/checkout/StepAddress.vue'
 import StepOrderDetails from '../components/checkout/StepOrderDetails.vue'
 import StepOrderSummary from '../components/checkout/StepOrderSummary.vue'
+import BillAddressAndPayment from '../components/checkout/BillAddressAndPayment.vue'
 export default {
   // sadece login olmuş kullanıcıların bu sayfaya erişebilmesi için;
   middleware: 'authenticated',
   head: {
     title: 'Sipariş Onay | KMC Elektronik',
   },
-  components: { StepAddress, StepOrderDetails, StepOrderSummary },
+  components: {
+    StepAddress,
+    StepOrderDetails,
+    StepOrderSummary,
+    BillAddressAndPayment,
+  },
   data() {
     return {
       activeStep: 0,
@@ -76,10 +90,10 @@ export default {
   },
   methods: {
     next() {
-      this.activeStep = 1
+      this.activeStep += 1
     },
     previous() {
-      this.activeStep = 0
+      this.activeStep -= 0
     },
   },
 }

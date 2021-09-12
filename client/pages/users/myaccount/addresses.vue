@@ -1,35 +1,15 @@
 <template>
   <section>
-    <!-- <div
-      class="box"
-      v-for="userAddress in userAddresses"
-      :key="userAddress._id"
-    >
-      <AddressList :address="userAddress" />
-    </div> -->
-    <div>
-      <StepAddress />
-    </div>
-    <!-- <AddressModal />
-    <AddAddress />
-    <UpdateAddress /> -->
+    <StepAddress />
   </section>
 </template>
 
 <script>
-import AddressList from '../../../components/checkout/AddressList.vue'
-import AddressModal from '../../../components/checkout/AddressModal.vue'
-import AddAddress from '../../../components/checkout/AddAddress.vue'
-import UpdateAddress from '../../../components/checkout/UpdateAddress.vue'
 import StepAddress from '../../../components/checkout/StepAddress.vue'
 export default {
   layout: 'usermenu',
   middleware: 'authenticated',
   components: {
-    AddressList,
-    AddressModal,
-    AddAddress,
-    UpdateAddress,
     StepAddress,
   },
   head: {

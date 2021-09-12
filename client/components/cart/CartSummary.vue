@@ -8,7 +8,7 @@
     </a>
     <a class="panel-block is-justify-content-space-between">
       <b
-        >Hizmet Bedeli<small>(%{{ serviceFee }})</small>:</b
+        >Hizmet Bedeli<small>(%{{ displayServiceFee }})</small>:</b
       >
       <p><i class="fas fa-lira-sign fa-1x"></i> {{ serviceFeeTL }}</p>
     </a>
@@ -86,6 +86,7 @@ export default {
     return {
       isAuthModalActive: false,
       serviceFee: null,
+      displayServiceFee: '',
       totalTL: null,
       feeTL: null,
       taxTL: null,
@@ -118,8 +119,15 @@ export default {
     try {
       const response = await this.$axios.$get('/serviceFee')
       if (response.success) {
-        // db den dönen veri en son kaydedilen sıralamasında - 0 index en son olan
         this.serviceFee = response.fees[0].serviceFee.$numberDecimal
+        if (Number.isInteger(this.serviceFee * 1)) {
+          return (this.displayServiceFee = this.serviceFee * 1)
+        } else {
+          return (this.displayServiceFee = module.formatNumber(
+            this.serviceFee,
+            2
+          ))
+        }
       }
     } catch (error) {
       console.log(error)

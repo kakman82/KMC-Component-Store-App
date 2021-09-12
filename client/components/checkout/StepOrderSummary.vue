@@ -12,7 +12,7 @@
       </a>
       <a class="panel-block is-justify-content-space-between">
         <b
-          >Hizmet Bedeli<small>(%{{ orderSummary.serviceFeeRate }})</small>:</b
+          >Hizmet Bedeli<small>(%{{ rate }})</small>:</b
         >
         <p>
           <i class="fas fa-lira-sign fa-1x"></i>
@@ -33,7 +33,7 @@
           {{ niceFormat(orderSummary.orderTotalTL) }}
         </b>
       </a>
-      <div class="is-flex m-2" v-if="stepInfo === 1">
+      <div class="is-flex m-2" v-if="stepInfo === 2">
         <b-checkbox v-model="isChecked"></b-checkbox>
         <small>
           <a @click="confirmConditionsModal">Hizmet Şartları'nı</a>
@@ -75,8 +75,16 @@ export default {
         return 0
       }
     },
+    rate() {
+      const value = this.orderSummary.serviceFeeRate * 1
+      if (Number.isInteger(value)) {
+        return value
+      } else {
+        return module.formatNumber(this.orderSummary.serviceFeeRate, 2)
+      }
+    },
     buttonText() {
-      return this.stepInfo === 0 ? 'Kaydet ve İlerle' : 'Siparişi Onayla!'
+      return this.stepInfo === 2 ? 'Siparişi Onayla!' : 'Kaydet ve İlerle'
     },
   },
   methods: {
@@ -98,12 +106,12 @@ export default {
           confirmText: 'Tamam',
         })
       }
-      this.$emit('nextStep')
+      if (this.stepInfo < 2) this.$emit('nextStep')
 
-      if (this.stepInfo === 1 && !this.isChecked)
+      if (this.stepInfo === 2 && !this.isChecked)
         return this.confirmConditionsModal()
 
-      if (this.stepInfo === 1 && this.isChecked) {
+      if (this.stepInfo === 2 && this.isChecked) {
         return this.createOrder()
       }
     },

@@ -5,6 +5,7 @@ import {
   length,
   email,
   double,
+  oneOf,
 } from 'vee-validate/dist/rules' //  npm i vee-validate@^3
 import { extend } from 'vee-validate'
 
@@ -23,6 +24,11 @@ extend('confirmed', {
   message: 'Yeni şifre ile aynı olmalıdır!',
 })
 
+extend('oneOf', {
+  ...oneOf,
+  message: 'Bir seçim yapılmalıdır!',
+})
+
 extend('length', {
   ...length,
   message: 'This field must have 2 options',
@@ -31,7 +37,7 @@ extend('length', {
 extend('double', {
   ...double,
   message:
-    'Değer sayısal olmalı ve ondalık kısım nokta ile belirtilerek iki basamaklı olmalıdır - %14.75 veya %10.00 gibi...',
+    'Değer sayısal olmalı ve ondalık kısım nokta ile belirtilerek iki basamaklı olmalıdır - %10.75 veya %10.00 gibi...',
 })
 
 extend('passwordLength', {
@@ -47,4 +53,13 @@ extend('phone', {
     /^(0)([0-9]{3})\s?([0-9]{3})\s?([0-9]{2})\s?([0-9]{2})$/.test(value) ||
     // cep noları için;
     /^(05)([0-9]{2})\s?([0-9]{3})\s?([0-9]{2})\s?([0-9]{2})$/.test(value),
+})
+
+extend('tckn', {
+  message: 'Geçerli bir TC Kimlik No girilmelidir!',
+  validate: (value) => /^[1-9]{1}[0-9]{9}[02468]{1}$/.test(value),
+})
+extend('vkn', {
+  message: 'Geçerli bir Vergi No girilmelidir!',
+  validate: (value) => /^[0-9]{10}$/.test(value),
 })

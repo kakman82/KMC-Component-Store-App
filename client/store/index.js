@@ -77,7 +77,8 @@ export const mutations = {
     )
   },
   setSelectedAddress(state, payload) {
-    state.selectedAddress.unshift(payload)
+    this.commit('resetSelectedAddress')
+    state.selectedAddress.push(payload)
   },
   resetSelectedAddress(state) {
     state.selectedAddress = []
