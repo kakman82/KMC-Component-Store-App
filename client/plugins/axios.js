@@ -5,7 +5,8 @@ export default function ({ $axios }) {
     //console.log('Making request to ' + config.url)
     if (config.url.startsWith('/users')) {
       const token = Cookie.get('access_token')
-      $axios.setHeader('Authorization', token)
+      //console.log('axios token:', token)
+      $axios.setHeader('Authorization', `Bearer ${token}`)
     }
   })
 }

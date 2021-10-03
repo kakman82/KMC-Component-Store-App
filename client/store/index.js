@@ -5,11 +5,6 @@ import { ToastProgrammatic as Toast } from '../node_modules/buefy'
 
 export const state = () => ({
   user: {},
-  userAddresses: [],
-  selectedAddress: [],
-  openAddAddressModal: false,
-  openUpdateAddressModal: false,
-  addressIdToUpdate: '',
 })
 
 export const actions = {
@@ -44,53 +39,6 @@ export const mutations = {
     }
     state.user = userData
   },
-  setUserAddresses(state, payload) {
-    state.userAddresses = payload
-  },
-  addUserAddress(state, newAddress) {
-    state.userAddresses.unshift(newAddress)
-  },
-  // update edilecek adresi storedan getters ile çekebilmek için
-  addressToUpdate(state, payload) {
-    state.addressIdToUpdate = payload
-  },
-  updateUserAddress(state, payload) {
-    const addressToUpdate = state.userAddresses.filter(
-      (el) => el._id === payload._id
-    )[0]
-    addressToUpdate.firstName = payload.firstName
-    addressToUpdate.lastName = payload.lastName
-    addressToUpdate.companyName = payload.companyName
-    addressToUpdate.phone = payload.phone
-    addressToUpdate.province = payload.province
-    addressToUpdate.district = payload.district
-    addressToUpdate.neighbourhood = payload.neighbourhood
-    addressToUpdate.fullAddress = payload.fullAddress
-    addressToUpdate.title = payload.title
-    addressToUpdate.createdAt = payload.createdAt
-    addressToUpdate.updatedAt = payload.updatedAt
-  },
-  deleteAddress(state, id) {
-    state.userAddresses = state.userAddresses.filter((el) => el._id !== id)
-    state.selectedAddress = state.selectedAddress.filter(
-      (val) => val._id !== id
-    )
-  },
-  setSelectedAddress(state, payload) {
-    this.commit('resetSelectedAddress')
-    state.selectedAddress.push(payload)
-  },
-  resetSelectedAddress(state) {
-    state.selectedAddress = []
-  },
-  setAddressModalStatus(state, payload) {
-    if (payload === 'add') return (state.openAddAddressModal = true)
-    if (payload === 'update') return (state.openUpdateAddressModal = true)
-  },
-  resetAddressModalStatus(state, payload) {
-    if (payload === 'add') return (state.openAddAddressModal = false)
-    if (payload === 'update') return (state.openUpdateAddressModal = false)
-  },
   logout(state, payload) {
     console.log('mutation logout çalıştı')
     state.user = ''
@@ -116,29 +64,11 @@ export const getters = {
       return true
     }
   },
-  getUserAddresses(state) {
-    return state.userAddresses
-  },
-  getModalType(state) {
-    let type = ''
-    if (state.openAddAddressModal === true) {
-      type = 'add'
-    }
-    if (state.openUpdateAddressModal === true) {
-      type = 'update'
-    }
-    return type
-  },
-  getAddressToUpdate(state) {
-    const address = state.userAddresses.filter(
-      (el) => el._id === state.addressIdToUpdate
-    )
-    return address
-  },
-  getSelectedAddress(state) {
-    return state.selectedAddress
-  },
   getUser(state) {
     return state.user
   },
 }
+// chrome consolda Error: [vuex] Do not mutate vuex store state outside mutation handlers hatasını almamak için nuxt daki store.js deki strict tanımını false yaparak override ettim. Normal de production modunda zaten false oluyor
+// https://github.com/nuxt/nuxt.js/issues/1521
+// https://vuex.vuejs.org/guide/strict.html
+export const strict = false

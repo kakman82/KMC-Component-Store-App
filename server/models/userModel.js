@@ -19,9 +19,13 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
 
-    address: {
+    deliveryAddresses: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address',
+      ref: 'DeliveryAddress',
+    },
+    billingAddress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BillingAddress',
     },
     role: {
       type: String,

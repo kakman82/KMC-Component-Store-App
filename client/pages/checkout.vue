@@ -15,7 +15,7 @@
             icon-pack="fas"
             icon="map-marked-alt"
           >
-            <StepAddress />
+            <StepDeliveryAddress />
           </b-step-item>
           <b-step-item
             step="2"
@@ -23,7 +23,7 @@
             icon-pack="fas"
             icon="money-bill-wave"
           >
-            <BillAddressAndPayment />
+            <StepBillingAddressAndPayment />
           </b-step-item>
           <b-step-item
             step="3"
@@ -43,10 +43,10 @@
 </template>
 
 <script>
-import StepAddress from '../components/checkout/StepAddress.vue'
+import StepDeliveryAddress from '../components/checkout/StepDeliveryAddress.vue'
 import StepOrderDetails from '../components/checkout/StepOrderDetails.vue'
 import StepOrderSummary from '../components/checkout/StepOrderSummary.vue'
-import BillAddressAndPayment from '../components/checkout/BillAddressAndPayment.vue'
+import StepBillingAddressAndPayment from '../components/checkout/StepBillingAddressAndPayment.vue'
 export default {
   // sadece login olmuş kullanıcıların bu sayfaya erişebilmesi için;
   middleware: 'authenticated',
@@ -54,10 +54,10 @@ export default {
     title: 'Sipariş Onay | KMC Elektronik',
   },
   components: {
-    StepAddress,
+    StepDeliveryAddress,
     StepOrderDetails,
     StepOrderSummary,
-    BillAddressAndPayment,
+    StepBillingAddressAndPayment,
   },
   data() {
     return {
@@ -66,27 +66,8 @@ export default {
       mobileMode: 'minimalist',
     }
   },
-  async created() {
-    try {
-      const response = await this.$axios.$get('/users/addresses')
-
-      if (response.error && response.error.name === 'TokenExpiredError') {
-        return this.$store.commit('logout', {
-          type: 'is-danger',
-          duration: 7000,
-          message:
-            'Oturum süreniz dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!',
-        })
-      }
-      if (response.success) {
-        const activeAddresses = response.addresses.filter(
-          (el) => el.active === true
-        )
-        this.$store.commit('setUserAddresses', activeAddresses)
-      }
-    } catch (error) {
-      console.log(error)
-    }
+  created() {
+    this.$store.dispatch('addresses/getUserDeliveryAddresses')
   },
   methods: {
     next() {

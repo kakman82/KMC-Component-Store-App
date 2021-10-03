@@ -1,7 +1,7 @@
 const Order = require('../models/orderModel')
 const Email = require('../utils/email')
 const User = require('../models/userModel')
-const Address = require('../models/addressModel')
+const DeliveryAddress = require('../models/deliveryAddressModel')
 
 //* @desc: Creating new order
 //* @route: POST /api/users/orders
@@ -25,7 +25,9 @@ exports.createOrder = async (req, res) => {
     //* lean() metodu json yerine pojo yani plain javascript objesi döndürür
     //* mail body için oluşturulan handlebars template okuması için bunu kullandım
     const user = await User.findById(newOrder.user).lean()
-    const address = await Address.findById(newOrder.deliveryAddress).lean()
+    const address = await DeliveryAddress.findById(
+      newOrder.deliveryAddress
+    ).lean()
     const order = await Order.findById(newOrder._id).lean()
 
     await new Email(user, null, order, address).sendOrderInfo(order.orderNo)

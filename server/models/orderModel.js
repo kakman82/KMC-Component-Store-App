@@ -8,12 +8,13 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
+        'Ödeme Bekliyor',
         'Tedarik Aşamasında',
         'Yola Çıktı',
         'Teslim Edildi',
-        'İptal Edildi',
+        'İptal',
       ],
-      default: 'Tedarik Aşamasında',
+      default: 'Ödeme Bekliyor',
     },
     products: {
       type: Array,
@@ -29,7 +30,11 @@ const orderSchema = new mongoose.Schema(
     },
     deliveryAddress: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address',
+      ref: 'DeliveryAddress',
+    },
+    billingAddress: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'BillingAddress',
     },
   },
   {

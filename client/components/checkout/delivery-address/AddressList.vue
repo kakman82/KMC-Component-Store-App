@@ -3,21 +3,27 @@
     <header class="card-header">
       <p class="card-header-title">
         <b-radio
-          v-model="selected"
+          v-model="selectedAddress"
           :native-value="address"
           name="name"
           class="has-text-primary"
-          @input="$store.commit('setSelectedAddress', selected)"
+          @input="
+            $store.commit(
+              'addresses/setSelectedDeliveryAddress',
+              selectedAddress
+            )
+          "
         >
           {{ address.title }}
         </b-radio>
       </p>
       <div class="buttons is-flex-wrap-nowrap is-justify-content-flex-end">
-        <button class="button is-white p-2" @click="onUpdate(address._id)">
+        <button class="button is-white p-2" @click="onUpdate(address)">
           <span class="icon">
             <i class="fas fa-edit has-text-primary"></i>
           </span>
         </button>
+
         <button class="button is-white p-2 mr-2" @click="onDelete(address._id)">
           <span class="icon">
             <i class="far fa-trash-alt has-text-danger"></i>
@@ -25,7 +31,11 @@
         </button>
       </div>
     </header>
-
+    <UpdateAddress
+      :addressData="address"
+      :isOpen="openUpdateFormModal"
+      @close-modal="closeUpdateFormModal"
+    />
     <div class="card-content">
       <p class="has-text-weight-bold">{{ address.companyName }}</p>
       <p class="has-text-weight-semibold">
@@ -34,7 +44,7 @@
       <p class="has-text-weight-light is-italic is-size-6">
         {{ address.phone }}
       </p>
-      <p class="is-text-overflow">
+      <p class="is-text-overflow is-capitalized">
         {{ address.neighbourhood }} {{ address.fullAddress }}
       </p>
       <p>{{ address.district }} / {{ address.province }}</p>
@@ -43,20 +53,26 @@
 </template>
 
 <script>
+import UpdateAddress from './UpdateAddress.vue'
 export default {
   name: 'AddressList',
+  components: { UpdateAddress },
   props: ['address'],
   data() {
     return {
-      selected: '',
+      selectedAddress: '',
+      addressToUpdate: {},
+      openUpdateFormModal: false,
     }
   },
 
   methods: {
-    onUpdate(id) {
-      // seçilen adresi id ile store dan updateforma getirmek için
-      this.$store.commit('addressToUpdate', id)
-      this.$store.commit('setAddressModalStatus', 'update')
+    onUpdate(address) {
+      this.openUpdateFormModal = true
+      this.addressToUpdate = address
+    },
+    closeUpdateFormModal() {
+      this.openUpdateFormModal = false
     },
     onDelete(id) {
       this.$buefy.dialog.confirm({
@@ -73,12 +89,13 @@ export default {
       })
     },
     async deleteAddress(addressId) {
+      let response = ''
       try {
-        const response = await this.$axios.$delete(
-          `/users/address/${addressId}`
+        response = await this.$axios.$delete(
+          `/users/deliveryAddresses/${addressId}`
         )
         if (response.success) {
-          this.$store.commit('deleteAddress', addressId)
+          this.$store.commit('addresses/deleteAddress', addressId)
           this.$buefy.toast.open({
             type: 'is-success',
             duration: 5000,
@@ -86,7 +103,14 @@ export default {
           })
         }
       } catch (error) {
-        console.log(error)
+        if (!response.success) {
+          this.$buefy.toast.open({
+            type: 'is-danger',
+            duration: 3000,
+            message: 'Bu ID bilgisine ait bir adres bulunamadı!',
+          })
+        }
+        console.log(error.message)
       }
     },
   },

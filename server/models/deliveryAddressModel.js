@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const addressSchema = new mongoose.Schema(
+const deliveryAddressSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -13,10 +13,6 @@ const addressSchema = new mongoose.Schema(
     lastName: {
       type: String,
       required: [true, 'Lütfen teslim alacak kişi soyadını giriniz!'],
-    },
-    companyName: {
-      type: String,
-      required: [true, 'Lütfen şirketinizin adını giriniz!'],
     },
     phone: {
       type: String,
@@ -60,4 +56,4 @@ const addressSchema = new mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model('Address', addressSchema)
+module.exports = mongoose.model('DeliveryAddress', deliveryAddressSchema)

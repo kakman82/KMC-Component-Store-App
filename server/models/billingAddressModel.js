@@ -1,12 +1,24 @@
 const mongoose = require('mongoose')
 
-const pttAddressSchema = new mongoose.Schema(
+const billingAddressSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    billType: {
+      type: String,
+      enum: ['kurumsal', 'bireysel'],
+    },
+    companyName: String,
+    companyTaxNumber: String,
+    companyTaxOffice: String,
+    personFullName: String,
+    personIDNumber: String,
     province: String,
     district: String,
-    town: String,
     neighbourhood: String,
-    pk: String,
+    fullAddress: String,
   },
   {
     // created ve updated at alanlarında tam gmt saati göstermesi için;
@@ -20,5 +32,4 @@ const pttAddressSchema = new mongoose.Schema(
     },
   }
 )
-
-module.exports = mongoose.model('PttAddress', pttAddressSchema)
+module.exports = mongoose.model('BillingAddress', billingAddressSchema)

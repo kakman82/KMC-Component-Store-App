@@ -151,7 +151,7 @@ export default {
   },
   computed: {
     selectedAddress() {
-      return this.$store.getters['getSelectedAddress'][0]
+      return this.$store.state.addresses.selectedDeliveryAddress
     },
     data() {
       return this.$store.getters['cart/getCartProducts']

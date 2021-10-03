@@ -2,13 +2,17 @@
   <div class="box">
     <article class="message is-info" v-show="$route.path === '/checkout'">
       <div class="message-body">
-        Kayıtlı teslimat adreslerinden birini seçerek onay kısmına
-        ilerleyebilirsin.
+        Kayıtlı teslimat adreslerinden birini seçerek ilerleyebilirsin.
       </div>
     </article>
     <button
       class="button is-primary is-small"
-      @click="$store.commit('setAddressModalStatus', 'add')"
+      @click="
+        $store.commit('addresses/showModal', {
+          type: 'showAddDeliveryAddress',
+          action: true,
+        })
+      "
     >
       <span class="icon">
         <i class="fas fa-edit"></i>
@@ -16,9 +20,9 @@
       <span>Yeni Adres Ekle</span>
     </button>
 
-    <AddressModal />
+    <AddAddress />
 
-    <section class="hero" v-show="getAddresses.length === 0">
+    <section class="hero" v-show="getUserDeliveryAddresses.length === 0">
       <div class="hero-body">
         <article class="message is-warning">
           <div class="message-header">
@@ -34,7 +38,7 @@
     </section>
     <div class="is-flex is-flex-wrap-wrap">
       <AddressList
-        v-for="(addressData, index) in getAddresses"
+        v-for="(addressData, index) in getUserDeliveryAddresses"
         :key="index"
         :address="addressData"
       />
@@ -43,15 +47,15 @@
 </template>
 
 <script>
-import AddressList from './AddressList.vue'
-import AddressModal from './AddressModal.vue'
+import AddressList from './delivery-address/AddressList.vue'
+import AddAddress from './delivery-address/AddAddress.vue'
 
 export default {
-  name: 'StepAddress',
-  components: { AddressList, AddressModal },
+  name: 'StepDeliveryAddress',
+  components: { AddressList, AddAddress },
   computed: {
-    getAddresses() {
-      return this.$store.getters['getUserAddresses']
+    getUserDeliveryAddresses() {
+      return this.$store.state.addresses.deliveryAddresses
     },
   },
 }

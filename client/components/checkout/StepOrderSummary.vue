@@ -84,7 +84,7 @@ export default {
       }
     },
     buttonText() {
-      return this.stepInfo === 2 ? 'Siparişi Onayla!' : 'Kaydet ve İlerle'
+      return this.stepInfo === 2 ? 'Siparişi Onayla!' : 'İlerle'
     },
   },
   methods: {
@@ -94,7 +94,8 @@ export default {
     handleSubmit() {
       if (
         this.stepInfo === 0 &&
-        this.$store.state.selectedAddress.length === 0
+        Object.keys(this.$store.state.addresses.selectedDeliveryAddress)
+          .length === 0
       ) {
         return this.$buefy.dialog.alert({
           title: 'Dikkat!',
@@ -170,6 +171,7 @@ export default {
     confirmConditionsModal() {
       this.$buefy.dialog.confirm({
         title: 'Hizmet Şartları',
+        size: 'is-small',
         message: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Fusce id fermentum quam. Proin sagittis,
                         nibh id hendrerit imperdiet, elit sapien laoreet elit,

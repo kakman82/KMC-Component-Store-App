@@ -1,34 +1,28 @@
 const express = require('express')
 const { isLoggedIn } = require('../../controller/authController')
-const addressController = require('../../controller/addressController')
+const deliveryAddressController = require('../../controller/deliveryAddressController')
 
 const router = express.Router()
 
-router.post('/users/addresses', isLoggedIn, addressController.createAddress)
-router.get('/users/addresses', isLoggedIn, addressController.getAllAddresses)
-router.patch('/users/address/:id', isLoggedIn, addressController.updateAddress)
-router.delete('/users/address/:id', isLoggedIn, addressController.deleteAddress)
-
-//* PTT Address routes;
-// Get provinces names
-router.get(
-  '/users/pttAddresses/provinces',
+router.post(
+  '/users/deliveryAddresses',
   isLoggedIn,
-  addressController.getProvinces
+  deliveryAddressController.createAddress
 )
-// Get district names by given province name
 router.get(
-  '/users/pttAddresses/:province',
+  '/users/deliveryAddresses',
   isLoggedIn,
-  addressController.getDistricts
+  deliveryAddressController.getAllAddresses
 )
-// Get neighbourhood name by given province and district names
-router.get(
-  '/users/pttAddresses/:province/:district',
-  addressController.getNeighbourhoods
+router.patch(
+  '/users/deliveryAddresses/:id',
+  isLoggedIn,
+  deliveryAddressController.updateAddress
 )
-
-//! For only creating document into dh - run only one time, then .csv file imported to the db
-router.post('/pttAddresses', addressController.createPttAddress)
+router.delete(
+  '/users/deliveryAddresses/:id',
+  isLoggedIn,
+  deliveryAddressController.deleteAddress
+)
 
 module.exports = router
