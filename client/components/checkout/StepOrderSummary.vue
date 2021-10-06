@@ -107,6 +107,20 @@ export default {
           confirmText: 'Tamam',
         })
       }
+      if (
+        this.stepInfo === 1 &&
+        Object.keys(this.$store.state.addresses.billingAddress).length === 0
+      ) {
+        return this.$buefy.dialog.alert({
+          title: 'Dikkat!',
+          message: 'Fatura adresi oluşturulmalıdır...',
+          type: 'is-warning',
+          hasIcon: true,
+          icon: 'exclamation-triangle',
+          iconPack: 'fas',
+          confirmText: 'Tamam',
+        })
+      }
       if (this.stepInfo < 2) this.$emit('nextStep')
 
       if (this.stepInfo === 2 && !this.isChecked)

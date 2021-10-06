@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@creativebulma/bulma-badge": "^1.0.1",
-    "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/axios": "^5.13.6",
     "cookie-parser": "^1.4.5",
     "core-js": "^3.9.1",
     "date-fns": "^2.22.1",

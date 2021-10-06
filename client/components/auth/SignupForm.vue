@@ -75,7 +75,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
-import lodash from '../../node_modules/lodash-es'
+import { capitalizeEachWord } from '../../plugins/formatHelper'
 import Cookie from 'js-cookie'
 import jwtDecode from 'jwt-decode'
 
@@ -97,9 +97,8 @@ export default {
   methods: {
     async submit() {
       const reqUserData = {
-        // https://stackoverflow.com/questions/38084396/lodash-title-case-uppercase-first-letter-of-every-word
-        firstName: lodash.startCase(lodash.camelCase(this.firstName)),
-        lastName: lodash.startCase(lodash.camelCase(this.lastName)),
+        firstName: capitalizeEachWord(this.firstName),
+        lastName: capitalizeEachWord(this.lastName),
         email: this.email.toLowerCase(),
         password: this.password,
       }

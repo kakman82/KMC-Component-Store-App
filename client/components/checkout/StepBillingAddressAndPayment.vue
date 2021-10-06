@@ -37,7 +37,18 @@
                 Kayıtlı fatura adresi bulunmamaktadır. <br />
               </div>
             </article>
-            <b-button type="is-primary"> Fatura Adresi Oluştur </b-button>
+            <b-button
+              type="is-primary"
+              @click="
+                $store.commit('addresses/showModal', {
+                  type: 'showAddBillingAddress',
+                  action: true,
+                })
+              "
+            >
+              Fatura Adresi Oluştur
+            </b-button>
+            <AddBillAddress />
           </div>
         </div>
       </div>

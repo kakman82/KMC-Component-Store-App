@@ -1,7 +1,7 @@
 const DeliveryAddress = require('../models/deliveryAddressModel')
 
 //* @desc: Saving new address to the db
-//* @route: POST /api/users/addresses
+//* @route: POST /api/users/deliveryAddresses
 //* @access: Private
 exports.createAddress = async (req, res) => {
   try {
@@ -34,7 +34,7 @@ exports.createAddress = async (req, res) => {
 }
 
 //* @desc: Get all delivery addresses from db
-//* @route: GET /api/users/addresses
+//* @route: GET /api/users/deliveryAddresses
 //* @access: Private
 exports.getAllAddresses = async (req, res) => {
   try {
@@ -57,7 +57,7 @@ exports.getAllAddresses = async (req, res) => {
 }
 
 //* @desc: Updating existing address
-//* @route: PATCH /api/users/address/:id
+//* @route: PATCH /api/users/deliveryAddresses/:id
 //* @access: Private
 exports.updateAddress = async (req, res) => {
   try {
@@ -82,7 +82,7 @@ exports.updateAddress = async (req, res) => {
   }
 }
 //* @desc: Deleting existing address - set active property to false!
-//* @route: DELETE /api/users/address/:id
+//* @route: DELETE /api/users/deliveryAddresses/:id
 //* @access: Private
 exports.deleteAddress = async (req, res) => {
   try {

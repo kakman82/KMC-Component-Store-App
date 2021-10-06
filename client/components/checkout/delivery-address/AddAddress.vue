@@ -189,7 +189,7 @@
               class="mt-5 is-primary has-text-weight-bold is-small"
               expanded
               :loading="isLoading"
-              @click="handleSubmit(submit)"
+              @click="handleSubmit(createDeliveryAddress)"
               >Kaydet</b-button
             >
           </section>
@@ -235,9 +235,6 @@ export default {
       }
     },
   },
-  created() {
-    //this.$store.dispatch('addresses/getProvinces')
-  },
   methods: {
     close() {
       this.$store.commit('addresses/showModal', {
@@ -257,7 +254,7 @@ export default {
       }
       this.$store.dispatch('addresses/getNeighbourhoods', data)
     },
-    async submit() {
+    async createDeliveryAddress() {
       this.isLoading = true
       let response = ''
       try {
@@ -279,7 +276,7 @@ export default {
           return this.$store.commit('logout', {
             type: 'is-danger',
             duration: 7000,
-            message: `Oturum süreniz dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!`,
+            message: `Oturum süresi dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!`,
           })
         }
 

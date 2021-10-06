@@ -11,6 +11,17 @@
       </header>
       <section class="modal-card-body">
         <ValidationObserver ref="observer" v-slot="{ handleSubmit }">
+          <div v-if="serverErrMsg !== null">
+            <b-message
+              type="is-danger"
+              has-icon
+              icon-size="is-small"
+              size="is-small"
+              class="mb-2"
+            >
+              {{ serverErrMsg }}
+            </b-message>
+          </div>
           <!-- FATURA TİP SORUSU -->
           <p class="has-text-primary">Fatura Bilgileri</p>
 
@@ -50,7 +61,7 @@
               v-slot="{ errors, valid }"
             >
               <b-field
-                label="Ad ve Soyad"
+                label="Fatura Ad ve Soyad"
                 custom-class="is-small"
                 :type="{ 'is-danger': errors[0], 'is-success': valid }"
                 :message="errors"
@@ -197,7 +208,8 @@
                       @input="getDistricts"
                     >
                       <option
-                        v-for="(province, index) in provinces"
+                        v-for="(province, index) in $store.state.addresses
+                          .provinces"
                         :key="index"
                         :value="province"
                       >
@@ -224,7 +236,8 @@
                       @input="getNeighbourhoods"
                     >
                       <option
-                        v-for="(district, index) in districts"
+                        v-for="(district, index) in $store.state.addresses
+                          .districts"
                         :key="index"
                         :value="district"
                       >
@@ -252,7 +265,8 @@
                   :disabled="!selectedDistrict"
                 >
                   <option
-                    v-for="(neighbourhood, index) in neighbourhoods"
+                    v-for="(neighbourhood, index) in $store.state.addresses
+                      .neighbourhoods"
                     :key="index"
                     :value="neighbourhood"
                   >
@@ -270,7 +284,7 @@
                 :message="errors"
               >
                 <b-input
-                  v-model="selectedFullAddress"
+                  v-model="fullAddress"
                   size="is-small"
                   type="textarea"
                   maxlength="200"
@@ -282,6 +296,7 @@
           <b-button
             class="mt-5 is-primary has-text-weight-bold is-small"
             :loading="isLoading"
+            expanded
             @click="handleSubmit(createBillAddress)"
             >Kaydet</b-button
           >
@@ -296,22 +311,21 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { capitalizeEachWord } from '../../../plugins/formatHelper'
 export default {
   name: 'AddBillAddress',
   components: { ValidationObserver, ValidationProvider },
   data() {
     return {
+      serverErrMsg: null,
+      isLoading: false,
       invoiceType: '',
       fullName: '',
-      tcNumber: null,
+      tcNumber: '',
       companyName: '',
-      taxNumber: null,
-      taxOffice: null,
-      isLoading: false,
+      taxNumber: '',
+      taxOffice: '',
       sameAsDeliveryAddress: '',
-      provinces: [],
-      districts: [],
-      neighbourhoods: [],
       selectedProvince: '',
       selectedDistrict: '',
       selectedNeighbourhood: '',
@@ -324,7 +338,7 @@ export default {
     },
     deliveryAddress() {
       if (this.sameAsDeliveryAddress === 'evet') {
-        return this.$store.getters['getSelectedAddress'][0]
+        return this.$store.getters['addresses/getSelectedDeliveryAddress']
       } else {
         return {}
       }
@@ -332,12 +346,103 @@ export default {
   },
   watch: {
     sameAsDeliveryAddress(newVal) {
-      newVal === 'hayır' ? this.getProvinces() : ''
+      newVal === 'hayır' ? this.$store.dispatch('addresses/getProvinces') : ''
     },
   },
   methods: {
-    createBillAddress() {
-      alert('metod çalıştı')
+    getDistricts() {
+      this.$store.dispatch('addresses/getDistricts', this.selectedProvince)
+    },
+    getNeighbourhoods() {
+      const data = {
+        province: this.selectedProvince,
+        district: this.selectedDistrict,
+      }
+      this.$store.dispatch('addresses/getNeighbourhoods', data)
+    },
+    async createBillAddress() {
+      const newBillAddress = {
+        billType: this.invoiceType,
+        companyName: capitalizeEachWord(this.companyName),
+        companyTaxNumber: this.taxNumber,
+        companyTaxOffice: capitalizeEachWord(this.taxOffice),
+        personFullName: capitalizeEachWord(this.fullName),
+        personIDNumber: this.tcNumber,
+        province:
+          this.sameAsDeliveryAddress === 'evet'
+            ? this.deliveryAddress.province
+            : this.selectedProvince,
+        district:
+          this.sameAsDeliveryAddress === 'evet'
+            ? this.deliveryAddress.district
+            : this.selectedDistrict,
+        neighbourhood:
+          this.sameAsDeliveryAddress === 'evet'
+            ? this.deliveryAddress.neighbourhood
+            : this.selectedNeighbourhood,
+        fullAddress:
+          this.sameAsDeliveryAddress === 'evet'
+            ? this.deliveryAddress.fullAddress
+            : this.fullAddress,
+      }
+      this.isLoading = true
+      let response = ''
+      try {
+        response = await this.$axios.$post(
+          '/users/billingAddresses',
+          newBillAddress
+        )
+        if (response.error && response.error.name === 'TokenExpiredError') {
+          return this.$store.commit('logout', {
+            type: 'is-danger',
+            duration: 7000,
+            message: `Oturum süresi dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!`,
+          })
+        }
+        if (response.success) {
+          this.isLoading = false
+          this.close()
+          this.$buefy.toast.open({
+            type: 'is-success',
+            duration: 3000,
+            message: response.message,
+          })
+
+          this.$store.commit(
+            'addresses/addUserBillingAddress',
+            response.billAddress
+          )
+        }
+      } catch (error) {
+        this.isLoading = false
+        if (response.error) {
+          this.serverErrMsg = response.error.data.message
+        } else {
+          this.serverErrMsg = error.message
+          console.log(error)
+        }
+      }
+    },
+    close() {
+      this.$store.commit('addresses/showModal', {
+        type: 'showAddBillingAddress',
+        action: false,
+      })
+      // reset state pttaddress data after closing
+      this.$store.commit('addresses/resetPttAddresses')
+
+      this.isLoading = false
+      this.invoiceType = ''
+      this.fullName = ''
+      this.tcNumber = ''
+      this.companyName = ''
+      this.taxNumber = ''
+      this.taxOffice = ''
+      this.sameAsDeliveryAddress = ''
+      this.selectedProvince = ''
+      this.selectedDistrict = ''
+      this.selectedNeighbourhood = ''
+      this.fullAddress = ''
     },
   },
 }

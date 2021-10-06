@@ -45,5 +45,8 @@ const mutations = {
       (el) => el._id !== id
     )
   },
+  addUserBillingAddress(state, payload) {
+    state.billingAddress = payload
+  },
 }
 export default mutations
