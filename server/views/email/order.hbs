@@ -234,7 +234,28 @@ img {
                 <p>{{ deliveryAddress.district }}/{{ deliveryAddress.province }}</p>
                 <p class="is-size-7">Tel: {{ deliveryAddress.phone }}</p>
                 <br>
-                <u>2 hafta içerisinde teslim edilmesi planlanmaktadır.</u>
+                <u>Ödeme yapıldıktan sonra 2 hafta içerisinde teslim edilmesi planlanmaktadır.</u>
+            </div>
+        </div>
+        <div class="card p-3 m-3">
+            <header class="card-header">
+                <p class="card-header-title has-text-primary">
+                    Fatura Bilgileri
+                </p>
+            </header>
+            <div class="card-content">
+                <b>
+                {{  deliveryAddress.firstName }} {{ deliveryAddress.lastName }}
+                </b>
+                <p>{{ deliveryAddress.companyName }}</p>
+                <p class="is-capitalized">
+                {{ deliveryAddress.neighbourhood }}
+                {{ deliveryAddress.fullAddress }}
+                </p>
+                <p>{{ deliveryAddress.district }}/{{ deliveryAddress.province }}</p>
+                <p class="is-size-7">Tel: {{ deliveryAddress.phone }}</p>
+                <br>
+                <u>Ödeme yapıldıktan sonra 2 hafta içerisinde teslim edilmesi planlanmaktadır.</u>
             </div>
         </div>
    </div>   

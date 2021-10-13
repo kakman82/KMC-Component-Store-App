@@ -2,6 +2,7 @@ const Order = require('../models/orderModel')
 const Email = require('../utils/email')
 const User = require('../models/userModel')
 const DeliveryAddress = require('../models/deliveryAddressModel')
+const BillingAddress = require('../models/billingAddressModel')
 
 //* @desc: Creating new order
 //* @route: POST /api/users/orders
@@ -12,6 +13,7 @@ exports.createOrder = async (req, res) => {
 
     newOrder.user = req.decoded._id
     newOrder.deliveryAddress = req.body.deliveryAddressId
+    newOrder.billingAddress = req.body.billingAddressId
     newOrder.orderNo = req.body.orderNo
     newOrder.products = req.body.products
     newOrder.tax = req.body.orderAmounts.cartTaxTL
@@ -25,12 +27,21 @@ exports.createOrder = async (req, res) => {
     //* lean() metodu json yerine pojo yani plain javascript objesi döndürür
     //* mail body için oluşturulan handlebars template okuması için bunu kullandım
     const user = await User.findById(newOrder.user).lean()
-    const address = await DeliveryAddress.findById(
+    const deliveryAddress = await DeliveryAddress.findById(
       newOrder.deliveryAddress
+    ).lean()
+    const billingAddress = await BillingAddress.findById(
+      newOrder.billingAddress
     ).lean()
     const order = await Order.findById(newOrder._id).lean()
 
-    await new Email(user, null, order, address).sendOrderInfo(order.orderNo)
+    await new Email(
+      user,
+      null,
+      order,
+      deliveryAddress,
+      billingAddress
+    ).sendOrderInfo(order.orderNo)
 
     res.status(200).json({
       success: true,

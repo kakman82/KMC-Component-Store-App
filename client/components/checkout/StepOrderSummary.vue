@@ -133,13 +133,16 @@ export default {
     async createOrder() {
       try {
         this.isLoading = true
-        const deliveryAddress = this.$store.getters['getSelectedAddress'][0]
+        const deliveryAddress =
+          this.$store.state.addresses.selectedDeliveryAddress
+        const billingAddress = this.$store.state.addresses.billingAddress
         const cartProducts = this.$store.getters['cart/getCartProducts']
         const orderAmounts = this.$store.getters['order/getOrderAmounts']
         const orderData = {
           // mongodb id si çok uzun olduğu için daha kısa bir unique id paketi kullandım
           orderNo: uniqid('KMC-', uniqid.time()),
           deliveryAddressId: deliveryAddress._id,
+          billingAddressId: billingAddress._id,
           products: cartProducts,
           orderAmounts: orderAmounts,
         }
