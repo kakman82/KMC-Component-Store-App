@@ -58,3 +58,26 @@ exports.getBillAddress = async (req, res) => {
     })
   }
 }
+
+//* @desc: Updating current bill address
+//* @route: PATCH /api/users/billingAddresses/:id
+//* @access: Private
+exports.updateBillAddress = async (req, res) => {
+  try {
+    const addressToUpdate = await BillingAddress.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+    res.status(200).json({
+      success: true,
+      message: 'Fatura adresi başarıyla güncellenmiştir.',
+      updatedAddress: addressToUpdate,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}

@@ -26,7 +26,7 @@
           <div
             v-if="Object.keys($store.state.addresses.billingAddress).length > 0"
           >
-            <BillAddressInfo :address="userBillingAddress" />
+            <BillAddressInfo />
           </div>
           <div v-else>
             <article class="message is-warning">
@@ -84,11 +84,5 @@ import PaymentInfo from './billing-address/PaymentInfo.vue'
 export default {
   name: 'StepBillAddressAndPayment',
   components: { AddBillAddress, BillAddressInfo, PaymentInfo },
-
-  computed: {
-    userBillingAddress() {
-      return this.$store.state.addresses.billingAddress[0]
-    },
-  },
 }
 </script>

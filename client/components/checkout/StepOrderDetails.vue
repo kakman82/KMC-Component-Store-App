@@ -172,7 +172,7 @@ export default {
       return this.$store.state.addresses.selectedDeliveryAddress
     },
     billAddress() {
-      return this.$store.state.addresses.billingAddress[0]
+      return this.$store.state.addresses.billingAddress
     },
     tckn() {
       let tcNumber = this.billAddress.personIDNumber

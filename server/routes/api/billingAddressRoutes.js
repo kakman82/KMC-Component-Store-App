@@ -15,4 +15,10 @@ router.get(
   billingAddressController.getBillAddress
 )
 
+router.patch(
+  '/users/billingAddresses/:id',
+  isLoggedIn,
+  billingAddressController.updateBillAddress
+)
+
 module.exports = router

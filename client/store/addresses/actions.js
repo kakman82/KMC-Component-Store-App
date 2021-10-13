@@ -66,7 +66,7 @@ const actions = {
         })
       }
       if (response.success) {
-        commit('setUserBillingAddress', response.userBillAddress)
+        commit('setUserBillingAddress', response.userBillAddress[0])
       }
     } catch (error) {
       console.log(error)

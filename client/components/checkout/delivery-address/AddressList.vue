@@ -37,8 +37,7 @@
       @close-modal="closeUpdateFormModal"
     />
     <div class="card-content">
-      <p class="has-text-weight-bold">{{ address.companyName }}</p>
-      <p class="has-text-weight-semibold">
+      <p class="has-text-weight-semibold is-capitalized">
         {{ address.firstName }} {{ address.lastName }}
       </p>
       <p class="has-text-weight-light is-italic is-size-6">

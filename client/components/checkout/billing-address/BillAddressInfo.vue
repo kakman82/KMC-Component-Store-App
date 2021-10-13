@@ -9,7 +9,7 @@
             is-capitalized is-marginless
           "
         >
-          {{ address.billType }}
+          {{ address.billType }} Fatura
         </p>
 
         <button class="button is-white" @click="onUpdate">
@@ -19,7 +19,7 @@
         </button>
       </header>
       <UpdateBillAddress
-        :addressData="address"
+        :billAddressData="address"
         :isOpen="openBillAddressUpdateFormModal"
         @close-modal="closeBillAddressUpdateFormModal"
       />
@@ -54,13 +54,15 @@ import UpdateBillAddress from './UpdateBillAddress.vue'
 export default {
   name: 'BillAddressInfo',
   components: { UpdateBillAddress },
-  props: ['address'],
   data() {
     return {
       openBillAddressUpdateFormModal: false,
     }
   },
   computed: {
+    address() {
+      return this.$store.state.addresses.billingAddress
+    },
     tckn() {
       let tcNumber = this.address.personIDNumber
       if (tcNumber) {
