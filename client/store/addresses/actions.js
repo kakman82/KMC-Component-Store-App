@@ -53,5 +53,24 @@ const actions = {
       console.log(error)
     }
   },
+  async getUserBillingAddress({ commit }) {
+    try {
+      const response = await this.$axios.$get('users/billingAddresses')
+
+      if (response.error && response.error.name === 'TokenExpiredError') {
+        return this.$store.commit('logout', {
+          type: 'is-danger',
+          duration: 7000,
+          message:
+            'Oturum süreniz dolmuştur. Uygulamaya tekrar giriş yapılmalıdır!',
+        })
+      }
+      if (response.success) {
+        commit('setUserBillingAddress', response.userBillAddress)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
 }
 export default actions

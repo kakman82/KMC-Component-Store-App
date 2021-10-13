@@ -19,6 +19,9 @@ const mutations = {
   setSelectedDeliveryAddress(state, payload) {
     state.selectedDeliveryAddress = payload
   },
+  resetSelectedAddress(state) {
+    state.selectedDeliveryAddress = {}
+  },
   setUserAllDeliveryAddresses(state, payload) {
     state.deliveryAddresses = payload
   },
@@ -45,7 +48,7 @@ const mutations = {
       (el) => el._id !== id
     )
   },
-  addUserBillingAddress(state, payload) {
+  setUserBillingAddress(state, payload) {
     state.billingAddress = payload
   },
 }

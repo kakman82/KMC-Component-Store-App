@@ -63,7 +63,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
-import lodash from '../../../node_modules/lodash-es'
+import * as module from '../../../plugins/formatHelper'
 export default {
   layout: 'usermenu',
   middleware: 'authenticated',
@@ -107,9 +107,8 @@ export default {
     async updateUser() {
       try {
         const dataToUpdate = {
-          //https://stackoverflow.com/questions/38084396/lodash-title-case-uppercase-first-letter-of-every-word
-          firstName: lodash.startCase(lodash.camelCase(this.firstName)),
-          lastName: lodash.startCase(lodash.camelCase(this.lastName)),
+          firstName: module.capitalizeEachWord(this.firstName),
+          lastName: module.capitalizeEachWord(this.lastName),
           email: this.email.toLowerCase(),
         }
         const response = await this.$axios.$patch(

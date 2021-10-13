@@ -147,10 +147,10 @@ export default {
         const response = await this.$axios.$post('/users/orders', orderData)
         if (response.success) {
           this.isLoading = false
-          //TODO mail testi için commente almıştım, vuex deki cart&order verileri temizlencek
+
           this.$store.commit('cart/resetCart')
           this.$store.commit('order/resetOrderAmounts')
-          this.$store.commit('resetSelectedAddress')
+          this.$store.commit('adresses/resetSelectedAddress')
 
           this.$buefy.dialog.confirm({
             title: response.message,

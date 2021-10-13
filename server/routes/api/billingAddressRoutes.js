@@ -9,4 +9,10 @@ router.post(
   billingAddressController.createBillAddress
 )
 
+router.get(
+  '/users/billingAddresses',
+  isLoggedIn,
+  billingAddressController.getBillAddress
+)
+
 module.exports = router

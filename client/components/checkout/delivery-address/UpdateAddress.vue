@@ -214,6 +214,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { capitalizeEachWord } from '../../../plugins/formatHelper'
 
 export default {
   name: 'UpdateAddress',
@@ -266,8 +267,8 @@ export default {
       let response = ''
       try {
         const addressToUpdate = {
-          firstName: this.addressData.firstName,
-          lastName: this.addressData.lastName,
+          firstName: capitalizeEachWord(this.addressData.firstName),
+          lastName: capitalizeEachWord(this.addressData.lastName),
           phone: this.addressData.phone,
           province: this.addressData.province,
           district: this.addressData.district,

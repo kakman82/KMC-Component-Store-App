@@ -40,9 +40,7 @@ export const mutations = {
     state.user = userData
   },
   logout(state, payload) {
-    console.log('mutation logout çalıştı')
     state.user = ''
-    console.log('logout sonrası user: ', state.user)
     Cookie.remove('access_token')
     this.$router.push('/')
     Toast.open({

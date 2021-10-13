@@ -409,7 +409,7 @@ export default {
           })
 
           this.$store.commit(
-            'addresses/addUserBillingAddress',
+            'addresses/setUserBillingAddress',
             response.billAddress
           )
         }

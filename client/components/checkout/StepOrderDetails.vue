@@ -10,27 +10,46 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title has-text-primary">Teslimat Bilgileri</p>
-        <b-button
-          class="button is-primary m-2"
-          size="is-small"
-          icon-pack="far"
-          icon-left="arrow-alt-circle-left"
-          @click="goPreviousStep"
-        >
-          Değiştir
-        </b-button>
       </header>
       <div class="card-content" v-if="selectedAddress">
-        <p class="subtitle">
+        <p class="has-text-weight-bold is-capitalized">
           {{ selectedAddress.firstName }} {{ selectedAddress.lastName }}
         </p>
-        <p class="is-capitalized">{{ selectedAddress.companyName }}</p>
+        <p class="has-text-weight-semibold">Tel: {{ selectedAddress.phone }}</p>
         <p class="is-capitalized">
           {{ selectedAddress.neighbourhood }}
           {{ selectedAddress.fullAddress }}
         </p>
         <p>{{ selectedAddress.district }}/{{ selectedAddress.province }}</p>
-        <p class="is-size-7">{{ selectedAddress.phone }}</p>
+      </div>
+    </div>
+
+    <div class="card mt-5" v-if="billAddress">
+      <header class="card-header">
+        <p class="card-header-title has-text-primary">Fatura Bilgileri</p>
+      </header>
+      <!-- Kurumsal Fatura Adres Bilgileri -->
+      <div class="card-content" v-if="billAddress.billType === 'kurumsal'">
+        <p class="has-text-weight-bold is-capitalized">
+          {{ billAddress.companyName }}
+        </p>
+        <p class="has-text-weight-semibold">
+          {{ billAddress.companyTaxOffice }} Vergi Dairesi, VKNO:
+          {{ billAddress.companyTaxNumber }}
+        </p>
+        <p class="is-capitalized">
+          {{ billAddress.neighbourhood }} {{ billAddress.fullAddress }}
+        </p>
+        <p>{{ billAddress.district }} / {{ billAddress.province }}</p>
+      </div>
+      <!-- Bireysel Fatura Adres Bilgileri -->
+      <div class="card-content" v-if="billAddress.billType === 'bireysel'">
+        <p class="has-text-weight-bold">{{ billAddress.personFullName }}</p>
+        <p class="has-text-weight-semibold">TCNO: {{ tckn }}</p>
+        <p class="is-capitalized">
+          {{ billAddress.neighbourhood }} {{ billAddress.fullAddress }}
+        </p>
+        <p>{{ billAddress.district }} / {{ billAddress.province }}</p>
       </div>
     </div>
 
@@ -136,7 +155,6 @@
 import * as module from '../../plugins/formatHelper'
 export default {
   name: 'StepOrderDetails',
-  emits: ['go-previous'],
   data() {
     return {
       isEmpty: false,
@@ -153,6 +171,21 @@ export default {
     selectedAddress() {
       return this.$store.state.addresses.selectedDeliveryAddress
     },
+    billAddress() {
+      return this.$store.state.addresses.billingAddress[0]
+    },
+    tckn() {
+      let tcNumber = this.billAddress.personIDNumber
+      if (tcNumber) {
+        let tcknArr = tcNumber.split('')
+        for (let i = 3; i < 9; i++) {
+          tcknArr[i] = '*'
+        }
+        return tcknArr.join('')
+      } else {
+        return
+      }
+    },
     data() {
       return this.$store.getters['cart/getCartProducts']
     },
@@ -163,9 +196,6 @@ export default {
   methods: {
     niceFormat(value) {
       return module.formatNumber(value, 2)
-    },
-    goPreviousStep() {
-      this.$emit('go-previous')
     },
   },
 }

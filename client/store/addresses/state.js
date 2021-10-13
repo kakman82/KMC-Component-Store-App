@@ -1,9 +1,7 @@
 const state = () => ({
   modalForms: {
     showAddDeliveryAddress: false,
-    showUpdateDeliveryAddress: false,
     showAddBillingAddress: false,
-    showUpdateBillingAddress: false,
   },
   provinces: [],
   districts: [],

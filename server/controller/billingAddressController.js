@@ -33,3 +33,28 @@ exports.createBillAddress = async (req, res) => {
     })
   }
 }
+
+//* @desc: Get the bill address by given user id
+//* @route: GET /api/users/billingAddresses
+//* @access: Private
+exports.getBillAddress = async (req, res) => {
+  try {
+    const userBillAddress = await BillingAddress.find({ user: req.decoded._id })
+    if (userBillAddress) {
+      res.status(200).json({
+        success: true,
+        userBillAddress,
+      })
+    } else {
+      res.status(404).json({
+        success: false,
+        message: 'Bu kullanıcıya ait fatura adresi bulunamadı!',
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}

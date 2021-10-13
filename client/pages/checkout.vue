@@ -31,7 +31,7 @@
             icon-pack="fas"
             icon="check-circle"
           >
-            <StepOrderDetails @go-previous="previous" />
+            <StepOrderDetails />
           </b-step-item>
         </b-steps>
       </div>
@@ -68,13 +68,11 @@ export default {
   },
   created() {
     this.$store.dispatch('addresses/getUserDeliveryAddresses')
+    this.$store.dispatch('addresses/getUserBillingAddress')
   },
   methods: {
     next() {
       this.activeStep += 1
-    },
-    previous() {
-      this.activeStep -= 0
     },
   },
 }
