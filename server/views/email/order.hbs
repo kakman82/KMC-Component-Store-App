@@ -72,6 +72,13 @@
   padding: 0.25em 0.5em;
 }
 
+.table-container {
+  -webkit-overflow-scrolling: touch;
+  overflow: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
 
 .table thead {
   background-color: transparent;
@@ -148,11 +155,38 @@ img {
        <div class="card p-3 m-3">
             <div class="content is-medium">
                 <h3 class="has-text-primary">Merhaba {{firstName}},</h3>
-                <p>Sipariş onaylanmıştır.</p>
+                <p>Sipariş alınmıştır.</p>
                 <div class="is-flex">  
-                    <b>Sipariş Numarası:</b>
+                    <b>Sipariş Numarası: </b>
                     <b class="has-text-primary">{{order.orderNo}}</b> 
                 </div> 
+                <div class="is-flex">  
+                    <b>Sipariş Durumu: </b>
+                    <b class="has-text-primary">{{order.status}}</b> 
+                </div> 
+                <br />
+                <b>Banka havalesi için hesap bilgilerimiz aşağıdaki gibidir. Ödeme yapıldıktan ürün tedariğine başlanacaktır.</b>
+                <br />
+                <div class="table-container">
+                  <table class="table is-striped is-narrow is-bordered">
+                    <thead>
+                      <tr>
+                        <th>Banka Adı</th>
+                        <th>IBAN No</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>X Bankası</td>
+                        <td>TR56 0006 2000 0001 2990 0226 04</td>
+                      </tr>
+                      <tr>
+                        <td>Y Bankası</td>
+                        <td>TR 68 00062 0 0000222990028402</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <br />
                 <p>Teşekkür eder, sağlıklı günler dileriz.</p>
                 <b>KMC Elektronik.</b>
@@ -243,20 +277,34 @@ img {
                     Fatura Bilgileri
                 </p>
             </header>
+            {{#if (isBillTypeIndividual billingAddress.billType) }}
             <div class="card-content">
                 <b>
-                {{  deliveryAddress.firstName }} {{ deliveryAddress.lastName }}
+                {{  billingAddress.personFullName }}
                 </b>
-                <p>{{ deliveryAddress.companyName }}</p>
+                <p class="is-size-7">TC No: {{ formatTCKN billingAddress.personIDNumber }}</p>
                 <p class="is-capitalized">
-                {{ deliveryAddress.neighbourhood }}
-                {{ deliveryAddress.fullAddress }}
+                {{ billingAddress.neighbourhood }}
+                {{ billingAddress.fullAddress }}
                 </p>
-                <p>{{ deliveryAddress.district }}/{{ deliveryAddress.province }}</p>
-                <p class="is-size-7">Tel: {{ deliveryAddress.phone }}</p>
+                <p>{{ billingAddress.district }}/{{ billingAddress.province }}</p>
                 <br>
-                <u>Ödeme yapıldıktan sonra 2 hafta içerisinde teslim edilmesi planlanmaktadır.</u>
             </div>
+            {{else}}
+            <div class="card-content">
+                <b>
+                {{  billingAddress.companyName }}
+                </b>
+                <p class="is-size-5"> Vergi Dairesi: {{ billingAddress.companyTaxOffice }}</p>
+                <p class="is-size-5"> Vergi No: {{ billingAddress.companyTaxNumber }}</p>
+                <p class="is-capitalized">
+                {{ billingAddress.neighbourhood }}
+                {{ billingAddress.fullAddress }}
+                </p>
+                <p>{{ billingAddress.district }}/{{ billingAddress.province }}</p>
+                <br>
+            </div>
+            {{/if}}
         </div>
    </div>   
 </body>

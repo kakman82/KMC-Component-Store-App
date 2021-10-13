@@ -241,9 +241,11 @@ export default {
       } else if (value === 'Tedarik Aşamasında') {
         return 'is-info'
       } else if (value === 'Yola Çıktı') {
-        return 'is-warning'
+        return 'is-dark'
       } else if (value === 'İptal Edildi') {
         return 'is-danger'
+      } else if (value === 'Ödeme Bekliyor') {
+        return 'is-warning'
       }
     },
     async getUserOrders() {

@@ -5,13 +5,14 @@ const path = require('path')
 //* Gönderilecek emailler için genel bir constructor class tanımı
 // bu class altında nodemailer config yapısı
 module.exports = class Email {
-  constructor(user, url, order, address) {
+  constructor(user, url, order, deliveryAddress, billingAddress) {
     this.to = user.email
     this.firstName = user.firstName
     this.url = url
     this.from = `KMC Elektronik <${process.env.EMAIL_FROM}>`
     this.order = order
-    this.address = address
+    this.deliveryAddress = deliveryAddress
+    this.billingAddress = billingAddress
   }
   //yeni bir mail transport tanımı yapıyoruz. Bu tanım production ve development ortamında göre değişiklik gösteriyor;
   newTransport() {
@@ -83,7 +84,8 @@ module.exports = class Email {
         firstName: this.firstName,
         url: this.url,
         order: this.order,
-        deliveryAddress: this.address,
+        deliveryAddress: this.deliveryAddress,
+        billingAddress: this.billingAddress,
         // bu şekilde template içinde kullanılabilecek helper func tanımlamak mümkün
         // ref https://www.youtube.com/watch?v=WaetjCYgB4U
         helpers: {
@@ -93,6 +95,16 @@ module.exports = class Email {
               maximumFractionDigits: digits,
             }).format(value)
             return formatted
+          },
+          formatTCKN: (value) => {
+            let tcknArr = value.split('')
+            for (let i = 3; i < 9; i++) {
+              tcknArr[i] = '*'
+            }
+            return tcknArr.join('')
+          },
+          isBillTypeIndividual: (value) => {
+            return value === 'bireysel' ? true : false
           },
         },
       },

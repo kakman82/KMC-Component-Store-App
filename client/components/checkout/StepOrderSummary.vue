@@ -153,7 +153,8 @@ export default {
 
           this.$store.commit('cart/resetCart')
           this.$store.commit('order/resetOrderAmounts')
-          this.$store.commit('adresses/resetSelectedAddress')
+          this.$store.commit('addresses/resetSelectedAddress')
+          this.$store.commit('addresses/resetBillingAddress')
 
           this.$buefy.dialog.confirm({
             title: response.message,

@@ -45,7 +45,7 @@ exports.createOrder = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Sipariş onaylandı...',
+      message: 'Sipariş alındı...',
       order: newOrder,
     })
   } catch (error) {
