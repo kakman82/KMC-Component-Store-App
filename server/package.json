@@ -25,10 +25,10 @@
     "nodemailer": "^6.6.3",
     "nodemailer-express-handlebars": "^4.0.0",
     "tcmb-doviz": "^1.1.1",
-    "xss-clean": "^0.1.1"
+    "xss-clean": "^0.1.1",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "morgan": "^1.10.0",
     "nodemon": "^2.0.7"
   },
   "engines": {
