@@ -20,15 +20,11 @@ module.exports = class Email {
       //TODO Buradaki kısım Emre'den alacağım mail host bilgileri olacak prod ortamı için şimdilik bu şekilde bıraktım
       //! ek olarak Jonas dan farklı olarak handlebars kullandığım için tanım biraz farklı https://www.youtube.com/watch?v=38aE1lSAJZ8
       let transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
-        secure: false,
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-          user: 'kofisoftteam@gmail.com',
-          pass: 'kofisoft2019',
-        },
-        tls: {
-          rejectUnauthorized: false,
+          user: process.env.EMAIL_USERNAME,
+          pass: process.env.EMAIL_PASSWORD,
         },
       })
 
