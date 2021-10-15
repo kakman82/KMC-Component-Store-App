@@ -54,9 +54,10 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    //! Heroku deploy için bu tanım önemli fakat heroku tanımadığı için BASE_URL manuel tanımladım https://kmc-arrow-store.herokuapp.com/api olarak. ref video-> https://www.youtube.com/watch?v=nngsKhTb2BA&t=946s
-    //*TODO 'https://kmc-store-app.herokuapp.com/api' || 'http://localhost:5000/api', bu eklenecek deploy sonrası, şimdilik sadece localhostu bırakıyorum
-    baseUrl: 'http://localhost:5000/api',
+    //! Heroku deploy için bu tanım önemli fakat heroku tanımadığı için BASE_URL ref video-> https://www.youtube.com/watch?v=nngsKhTb2BA&t=946s
+
+    baseUrl:
+      'https://kmc-server-app.herokuapp.com/' || 'http://localhost:5000/api',
   },
   router: {
     middleware: ['authenticated', 'searched'],
