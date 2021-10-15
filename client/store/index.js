@@ -16,16 +16,13 @@ export const actions = {
   nuxtServerInit({ commit }, { req }) {
     // headerda cookie yoksa çık
     if (!req && !req.headers.cookie) return
-    console.log('nuxtServerInıt çalıştı')
-    console.log('req headers', req.headers)
-    console.log('cookie: ', Cookie.get('access_token'))
-    console.log(
-      'cookie de token varsa eğer decoded: ',
-      jwtDecode(Cookie.get('access_token'))
-    )
-    //cookie de bir kayıt varsa decode işlemi;
-    const decoded = jwtDecode(req.headers.cookie)
 
+    const token = Cookie.get('access_token')
+    //cookie de bir kayıt varsa decode işlemi;
+    let decoded = ''
+    if (token) {
+      decoded = jwtDecode(token)
+    }
     // decode işlemi oldu ise gerekli user bilgisinin state kaydı için mutationa gönder;
     if (decoded) {
       commit('setUser', decoded)
