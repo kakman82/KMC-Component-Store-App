@@ -190,6 +190,7 @@ export default {
       this.$buefy.dialog.confirm({
         title: 'Hizmet Şartları',
         size: 'is-small',
+        //TODO hizmet şartları metni gerekiyor - ayrı bir html dosyasından okutma şeklinde olabilir
         message: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Fusce id fermentum quam. Proin sagittis,
                         nibh id hendrerit imperdiet, elit sapien laoreet elit,

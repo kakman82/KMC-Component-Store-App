@@ -126,4 +126,8 @@ module.exports = class Email {
   async sendOrderInfo(orderNumber) {
     await this.send('order', `Sipariş alındı (#:${orderNumber})`)
   }
+
+  async sendPaymentConfirmedInfo(orderNumber) {
+    await this.send('paymentConfirmed', `Ödeme onaylandı (#:${orderNumber}) `)
+  }
 }

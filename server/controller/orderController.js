@@ -43,9 +43,9 @@ exports.createOrder = async (req, res) => {
       billingAddress
     ).sendOrderInfo(order.orderNo)
 
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: 'Sipariş alındı...',
+      message: 'Siparişin bize ulaştı...',
       order: newOrder,
     })
   } catch (error) {
@@ -63,14 +63,82 @@ exports.createOrder = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.params.id })
+      .populate('deliveryAddress')
+      .populate('billingAddress')
       .sort({
         createdAt: 'desc',
       })
-      .populate('deliveryAddress')
 
     res.status(200).json({
       success: true,
+      orderResult: orders.length,
       orders: orders,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
+
+//* @desc: Get all user orders for given role
+//* @route: GET /api/users/orders
+//* @access: Private
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate('user')
+      .populate('deliveryAddress')
+      .populate('billingAddress')
+      .sort({
+        createdAt: 'desc',
+      })
+    res.status(200).json({
+      success: true,
+      orderResult: orders.length,
+      orders: orders,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
+
+//* @desc: Update order status
+//* @route: PATCH /api/users/orders
+//* @access: Private
+exports.updateOrderStatus = async (req, res) => {
+  try {
+    const orderToUpdate = await Order.findByIdAndUpdate(
+      { _id: req.body.orderId },
+      { status: req.body.newStatus }
+    )
+
+    const updatedOrder = await Order.findById(req.body.orderId)
+      .populate('user')
+      .populate('deliveryAddress')
+      .populate('billingAddress')
+      .lean()
+
+    if (
+      orderToUpdate.status === 'Ödeme Bekliyor' &&
+      updatedOrder.status === 'Tedarik Aşamasında'
+    ) {
+      await new Email(
+        updatedOrder.user,
+        null,
+        updatedOrder,
+        updatedOrder.deliveryAddress,
+        updatedOrder.billingAddress
+      ).sendPaymentConfirmedInfo(updatedOrder.orderNo)
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Siparişin durumu başarıyla güncellendi.',
     })
   } catch (error) {
     res.status(500).json({

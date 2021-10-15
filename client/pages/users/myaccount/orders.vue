@@ -66,7 +66,7 @@
 
           <b-table-column
             field="createdAt"
-            label="Tarih"
+            label="Sipariş Tarihi"
             numeric
             centered
             v-slot="props"
@@ -169,18 +169,70 @@
                 </p>
               </header>
               <div class="card-content">
-                <p class="subtitle">
+                <p class="subtitle is-capitalized">
                   {{ props.row.deliveryAddress.firstName }}
                   {{ props.row.deliveryAddress.lastName }}
                 </p>
-                <p class="is-capitalized">
-                  {{ props.row.deliveryAddress.companyName }}
+                <p class="is-size-6">
+                  Tel: {{ props.row.deliveryAddress.phone }}
                 </p>
                 <p class="is-capitalized">
                   {{ props.row.deliveryAddress.neighbourhood }}
                   {{ props.row.deliveryAddress.fullAddress }}
+                </p>
+                <p>
                   {{ props.row.deliveryAddress.district }} /
                   {{ props.row.deliveryAddress.province }}
+                </p>
+              </div>
+            </div>
+
+            <div class="card mt-5">
+              <header class="card-header">
+                <p class="card-header-title has-text-primary">
+                  Fatura Bilgileri
+                </p>
+              </header>
+              <!-- Kurumsal Fatura Adres Bilgileri -->
+              <div
+                class="card-content"
+                v-if="props.row.billingAddress.billType === 'kurumsal'"
+              >
+                <p class="has-text-weight-bold is-capitalized">
+                  {{ props.row.billingAddress.companyName }}
+                </p>
+                <p class="has-text-weight-semibold">
+                  {{ props.row.billingAddress.companyTaxOffice }} Vergi Dairesi,
+                  VKNO:
+                  {{ props.row.billingAddress.companyTaxNumber }}
+                </p>
+                <p class="is-capitalized">
+                  {{ props.row.billingAddress.neighbourhood }}
+                  {{ props.row.billingAddress.fullAddress }}
+                </p>
+                <p>
+                  {{ props.row.billingAddress.district }} /
+                  {{ props.row.billingAddress.province }}
+                </p>
+              </div>
+              <!-- Bireysel Fatura Adres Bilgileri -->
+              <div
+                class="card-content"
+                v-if="props.row.billingAddress.billType === 'bireysel'"
+              >
+                <p class="has-text-weight-bold">
+                  {{ props.row.billingAddress.personFullName }}
+                </p>
+                <p class="has-text-weight-semibold">
+                  TCNO: {{ tckn(props.row.billingAddress.personIDNumber) }}
+                </p>
+                <p class="is-capitalized">
+                  {{ props.row.billingAddress.neighbourhood }}
+                  {{ props.row.billingAddress.fullAddress }}
+                </p>
+                <p>
+                  {{ props.row.billingAddress.district }} /
+                  {{ props.row.billingAddress.province }}
                 </p>
               </div>
             </div>
@@ -247,6 +299,13 @@ export default {
       } else if (value === 'Ödeme Bekliyor') {
         return 'is-warning'
       }
+    },
+    tckn(tcNumber) {
+      let tcknArr = tcNumber.split('')
+      for (let i = 3; i < 9; i++) {
+        tcknArr[i] = '*'
+      }
+      return tcknArr.join('')
     },
     async getUserOrders() {
       try {
