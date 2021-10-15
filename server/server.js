@@ -132,4 +132,9 @@ app.all('*', (req, res, next) => {
 //* process.env.PORT bu tanım Heroku deploy için
 const PORT = process.env.PORT || 5000
 
+//* deploy sonrası test için;
+app.get('/', (req, res) => {
+  res.send('Hello from Express!')
+})
+
 app.listen(PORT, () => console.log(`Server started on port: ${PORT}`))
