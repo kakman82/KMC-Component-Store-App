@@ -15,7 +15,7 @@ export const actions = {
   */
   nuxtServerInit({ commit }, { req }) {
     // headerda cookie yoksa çık
-    if (!req.headers.cookie) return
+    if (!req && !req.headers.cookie) return
 
     //cookie de bir kayıt varsa decode işlemi;
     const decoded = jwtDecode(req.headers.cookie)
