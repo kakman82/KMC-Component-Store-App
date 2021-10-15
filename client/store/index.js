@@ -13,21 +13,17 @@ export const actions = {
   Bu metodu kullanmak için nuxt/store da index.js dosyası oluşturmak zorunlu 
   bu nedenle haricen user için ayrı bir folder yaratmadım bu dosyada belirttim
   */
-  nuxtServerInit({ commit }, { req }) {
-    // headerda cookie yoksa çık
-    if (!req && !req.headers.cookie) return
-
-    const token = Cookie.get('access_token')
-    //cookie de bir kayıt varsa decode işlemi;
-    let decoded = ''
-    if (token) {
-      decoded = jwtDecode(token)
-    }
-    // decode işlemi oldu ise gerekli user bilgisinin state kaydı için mutationa gönder;
-    if (decoded) {
-      commit('setUser', decoded)
-    }
-  },
+  //! nuxtServerInit netlift deploy sonrası çalışmadığı için -static site çünkü-SSR olarak çalışıyor bu bende bu metodu iptal ettim, layout/defaul.vue da uygulama çalışırken cookide varsa değer alıp store gönderdim
+  // nuxtServerInit({ commit }, { req }) {
+  //   // headerda cookie yoksa çık
+  //   if (!req.headers.cookie) return
+  //   //cookie de bir kayıt varsa decode işlemi;
+  //   const decoded = jwtDecode(req.headers.cookie)
+  //   // decode işlemi oldu ise gerekli user bilgisinin state kaydı için mutationa gönder;
+  //   if (decoded) {
+  //     commit('setUser', decoded)
+  //   }
+  // },
 }
 
 export const mutations = {
