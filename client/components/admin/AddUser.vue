@@ -113,6 +113,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { capitalizeEachWord } from '../../plugins/formatHelper'
 export default {
   name: 'AddUser',
   components: { ValidationObserver, ValidationProvider },
@@ -143,9 +144,9 @@ export default {
         this.isLoading = true
         const reqData = {
           role: this.role,
-          firstName: this.firstName,
-          lastName: this.lastName,
-          email: this.email,
+          firstName: capitalizeEachWord(this.firstName),
+          lastName: capitalizeEachWord(this.lastName),
+          email: this.email.toLowerCase(),
           password: this.password,
         }
         const response = await this.$axios.$post('/auth/signup', reqData)

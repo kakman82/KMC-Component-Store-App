@@ -117,6 +117,7 @@
 
 <script>
 import { ValidationObserver, ValidationProvider } from 'vee-validate'
+import { capitalizeEachWord } from '../../plugins/formatHelper'
 export default {
   name: 'UpdateUser',
   components: { ValidationObserver, ValidationProvider },
@@ -147,9 +148,9 @@ export default {
     async updateUser() {
       const reqDataForUpdateUser = {
         id: this.user._id,
-        firstName: this.user.firstName,
-        lastName: this.user.lastName,
-        email: this.user.email,
+        firstName: capitalizeEachWord(this.user.firstName),
+        lastName: capitalizeEachWord(this.user.lastName),
+        email: this.user.email.toLowerCase(),
         role: this.user.role,
         active: this.user.active,
       }
