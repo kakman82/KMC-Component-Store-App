@@ -1,5 +1,5 @@
 <template>
-  <div class="card m-5" style="width: 300px">
+  <div class="card mt-5 mr-5" style="width: 300px">
     <header class="card-header">
       <p class="card-header-title">
         <b-radio

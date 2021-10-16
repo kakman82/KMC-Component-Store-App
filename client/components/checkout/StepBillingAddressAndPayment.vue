@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div class="box p-2">
     <article class="message is-info" v-show="$route.path === '/checkout'">
       <div class="message-body">
         Kayıtlı fatura adresi yoksa yenisi oluşturarak ve ödeme yöntemini de

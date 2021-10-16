@@ -1,10 +1,12 @@
 <template>
   <section>
-    <Navbar />
+    <ClientOnly>
+      <Navbar />
 
-    <Nuxt keep-alive />
+      <Nuxt keep-alive />
 
-    <Footer />
+      <Footer />
+    </ClientOnly>
   </section>
 </template>
 <script>

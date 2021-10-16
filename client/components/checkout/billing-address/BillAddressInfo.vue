@@ -1,52 +1,46 @@
 <template>
-  <section>
-    <div class="card" v-if="address">
-      <header class="card-header">
-        <p
-          class="
-            card-header-title
-            has-text-primary
-            is-capitalized is-marginless
-          "
-        >
-          {{ address.billType }} Fatura
-        </p>
+  <div class="card" v-if="address">
+    <header class="card-header">
+      <p
+        class="card-header-title has-text-primary is-capitalized is-marginless"
+      >
+        {{ address.billType }} Fatura
+      </p>
 
-        <button class="button is-white" @click="onUpdate">
-          <span class="icon">
-            <i class="fas fa-edit has-text-primary"></i>
-          </span>
-        </button>
-      </header>
-      <UpdateBillAddress
-        :billAddressData="address"
-        :isOpen="openBillAddressUpdateFormModal"
-        @close-modal="closeBillAddressUpdateFormModal"
-      />
+      <button class="button is-white" @click="onUpdate">
+        <span class="icon">
+          <i class="fas fa-edit has-text-primary"></i>
+        </span>
+      </button>
+    </header>
+    <UpdateBillAddress
+      :billAddressData="address"
+      :isOpen="openBillAddressUpdateFormModal"
+      @close-modal="closeBillAddressUpdateFormModal"
+    />
 
-      <!-- Kurumsal Fatura Adres Bilgileri -->
-      <div class="card-content" v-if="address.billType === 'kurumsal'">
-        <p class="has-text-weight-bold">{{ address.companyName }}</p>
-        <p class="has-text-weight-semibold">
-          {{ address.companyTaxOffice }} Vergi Dairesi, VKNO:
-          {{ address.companyTaxNumber }}
-        </p>
-        <p class="is-text-overflow is-capitalized">
-          {{ address.neighbourhood }} {{ address.fullAddress }}
-        </p>
-        <p>{{ address.district }} / {{ address.province }}</p>
-      </div>
-      <!-- Bireysel Fatura Adres Bilgileri -->
-      <div class="card-content" v-if="address.billType === 'bireysel'">
-        <p class="has-text-weight-bold">{{ address.personFullName }}</p>
-        <p class="has-text-weight-semibold">TCNO: {{ tckn }}</p>
-        <p class="is-text-overflow is-capitalized">
-          {{ address.neighbourhood }} {{ address.fullAddress }}
-        </p>
-        <p>{{ address.district }} / {{ address.province }}</p>
-      </div>
+    <!-- Kurumsal Fatura Adres Bilgileri -->
+    <div class="card-content" v-if="address.billType === 'kurumsal'">
+      <p class="has-text-weight-bold">{{ address.companyName }}</p>
+      <p class="has-text-weight-semibold">
+        {{ address.companyTaxOffice }} Vergi Dairesi, VKNO:
+        {{ address.companyTaxNumber }}
+      </p>
+      <p class="is-text-overflow is-capitalized">
+        {{ address.neighbourhood }} {{ address.fullAddress }}
+      </p>
+      <p>{{ address.district }} / {{ address.province }}</p>
     </div>
-  </section>
+    <!-- Bireysel Fatura Adres Bilgileri -->
+    <div class="card-content" v-if="address.billType === 'bireysel'">
+      <p class="has-text-weight-bold">{{ address.personFullName }}</p>
+      <p class="has-text-weight-semibold">TCNO: {{ tckn }}</p>
+      <p class="is-text-overflow is-capitalized">
+        {{ address.neighbourhood }} {{ address.fullAddress }}
+      </p>
+      <p>{{ address.district }} / {{ address.province }}</p>
+    </div>
+  </div>
 </template>
 
 <script>

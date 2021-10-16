@@ -1,6 +1,6 @@
 <template>
   <section class="section is-medium mt-5">
-    <div class="columns mx-6">
+    <div class="columns">
       <div class="column is-8">
         <b-steps
           size="is-medium"

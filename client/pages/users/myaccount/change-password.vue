@@ -1,5 +1,5 @@
 <template>
-  <div class="card ml-6" style="width: 600px">
+  <div class="card" style="width: 600px">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Şifre Değiştir</p>
     </header>
