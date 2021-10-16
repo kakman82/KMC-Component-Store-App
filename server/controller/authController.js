@@ -43,9 +43,11 @@ exports.signUpUser = async (req, res) => {
       await newUser.save()
 
       // mail bodysinde yer alacak olan sitenin adresi için url tanımı
-      const url = `${req.protocol}://${req.get('host')}`
+      // bu url herokudaki server adresini verir - oyüzden .env ye netlifye deploy ettiğim site adresini ekledim
+      //const url = `${req.protocol}://${req.get('host')}`
+
       // ve welcome email gönderimi
-      await new Email(newUser, url).sendWelcome()
+      await new Email(newUser, process.env.DEPLOY_URL).sendWelcome()
 
       // DB ye kayıt sonrası token oluşturma ve gönderme
       createSendToken(
