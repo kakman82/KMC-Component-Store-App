@@ -14,7 +14,7 @@ export default {
     confirmCustomDelete() {
       this.$buefy.dialog.confirm({
         title: 'Sepetten Sil?',
-        message: `${this.productName} no.lu ürünü sepetinizden <b>silmek</b> istediğinize emin misiniz? <br/>  <small>Bu işlem geri alınamaz!</small>`,
+        message: `${this.productName} no.lu ürünü sepetten <b>silmek</b> istediğine emin misin? <br/>  <small>Bu işlem geri alınamaz!</small>`,
         cancelText: 'Vazgeç',
         confirmText: 'Sil',
         type: 'is-danger',
