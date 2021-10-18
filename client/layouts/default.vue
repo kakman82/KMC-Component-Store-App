@@ -22,7 +22,8 @@ export default {
   },
   created() {
     const token = Cookie.get()
-    if (token) {
+
+    if (Object.keys(token).length > 0) {
       const decoded = jwtDecode(token.access_token)
       this.$store.commit('setUser', decoded)
     }

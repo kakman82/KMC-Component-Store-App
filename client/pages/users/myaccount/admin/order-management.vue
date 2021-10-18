@@ -80,14 +80,24 @@
           </b-table-column>
 
           <b-table-column
-            field="firtName"
-            label="Kullanıcı"
+            field="user.firstName"
+            label="Ad Soyad"
             width="120px"
             searchable
             sortable
             v-slot="props"
           >
             {{ props.row.user.firstName }} {{ props.row.user.lastName }}
+          </b-table-column>
+
+          <b-table-column
+            field="user.email"
+            label="E-posta"
+            width="120px"
+            searchable
+            v-slot="props"
+          >
+            {{ props.row.user.email }}
           </b-table-column>
 
           <b-table-column

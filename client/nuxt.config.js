@@ -1,7 +1,7 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
-  // netlify 404 not found uyarısı için : https://nuxtjs.org/deployments/netlify/
+  ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

@@ -21,7 +21,7 @@
       <hr class="solid mt-0" />
       <section>
         <div class="columns">
-          <div class="column is-3">
+          <div class="column is-2">
             <div class="sidebar-page">
               <section class="sidebar-layout">
                 <div
@@ -156,7 +156,7 @@
               </section>
             </div>
           </div>
-          <div class="column is-9 ml-3">
+          <div class="column is-10 ml-3">
             <Nuxt keep-alive />
           </div>
         </div>
