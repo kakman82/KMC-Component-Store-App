@@ -1,6 +1,5 @@
 import lodash from '../../node_modules/lodash-es'
 import deepdash from '../../node_modules/deepdash-es'
-import { fil } from 'date-fns/locale'
 const _ = deepdash(lodash)
 
 export default {

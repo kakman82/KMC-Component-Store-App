@@ -1,14 +1,7 @@
 <template>
   <section>
     <div class="columns mt-6 mx-3">
-      <div class="column is-6 mt-5">
-        <div class="notification is-success is-light">
-          <b>" {{ $route.params.title }}"</b
-          ><i>no.lu ürün için Arrow.com stokları gösteriliyor...</i>
-        </div>
-      </div>
-
-      <div class="column is-6 mt-5">
+      <div class="column mt-5">
         <SearchBar />
       </div>
     </div>
@@ -25,13 +18,12 @@
         >
           <b-message type="is-warning" has-icon>
             <p class="is-size-5 has-text-weight-bold">
-              Bu üründe stok bulunmamaktadır!
+              Bu üründe stok yok ya da ürün bulunamamıştır.
             </p>
             <p class="is-size-8">
-              Ana sayfamızdan farklı bir ürün için yeniden arama yapabilir ya da
+              Farklı bir ürün için yeniden arama yapabilir ya da
               <br />
-              bu ürün için sol taraftaki menüden seçim kriterlerini
-              değiştirebilirsin.
+              sol taraftaki menüden seçim kriterlerini değiştirebilirsin.
             </p>
           </b-message>
         </div>

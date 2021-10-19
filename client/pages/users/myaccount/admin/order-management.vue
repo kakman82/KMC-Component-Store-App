@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" style="width: 95%">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Tüm Siparişler</p>
       <b-tooltip
@@ -71,7 +71,7 @@
           <b-table-column
             field="orderNo"
             label="Sipariş No."
-            width="120px"
+            width="90px"
             searchable
             sortable
             v-slot="props"
@@ -90,7 +90,7 @@
             {{ props.row.user.firstName }} {{ props.row.user.lastName }}
           </b-table-column>
 
-          <b-table-column
+          <!-- <b-table-column
             field="user.email"
             label="E-posta"
             width="120px"
@@ -98,11 +98,12 @@
             v-slot="props"
           >
             {{ props.row.user.email }}
-          </b-table-column>
+          </b-table-column> -->
 
           <b-table-column
             field="createdAt"
             label="Sipariş Tarihi"
+            width="50px"
             numeric
             centered
             sortable
@@ -117,36 +118,35 @@
 
           <b-table-column
             field="serviceFee"
-            label="Hizmet Bedeli"
+            label="Hizmet Bedeli(TL)"
             numeric
             centered
             v-slot="props"
           >
-            {{ niceFormat(props.row.serviceFee, 2) }} TL
+            {{ niceFormat(props.row.serviceFee, 2) }}
           </b-table-column>
           <b-table-column
             field="tax"
-            label="KDV"
+            label="KDV(TL)"
             numeric
             centered
             v-slot="props"
           >
-            {{ niceFormat(props.row.tax, 2) }} TL
+            {{ niceFormat(props.row.tax, 2) }}
           </b-table-column>
           <b-table-column
             field="sumTotal"
-            label="Sipariş Toplamı"
+            label="Sipariş Toplamı(TL)"
             numeric
             centered
             v-slot="props"
           >
-            {{ niceFormat(props.row.sumTotal, 2) }} TL
+            {{ niceFormat(props.row.sumTotal, 2) }}
           </b-table-column>
 
           <b-table-column
             field="status"
             label="Sipariş Durumu"
-            width="80px"
             searchable
             sortable
             centered
@@ -154,6 +154,7 @@
           >
             <b-select
               rounded
+              size="is-small"
               v-model="props.row.status"
               @input="setNewStatus($event, props.row._id)"
             >
@@ -167,16 +168,16 @@
             </b-select>
           </b-table-column>
 
-          <b-table-column label="Durum Güncelle" centered>
+          <b-table-column label="Durum Güncelle" centered width="50px">
             <b-button
               rounded
               outlined
               :disabled="!newStatus"
               :loading="isLoading"
-              type="is-primary"
+              type="is-primary is-small"
               @click="updateOrderStatus"
             >
-              Güncelle
+              Kaydet
             </b-button>
           </b-table-column>
 
@@ -450,5 +451,8 @@ export default {
 tr.rowColorStyle {
   background-color: #fffbeb;
   color: #947600;
+}
+.b-table {
+  font-size: smaller;
 }
 </style>

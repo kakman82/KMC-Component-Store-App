@@ -1,7 +1,7 @@
 <template>
   <div class="control has-icons-left">
     <input
-      class="input is-rounded is-large"
+      class="input is-rounded is-medium"
       type="text"
       placeholder="Ara..."
       v-model="search_token"
@@ -10,7 +10,7 @@
     <span class="icon is-medium is-left">
       <i class="fas fa-search"></i>
     </span>
-    <!-- Loading -->
+    <!-- Loading Spinner -->
     <b-loading :is-full-page="isFullPage" v-model="isLoading"></b-loading>
   </div>
 </template>
@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      search_token: '',
+      search_token: this.$store.state.products.search,
       isFullPage: true,
       isLoading: false,
     }
@@ -39,13 +39,10 @@ export default {
           this.$store.commit('products/setSearch', this.search_token)
           this.isLoading = false
           this.$router.push(`/search_result/${this.search_token}`)
-          this.search_token = ''
         }
       } catch (error) {
         this.isLoading = false
-        this.search_token = ''
         this.$store.commit('products/setSearch', this.search_token)
-        this.$router.push('/')
         this.alertError()
         console.log(error)
       }

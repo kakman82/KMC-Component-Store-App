@@ -6,7 +6,6 @@ const mutations = {
     state.search = value
   },
   resetValuesForNewSeach(state) {
-    state.search = ''
     state.products = []
     state.showOnlyHasStock = true
     state.mfrCheckboxGroup = []

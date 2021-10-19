@@ -1,5 +1,5 @@
 const state = () => ({
-  search: null,
+  search: '',
   products: [],
   showOnlyHasStock: true,
   mfrCheckboxGroup: [],

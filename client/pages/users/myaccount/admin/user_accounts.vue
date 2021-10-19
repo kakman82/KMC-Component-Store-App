@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" style="width: 95%">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Kullanıcı Listesi</p>
     </header>

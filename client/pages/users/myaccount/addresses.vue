@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="width: 95%">
     <StepDeliveryAddress />
   </section>
 </template>
