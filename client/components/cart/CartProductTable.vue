@@ -13,6 +13,7 @@
       </b-button>
     </div>
     <b-table
+      class="fontSize"
       :data="isEmpty ? [] : data"
       :bordered="isBordered"
       :striped="isStriped"
@@ -30,7 +31,7 @@
       <b-table-column
         field="productName"
         label="Ürün Kodu"
-        width="50"
+        width="200px"
         v-slot="props"
       >
         {{ props.row.productName }}
@@ -214,6 +215,9 @@ export default {
   transform: scale(
     1.8
   ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+.b-table.fontSize {
+  font-size: smaller;
 }
 
 /* .image.is-64x64 {

@@ -60,6 +60,7 @@
           <b-table-column
             field="firstName"
             label="Ad"
+            width="120px"
             searchable
             sortable
             v-slot="props"
@@ -69,6 +70,7 @@
           <b-table-column
             field="lastName"
             label="Soyad"
+            width="120px"
             searchable
             sortable
             v-slot="props"
@@ -78,6 +80,7 @@
           <b-table-column
             field="email"
             label="E-posta"
+            width="120px"
             searchable
             sortable
             v-slot="props"
@@ -88,6 +91,7 @@
             field="createdAt"
             label="Kayıt Tarihi"
             centered
+            width="40px"
             searchable
             sortable
             v-slot="props"
@@ -97,6 +101,7 @@
           <b-table-column
             field="role"
             label="Rol"
+            width="20px"
             centered
             sortable
             v-slot="props"
@@ -108,6 +113,7 @@
           <b-table-column
             field="active"
             label="Durum"
+            width="10px"
             centered
             sortable
             v-slot="props"
@@ -116,7 +122,7 @@
               {{ userStatus(props.row.active) }}
             </span>
           </b-table-column>
-          <b-table-column label="Düzenle" centered v-slot="props">
+          <b-table-column label="Düzenle" centered v-slot="props" width="10px">
             <b-button
               size="is-small"
               type="is-info"

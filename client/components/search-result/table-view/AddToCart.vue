@@ -141,7 +141,6 @@ export default {
           productCurrencyDate: '',
           productQuantity: this.quantity,
         }
-        //console.log('Sepete Eklenen Product Object: ', cartProductData)
         // Mutationa product gönderimi ve modal gösterimi;
         this.$store.commit('cart/addProductToCart', cartProductData)
         // Modal componentin beklediği active propu true olarak set ediyorum

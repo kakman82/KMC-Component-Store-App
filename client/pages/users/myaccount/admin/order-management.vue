@@ -39,6 +39,7 @@
       </div>
       <div class="content">
         <b-table
+          class="fontSize"
           :data="isEmpty ? [] : orders"
           :bordered="isBordered"
           :striped="isStriped"
@@ -65,7 +66,14 @@
           aria-page-label="Page"
           aria-current-label="Current page"
           :row-class="
-            (row, index) => row.status === 'Ödeme Bekliyor' && 'rowColorStyle'
+            (row, index) =>
+              row.status === 'Ödeme Bekliyor'
+                ? 'rowColorStyleWarning'
+                : row.status === 'İptal'
+                ? 'rowColorStyleDanger'
+                : row.status === 'Teslim Edildi'
+                ? 'rowColorStyleSuccess'
+                : ''
           "
         >
           <b-table-column
@@ -152,33 +160,11 @@
             centered
             v-slot="props"
           >
-            <b-select
-              rounded
-              size="is-small"
-              v-model="props.row.status"
-              @input="setNewStatus($event, props.row._id)"
-            >
-              <option
-                v-for="(status, index) in statuses"
-                :value="status"
-                :key="index"
-              >
-                {{ status }}
-              </option>
-            </b-select>
-          </b-table-column>
-
-          <b-table-column label="Durum Güncelle" centered width="50px">
-            <b-button
-              rounded
-              outlined
-              :disabled="!newStatus"
-              :loading="isLoading"
-              type="is-primary is-small"
-              @click="updateOrderStatus"
-            >
-              Kaydet
-            </b-button>
+            <ChangeOrderStatus
+              :orderId="props.row._id"
+              :statusInfo="props.row.status"
+              @refresh-orders="getAllOrders"
+            />
           </b-table-column>
 
           <template #empty>
@@ -342,25 +328,18 @@
 
 <script>
 import * as module from '../../../../plugins/formatHelper'
+import ChangeOrderStatus from '../../../../components/admin/ChangeOrderStatus.vue'
 export default {
   layout: 'usermenu',
   middleware: 'authenticated',
+  components: { ChangeOrderStatus },
   head: {
     title: 'Sipariş Yön. | KMC Elektronik',
   },
+
   data() {
     return {
       orders: [],
-      statuses: [
-        'Ödeme Bekliyor',
-        'Tedarik Aşamasında',
-        'Yola Çıktı',
-        'Teslim Edildi',
-        'İptal',
-      ],
-      newStatus: '',
-      orderIDToUpdateStatus: '',
-      isLoading: false,
 
       isEmpty: false,
       isBordered: true,
@@ -401,33 +380,6 @@ export default {
       }
       return tcknArr.join('')
     },
-    setNewStatus(event, orderId) {
-      this.newStatus = event
-      this.orderIDToUpdateStatus = orderId
-    },
-    async updateOrderStatus() {
-      try {
-        const requestData = {
-          orderId: this.orderIDToUpdateStatus,
-          newStatus: this.newStatus,
-        }
-        this.isLoading = true
-        const response = await this.$axios.$patch('/users/orders', requestData)
-        if (response.success) {
-          this.isLoading = false
-          this.newStatus = ''
-          this.orderIDToUpdateStatus = ''
-          this.getAllOrders()
-          this.$buefy.toast.open({
-            message: response.message,
-            type: 'is-success',
-          })
-        }
-      } catch (error) {
-        this.isLoading = false
-        console.log(error)
-      }
-    },
     async getAllOrders() {
       try {
         const response = await this.$axios.$get('/users/orders')
@@ -448,11 +400,22 @@ export default {
     2
   ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }
-tr.rowColorStyle {
+tr.rowColorStyleWarning {
   background-color: #fffbeb;
   color: #947600;
 }
-.b-table {
+
+tr.rowColorStyleDanger {
+  background-color: #feecf0;
+  color: #cc0f35;
+}
+
+tr.rowColorStyleSuccess {
+  background-color: #effaf5;
+  color: #257953;
+}
+
+.b-table.fontSize {
   font-size: smaller;
 }
 </style>
