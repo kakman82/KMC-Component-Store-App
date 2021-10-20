@@ -111,7 +111,6 @@ export default {
           '/users/profile/updateMyPassword',
           reqData
         )
-        console.log(response)
         if (response.success) {
           this.$buefy.toast.open({
             type: 'is-success',

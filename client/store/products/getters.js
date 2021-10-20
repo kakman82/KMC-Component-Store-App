@@ -2,7 +2,7 @@ import lodash from '../../node_modules/lodash-es'
 import deepdash from '../../node_modules/deepdash-es'
 const _ = deepdash(lodash)
 
-export default {
+const getters = {
   getProducts(state) {
     let apiProducts = [...state.products]
     let filteredProducts = []
@@ -60,3 +60,4 @@ export default {
     }
   },
 }
+export default getters

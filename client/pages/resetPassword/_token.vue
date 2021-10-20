@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     async resetPassword() {
-      //console.log('token: ', this.$route.params.token)
       if (this.errMsg) {
         this.errMsg = ''
       }

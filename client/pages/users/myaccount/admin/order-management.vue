@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="width: 95%">
+  <div class="card" style="width: 100%">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Tüm Siparişler</p>
       <b-tooltip
@@ -21,7 +21,7 @@
         </b-button>
       </b-tooltip>
     </header>
-    <div class="card-content">
+    <div class="card-content p-2">
       <article class="message is-warning">
         <div class="message-body">
           Sipariş durumunun <strong>'Tedarik Aşamasında'</strong> olarak
@@ -120,7 +120,12 @@
             {{ niceDateFormat(props.row.createdAt) }}
           </b-table-column>
 
-          <b-table-column label="Ürün Adedi" centered v-slot="props">
+          <b-table-column
+            label="Ürün Adedi"
+            centered
+            width="20px"
+            v-slot="props"
+          >
             {{ props.row.products.length }}
           </b-table-column>
 
@@ -128,6 +133,7 @@
             field="serviceFee"
             label="Hizmet Bedeli(TL)"
             numeric
+            width="30px"
             centered
             v-slot="props"
           >
@@ -137,6 +143,7 @@
             field="tax"
             label="KDV(TL)"
             numeric
+            width="30px"
             centered
             v-slot="props"
           >
@@ -146,6 +153,7 @@
             field="sumTotal"
             label="Sipariş Toplamı(TL)"
             numeric
+            width="40px"
             centered
             v-slot="props"
           >
@@ -157,6 +165,7 @@
             label="Sipariş Durumu"
             searchable
             sortable
+            width="90px"
             centered
             v-slot="props"
           >
@@ -417,5 +426,6 @@ tr.rowColorStyleSuccess {
 
 .b-table.fontSize {
   font-size: smaller;
+  width: 100%;
 }
 </style>

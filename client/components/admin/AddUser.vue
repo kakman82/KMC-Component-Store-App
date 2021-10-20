@@ -151,7 +151,6 @@ export default {
         }
         const response = await this.$axios.$post('/auth/signup', reqData)
 
-        console.log(response)
         if (response.success) {
           this.isLoading = false
           this.close()

@@ -90,7 +90,6 @@ export default {
 
           // eğer kullanıcı ana sayfadaki giriş yap butonu ile login oldu ise ana sayfaya yönlendir
           // değilse zaten sepet sayfasından login olmuş demektir ve direkt checkout sayfasında yönlendir
-          //console.log(this.$route)
           if (this.$route.path === '/cart') {
             // bu emit sepet sayfasından login olunduğu zaman modalın kapatılması için
             this.$emit('closeAuthFormModal')

@@ -5,10 +5,14 @@
       <!-- Stok Filtre -->
       <ul class="menu-list">
         <li>
-          <a class="is-active has-text-weight-bold">Yalnızca Stoğu Olanları Göster</a>
+          <a class="is-active has-text-weight-bold"
+            >Yalnızca Stoğu Olanları Göster</a
+          >
           <ul>
             <b-field>
-              <b-checkbox v-model="stockCheckboxValue" type="is-info"> Evet </b-checkbox>
+              <b-checkbox v-model="stockCheckboxValue" type="is-info">
+                Evet
+              </b-checkbox>
             </b-field>
           </ul>
           <!-- <p class="content"><b>Selection:</b> {{ stockCheckboxValue }}</p> -->
@@ -20,7 +24,11 @@
           <a class="is-active has-text-weight-bold">Üretici Firma [A-Z]</a>
           <ul v-for="(manufacturer, i) in manufacturers" :key="i">
             <b-field>
-              <b-checkbox v-model="mfrCheckboxGroup" :native-value="manufacturer" type="is-info">
+              <b-checkbox
+                v-model="mfrCheckboxGroup"
+                :native-value="manufacturer"
+                type="is-info"
+              >
                 {{ manufacturer }}
               </b-checkbox>
             </b-field>
@@ -31,10 +39,16 @@
       <!-- Tedarik Yeri Filter -->
       <ul class="menu-list">
         <li>
-          <a class="is-active has-text-weight-bold">Tedarik Firma/Bölge [A-Z]</a>
+          <a class="is-active has-text-weight-bold"
+            >Tedarik Firma/Bölge [A-Z]</a
+          >
           <ul v-for="(supplier, i) in suppliers" :key="i">
             <b-field>
-              <b-checkbox v-model="supplierCheckboxGroup" :native-value="supplier" type="is-info">
+              <b-checkbox
+                v-model="supplierCheckboxGroup"
+                :native-value="supplier"
+                type="is-info"
+              >
                 {{ supplier }}
               </b-checkbox>
             </b-field>
@@ -65,14 +79,19 @@ export default {
   },
   watch: {
     stockCheckboxValue(newVal, oldVal) {
-      //console.log('old: ', oldVal, 'new: ', newVal)
       this.$store.commit('products/setStockCheckboxSelections', newVal)
     },
     mfrCheckboxGroup(newVal, oldVal) {
-      this.$store.commit('products/setManufacturerCheckboxSelections', this.mfrCheckboxGroup)
+      this.$store.commit(
+        'products/setManufacturerCheckboxSelections',
+        this.mfrCheckboxGroup
+      )
     },
     supplierCheckboxGroup(newVal, oldVal) {
-      this.$store.commit('products/setSupplierCheckboxSelections', this.supplierCheckboxGroup)
+      this.$store.commit(
+        'products/setSupplierCheckboxSelections',
+        this.supplierCheckboxGroup
+      )
     },
   },
 }
