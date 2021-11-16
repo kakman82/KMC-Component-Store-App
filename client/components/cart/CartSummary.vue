@@ -13,6 +13,14 @@
       <p><i class="fas fa-lira-sign fa-1x"></i> {{ serviceFeeTL }}</p>
     </a>
     <a class="panel-block is-justify-content-space-between">
+      <b>İndirim:</b>
+      <p><i class="fas fa-lira-sign fa-1x"></i> Varsa</p>
+    </a>
+    <a class="panel-block is-justify-content-space-between">
+      <b>Gümrük ve Diğer Vergiler:</b>
+      <p><i class="fas fa-lira-sign fa-1x"></i> {{ taxFee }}</p>
+    </a>
+    <a class="panel-block is-justify-content-space-between">
       <b>KDV Tutarı<small>(%18)</small>:</b>
       <p><i class="fas fa-lira-sign fa-1x"></i> {{ taxFee }}</p>
     </a>

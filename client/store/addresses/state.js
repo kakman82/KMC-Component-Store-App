@@ -8,6 +8,6 @@ const state = () => ({
   neighbourhoods: [],
   deliveryAddresses: [],
   selectedDeliveryAddress: {},
-  billingAddress: {},
+  billingAddress: null,
 })
 export default state

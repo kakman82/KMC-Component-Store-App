@@ -1,6 +1,7 @@
 const state = () => ({
   search: '',
   products: [],
+
   showOnlyHasStock: true,
   mfrCheckboxGroup: [],
   supplierCheckboxGroup: [],

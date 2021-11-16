@@ -71,7 +71,7 @@
           </div>
           <div class="column has-text-centered">
             <p class="title has-text-weight-light has-text-centered">
-              Garantili ve Güvenilir Teslimat
+              Garantili ve Güvenilir Hizmet
             </p>
             <span class="icon-text mt-2">
               <span class="icon has-text-black">

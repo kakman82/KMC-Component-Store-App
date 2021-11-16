@@ -5,7 +5,25 @@ const _ = deepdash(lodash)
 const getters = {
   getProducts(state) {
     let apiProducts = [...state.products]
+
     let filteredProducts = []
+
+    // webSite adına göre sıralama - arrow.com lar en başta gelecek şekilde
+    for (let i = 0; i < apiProducts.length; i++) {
+      const sortedByWebSite = apiProducts[i].InvOrg.webSites
+      for (let j = 0; j < sortedByWebSite.length; j++) {
+        sortedByWebSite.sort(function (a, b) {
+          if (a.name.toLowerCase() < b.name.toLowerCase()) {
+            return -1
+          }
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1
+          }
+          return 0
+        })
+      }
+      filteredProducts = sortedByWebSite
+    }
 
     // sadece stoklu olanlar gelsin;
     if (state.showOnlyHasStock) {

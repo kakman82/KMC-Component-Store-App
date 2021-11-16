@@ -50,6 +50,7 @@ export default {
     prices: null,
     currency: '',
     supplier: '',
+    htsCode: '',
   },
   data() {
     return {
@@ -140,6 +141,7 @@ export default {
           productCurrencyValue: 0,
           productCurrencyDate: '',
           productQuantity: this.quantity,
+          productHtsCode: this.htsCode,
         }
         // Mutationa product gönderimi ve modal gösterimi;
         this.$store.commit('cart/addProductToCart', cartProductData)

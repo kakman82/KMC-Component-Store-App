@@ -92,6 +92,15 @@
         }}
       </b-table-column>
 
+      <b-table-column
+        field="productHtsCode"
+        label="Gümrük Vergisi (HTS Kodu)"
+        centered
+        v-slot="props"
+      >
+        {{ props.row.productHtsCode }}
+      </b-table-column>
+
       <b-table-column label="Teslim Süresi" centered>
         <span class="tag is-success"> Ort 2 hafta </span>
       </b-table-column>

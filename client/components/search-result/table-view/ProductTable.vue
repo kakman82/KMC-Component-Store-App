@@ -88,9 +88,10 @@
                   <span>{{ prod.desc }}</span>
                   <br />
                   <strong>Kategori: </strong
-                  >{{
-                    prod.categoryName ? prod.categoryName : 'Bilgi mevcut değil'
-                  }}
+                  >{{ prod.categoryName ? prod.categoryName : '-' }}
+                  <br />
+                  <strong>Tarih Kodu: </strong
+                  >{{ source.dateCode ? source.dateCode : '-' }}
                 </div>
               </td>
               <td
@@ -221,6 +222,7 @@
                       :prices="source.Prices"
                       :currency="supplier.currency"
                       :supplier="supplier.displayName"
+                      :htsCode="source.htsCode"
                     />
                   </div>
                 </div>

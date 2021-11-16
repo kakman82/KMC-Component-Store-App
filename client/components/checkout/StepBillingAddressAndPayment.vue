@@ -23,9 +23,7 @@
 
       <div class="card-content">
         <div class="content">
-          <div
-            v-if="Object.keys($store.state.addresses.billingAddress).length > 0"
-          >
+          <div v-if="$store.state.addresses.billingAddress !== null">
             <BillAddressInfo />
           </div>
           <div v-else>

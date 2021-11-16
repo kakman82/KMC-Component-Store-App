@@ -1,5 +1,5 @@
 <template>
-  <div class="card" style="width: 100%">
+  <div class="card" style="width: 97%">
     <header class="card-header">
       <p class="card-header-title has-text-primary-dark">Tüm Siparişler</p>
       <b-tooltip
