@@ -23,9 +23,10 @@
 
       <div class="card-content">
         <div class="content">
-          <div v-if="$store.state.addresses.billingAddress !== null">
+          <div v-if="$store.state.addresses.billingAddress">
             <BillAddressInfo />
           </div>
+          <!-- <div v-else> -->
           <div v-else>
             <article class="message is-warning">
               <div class="message-header">

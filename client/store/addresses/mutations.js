@@ -52,7 +52,7 @@ const mutations = {
     state.billingAddress = payload
   },
   resetBillingAddress(state) {
-    state.billingAddress = {}
+    state.billingAddress = null
   },
 }
 export default mutations
